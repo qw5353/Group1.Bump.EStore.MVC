@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.TrendingQuestionTypeVM>
+
+@{
+    ViewBag.Breadcrumbs = new string[] { "客服管理", "常見問題", "分類管理" };
+    ViewBag.Title = "常見問題分類";
+}
+
+@section customStyles{
+    <style>
+        .text-right {
+            text-align: right;
+        }
+
+        .h36px {
+            height: 36px;
+        }
+
+        .w74px {
+            width: 74px;
+        }
+
+        option:hover,
+        option:focus,
+        option:active,
+        option:checked {
+            background-color: #f3e9df;
+        }
+
+        select:focus option:checked {
+            background: #f3e9df !important;
+        }
+    </style>
+}
+
+<h2>分類管理</h2>
+
+<div class="row">
+    <div class="ms-4 col-3 d-flex flex-column">
+        @Html.ActionLink("新增分類", "Create", "TrendingQuestionTypes", new { @class = "btn btn-success mb-2" })
+        <select id="type-select" class="form-select overflow-auto" size="15">
+            @foreach (var item in Model)
+            {
+                <option value="@item.Id" class="fs-5 py-1" data-questions-length="@item.QuestionsLength">@item.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-2 d-flex align-items-end mb-2">
+        <button class="btn btn-secondary w74px h36px me-2" data-action="edit">Edit</button>
+        <button class="btn btn-danger w74px h36px" data-action="delete">Delete</button>
+    </div>
+    <div class="col d-flex h36px">
+        <a class="btn btn-secondary ms-auto" href="/TrendingQuestions">回常見問題
+        </a>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>
+        document.querySelector('#type-select').addEventListener('change', function (e) {
+            if (+this.selectedOptions[0].dataset.questionsLength > 0) {
+                document.querySelector('button[data-action="delete"]').classList.add('d-none');
+            } else {
+                document.querySelector('button[data-action="delete"]').classList.remove('d-none');
+            }
+        })
+
+        if (document.querySelector('select option').dataset.questionsLength > 0) {
+            document.querySelector('button[data-action="delete"]').classList.add('d-none');
+        } else {
+            document.querySelector('button[data-action="delete"]').classList.remove('d-none');
+        }
+
+        document.querySelector('select option').selected = true;
+
+        document.querySelectorAll('button[data-action]').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const selectedId = document.getElementById('type-select').value;
+                const action = e.target.dataset.action;
+                const actionMap = {
+                    edit: 'Edit',
+                    delete: 'Delete'
+                };
+
+                location.href = `/TrendingQuestionTypes/${actionMap[action]}/${selectedId}`;
+            });
+        });
+    </script>
+}

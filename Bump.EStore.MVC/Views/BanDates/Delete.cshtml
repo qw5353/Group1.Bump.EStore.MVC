@@ -1,0 +1,64 @@
+﻿@model Bump.EStore.MVC.ViewModels.BanDates.BanDateDeleteVM
+
+@{
+    ViewBag.Title = "刪除禁用日期";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+@*<h2 class="mb-3">刪除禁用日期</h2>*@
+
+<h3 class="text-danger">你確定要刪除嗎?</h3>
+<div>
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">場館禁用日期時間</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-0 p-1" style="background-color: rgb(87,55,25)">
+        </div>
+    </div>
+    <div class="row border border-secondary p-3 px-5">
+        <dl>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Field)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Field)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BanStartDateTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BanStartDateTime)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BanEndDateTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BanEndDateTime)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="刪除" class="btn btn-danger" />
+                @*@Html.ActionLink("返回清單", "Index", "BanDates", new { @class = "btn btn-secondary ms-2" })*@
+            </div>
+        }
+    </div>
+    @*@Html.ActionLink("返回清單", "Index", "BanDates", new { @class = "btn btn-secondary ms-2" })*@
+    @Html.ActionLink("返回場館清單", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+
+</div>

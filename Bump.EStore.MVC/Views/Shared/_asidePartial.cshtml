@@ -1,0 +1,188 @@
+﻿<aside class="col-2 col-lg-2 aside-col g-0 p-0 m-0 px-3 overflow-y-auto" id="nav-aside">
+    <div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="flex-shrink-0 aside-bar">
+                <ul class="list-unstyled ps-0 mx-2 first-list">
+                    <li class="mb-2 mt-3">
+                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fs-5 shopping-center-logo-btn aside-item-logo collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#home-collapse"
+                                aria-expanded="false">
+                            商品中心
+                        </button>
+                        <div class="collapse shadow-block-list" id="home-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/Products"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">商品列表</a>
+                                </li>
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/Products/Create"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">新增商品</a>
+                                </li>
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="~/Categories/Index"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">類別管理</a>
+                                </li>
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="~/Inventories"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">庫存管理</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    @if (User.Identity.IsAuthenticated && (User.IsInRole("教練") || User.IsInRole("管理員")))
+                    {
+
+                        <li class="mb-2">
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fs-5 course-management-logo-btn aside-item-logo collapsed"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#coach-collapse"
+                                    aria-expanded="false">
+                                課程管理
+                            </button>
+                            <div class="collapse shadow-block-list"
+                                 id="coach-collapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li class="fs-6 bg-aside-item">
+                                        <a href="/Coaches/Index"
+                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">教練管理</a>
+                                    </li>
+                                    <li class="fs-6 bg-aside-item">
+                                        <a href="/Fields/Index"
+                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">場館管理</a>
+                                    </li>
+                                    <li class="fs-6 bg-aside-item">
+                                        <a href="/SkillCours/Index"
+                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">技巧課程管理</a>
+                                    </li>
+                                    <li class="fs-6 bg-aside-item">
+                                        <a href="/Skillcurriculums/Index"
+                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">技巧課課表管理</a>
+                                    </li>
+                                    <li class="fs-6 bg-aside-item">
+                                        <a href="/ExperienceCoursePlans/Index"
+                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">體驗課方案管理</a>
+                                    </li>
+                                    <li class="fs-6 bg-aside-item">
+                                        <a href="/CourseEnrollments"
+                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">報名檢視</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                    <li class="mb-2">
+                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fs-5 marketing-management-logo-btn aside-item-logo"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#orders-collapse"
+                                aria-expanded="false">
+                            訂單管理
+                        </button>
+                        <div class="collapse shadow-block-list"
+                             id="orders-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/Orders/Index"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">訂單查詢</a>
+                                </li>
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/Orders/Chart"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">報表統計</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-2">
+                        <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fs-5 dealer-management-logo-btn aside-item-logo"
+                           data-bs-target="#home-collapse"
+                           href="~/Dealers">
+                            經銷商管理
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fs-5 marketing-management-logo-btn aside-item-logo"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#marketing-collapse"
+                                aria-expanded="false">
+                            行銷管理
+                        </button>
+                        <div class="collapse shadow-block-list"
+                             id="marketing-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/Coupons/Index"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">優惠券管理</a>
+                                </li>
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/Activities/Index"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">活動管理</a>
+                                </li>
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/Freebies/Index"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">贈品管理</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+                    <li class="mb-2">
+                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fs-5 customer-management-logo-btn aside-item-logo collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#customer-service-collapse"
+                                aria-expanded="false">
+                            客服管理
+                        </button>
+                        <div class="collapse shadow-block-list"
+                             id="customer-service-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="~/TrendingQuestions"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">常見問題</a>
+                                </li>
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="~/ContactUs"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">聯繫我們</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="mb-2">
+                        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fs-5 member-management-logo-btn aside-item-logo collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#member-service-collapse"
+                                aria-expanded="false">
+                            會員管理
+                        </button>
+                        <div class="collapse shadow-block-list"
+                             id="member-service-collapse">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/Members/Index"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">會員列表</a>
+                                </li>
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/MemberLevels/Index"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">會員等級</a>
+                                </li>
+                                <li class="fs-6 bg-aside-item">
+                                    <a href="/MemberTags/Index"
+                                       class="link-body-emphasis d-inline-flex text-decoration-none rounded text-white w-90 ms-3">會員標籤</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="mb-2">
+                        <a href="/Employees/Index" class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fs-5 order-management-logo-btn aside-item-logo"
+                           data-bs-target="#home-collapse">
+                            員工管理
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
+</aside>
+

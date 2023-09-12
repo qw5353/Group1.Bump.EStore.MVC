@@ -1,0 +1,218 @@
+﻿@model Bump.EStore.MVC.ViewModels.Coupons.CouponDetailVM
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2 class="mt-3">@Html.DisplayFor(model => model.Name)</h2>
+<section class="container">
+    <div class="row justify-content-between">
+        <div class="mb-3 col-md-1">
+            <a class="btn btn-dark" href="@Url.Action("Index")" role="button"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mb-0 p-1" style="background-color: rgb(87,55,25)">
+        </div>
+    </div>
+    <div class="row  border border-secondary p-3 px-5 rounded-bottom">
+        <div class="mb-3">
+            <div class="row d-flex">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "form-label" })
+                </div>
+                <div class="col-md-6 border border-1 border-secondary rounded">
+                    @Html.DisplayFor(model => model.Code)
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="row d-flex">
+                <div class="col-md-1">
+                    <p>活動區間</p>
+                </div>
+                <div class="col-md-4 border border-1 border-secondary rounded">
+                    @Html.DisplayFor(model => model.StartTime)~@Html.DisplayFor(model => model.EndTime)
+
+                </div>
+                <div class="form-check col-md-1">
+                    週期
+                </div>
+                <div class="col-md-1 border border-1 border-secondary rounded">
+                    @Html.DisplayFor(model => model.RepeatRule)
+                    @Html.DisplayFor(model => model.RepeatNum)
+                    @if (Model.RepeatNum != null)
+                    {
+                        <span>次</span>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.TargetTypeName, htmlAttributes: new { @class = "form-label" })
+                </div>
+                <div class="col-md-6  border border-1 border-secondary rounded">
+                    @Html.DisplayFor(model => model.TargetTypeName)
+                    @Html.DisplayFor(model => model.MemberLevel)
+                    @Html.DisplayFor(model => model.MemberTag)
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row d-flex">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.PromotionProductTypeName, htmlAttributes: new { @class = "form-label" })
+                </div>
+                <div class="col-md-6  border border-1 border-secondary rounded">
+                    @Html.DisplayFor(model => model.PromotionProductTypeName)
+                    @Html.DisplayFor(model => model.Category)
+                    @Html.DisplayFor(model => model.ProductTag)
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row d-flex">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.CouponTypeName, htmlAttributes: new { @class = "form-label" })
+                </div>
+                <div class="col-md-6  border border-1 border-secondary rounded">
+                    @Html.DisplayFor(model => model.CouponTypeName)
+                    @if (Model.CouponTypeName == "打折")
+                    {
+                        @Html.DisplayFor(model => model.Amount)
+                    }
+                    @if (Model.CouponTypeName == "折抵" || Model.CouponTypeName == "運費")
+                    {
+                        @Html.DisplayFor(model => model.Amount)
+                        <span>元</span>
+                    }
+                    @if (Model.CouponTypeName == "買X送Y")
+                    {
+                        <span>買</span>
+                        @Html.DisplayFor(model => model.Amount)
+                        <span>送</span>
+                        @Html.DisplayFor(model => model.DiscountQty)
+                    }
+                    @if (Model.CouponTypeName == "點數加倍送")
+                    {
+                        @Html.DisplayFor(model => model.Amount)
+                        <span>倍</span>
+                    }
+                    @Html.DisplayFor(model => model.FreebieName)
+                    @Html.DisplayFor(model => model.DiscountQty)
+                </div>
+
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row d-flex">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.PriceThreshold, htmlAttributes: new { @class = "form-label" })
+                </div>
+                <div class="col-md-6  border border-1 border-secondary rounded">
+                    最低消費
+                    @Html.DisplayFor(model => model.PriceThreshold)
+                    元
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row d-flex">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "form-label" })
+                </div>
+                <div class="col-md-6  border border-1 border-secondary rounded">
+                    @if (Model.Quantity == null)
+                    {
+                        <span>無上限張</span>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(model => model.Quantity)
+                        <span>張</span>
+
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row d-flex">
+                <div class="col-md-1">
+                    @Html.LabelFor(model => model.ExtraSalesUsage, htmlAttributes: new { @class = "form-check-label" })
+                </div>
+                <div class="col-md-3">
+                    @Html.DisplayFor(model => model.ExtraSalesUsage)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-2 mt-3 d-flex justify-content-end">
+            <a class="btn btn-primary" href="@Url.Action("Edit", new { id = Model.Id })" role="button">編輯</a>
+        </div>
+        <div class="col-md-2 mt-3">
+            <button type="submit" class="btn btn-danger delete" id="@Model.Id">刪除</button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="https://kit.fontawesome.com/afa27cfccd.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const deleteMessages = document.querySelectorAll('.delete');
+        deleteMessages.forEach(deleteMessage => {
+            deleteMessage.onclick = function () {
+
+                Swal.fire({
+                    title: '你確定要刪除這筆紀錄嗎?',
+                    text: "刪了就回不去了",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消'
+                })
+                    .then(function (result) {
+                        if (result.value) {
+                            fetch(`/ActivityDetails/Delete`, {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    id: deleteMessage.id
+                                }),
+                                headers: {
+                                    "content-type": "application/json"
+                                }
+                            })
+                                .then(res => {
+                                    if (res.ok) {
+                                        Swal.fire(
+                                            '刪除!',
+                                            '你成功將資料刪除',
+                                            'success'
+                                        ).then(
+                                            function () {
+                                                location.reload();
+                                            })
+                                    }
+                                })
+                                .catch(err => {
+                                    alert(err)
+                                })
+                        }
+                    })
+            }
+        });
+    </script>
+}

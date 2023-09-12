@@ -1,0 +1,32 @@
+﻿@model Bump.EStore.MVC.ViewModels.TrendingQuestionTypeVM
+
+@{
+    ViewBag.Title = "刪除常見問題分類";
+}
+
+<h2 class="mb-3">刪除分類</h2>
+
+<h3 class="text-danger">你確定要刪除嗎?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="刪除" class="btn btn-danger" />
+            @Html.ActionLink("返回清單", "Index", "TrendingQuestionTypes", new { @class = "btn btn-secondary" })
+        </div>
+    }
+</div>

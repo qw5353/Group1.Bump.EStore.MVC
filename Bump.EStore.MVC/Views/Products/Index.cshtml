@@ -1,0 +1,502 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.Products.ProductIndexVM>
+
+@{
+    ViewBag.Title = "商品列表";
+    ViewBag.Breadcrumbs = new string[] { "商品中心", "商品列表" };
+    var firstcategories = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.FirstCategoryId);
+    var secondcategories = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.SecondCategoryId);
+    var thirdcategories = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ThirdCategoryId);
+    var brands = ViewBag.BrandId as SelectList;
+
+    var criteria = ViewBag.Criteria as Bump.EStore.MVC.ViewModels.Products.ProductCriteriaVM;
+    string f_categoryId = criteria.FirstCategoryId.HasValue ? criteria.FirstCategoryId.Value.ToString() : "";
+    string s_categoryId = criteria.FirstCategoryId.HasValue ? criteria.FirstCategoryId.Value.ToString() : "";
+    string t_categoryId = criteria.FirstCategoryId.HasValue ? criteria.FirstCategoryId.Value.ToString() : "";
+    string s_brandId = criteria.BrandId.HasValue ? criteria.BrandId.Value.ToString() : "";
+
+}
+
+@section customStyles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+
+    <style>
+        .custom-table-striped tbody tr:nth-child(odd) td {
+            background-color: #f3e9df;
+        }
+
+        .scrollable-table {
+            height: 56vh;
+            overflow-y: scroll;
+        }
+
+        .tableFixHead {
+            overflow: auto;
+        }
+
+            .tableFixHead thead th {
+                position: sticky;
+                top: 0%;
+                z-index: 1;
+                background-color: #BB5E00 !important;
+                color: aliceblue !important;
+            }
+
+        /* Just common table stuff. Really. */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .scrollable-table::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .scrollable-table::-webkit-scrollbar-track {
+            border-radius: 10px;
+            margin: 40px 130px 20px 130px;
+            background-color: rgb(187, 187, 187, 0.2);
+        }
+
+        .scrollable-table::-webkit-scrollbar-thumb {
+            height: 50px;
+            border-radius: 10px;
+            background-color: rgb(187, 187, 187, 0.84);
+        }
+
+        /*td {
+            border: 1px solid black;*/ /* 添加1像素的實線邊框 */
+        /*}*/
+    </style>
+}
+
+<section class="container">
+    <form method="get">
+        <div class="row">
+            <div class="mb-3 col-3">
+                <label for="s_name">商品名稱</label>
+                <input type="text" class="form-control" name="Name" id="s_name" value="@criteria.Name">
+            </div>
+
+            <div class="mb-3 col-3">
+                <label for="f_categoryId">商品大分類</label>
+                <select name="FirstCategoryId" id="f_categoryId" class="form-select" value="@criteria.FirstCategoryId">
+                    <option value="">請選擇</option>
+                </select>
+            </div>
+
+            <div class="mb-3 col-3">
+                <label for="s_categoryId">商品中分類</label>
+                <select name="SecondCategoryId" id="s_categoryId" class="form-select" value="@criteria.SecondCategoryId" disabled>
+                    <option value="">請選擇</option>
+                </select>
+            </div>
+
+            <div class="mb-3 col-3">
+                <label for="t_categoryId">商品小分類</label>
+                <select name="ThirdCategoryId" id="t_categoryId" class="form-select" value="@criteria.ThirdCategoryId" disabled>
+                    <option value="">請選擇</option>
+                    @*@foreach (var item in thirdcategories)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }*@
+                </select>
+            </div>
+
+            <div class="mb-3 col-3">
+                <label for="s_code">商品編號</label>
+                <input type="text" class="form-control" name="Code" id="s_code" value="@criteria.Code">
+            </div>
+
+            <div class="mb-3 col-3">
+                <label for="s_brandId">
+                    品牌
+                </label>
+                <select name="brandId" id="s_brandId" class="form-select" value="@criteria.BrandId">
+                    <option value="">請選擇</option>
+                    @foreach (var item in brands)
+                    {
+                        if (@item.Text == "") { continue; }
+                        <option value="@item.Value" @(s_brandId == item.Value ? "selected" : "")>@item.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3 col-4">
+                <label for="s_minPrice" style="display: block">金額</label>
+                <input type="number" class="form-control" name="MinPrice" id="s_minPrice" style="width: 40%; display: inline" value="@criteria.MinPrice"> ~
+                <input type="number" class="form-control" name="MaxPrice" id="s_maxPrice" style="width: 40%; display: inline" value="@criteria.MaxPrice">
+            </div>
+            <div class="mb-3 col-2 align-self-end ms-auto">
+                <div class="row me-3">
+                    <div class="col">
+                        <button class="btn btn-danger w-100" onclick="clearFilters(event)">清除</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary w-100">搜尋</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+<span class="position-sticky top-0 z-3 bg-white fs-5 mb-1 d-inline-flex">商品合計:<p class="fw-bold ms-1">@ViewBag.CountOfProduct</p>件</span>
+<div class="scrollable-table">
+    <table class="table custom-table-striped tableFixHead" id="ordertable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th></th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Code)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ShelfStatus)
+                </th>
+                <th></th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.CreateAt)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.UpdateTime)
+                </th>
+            </tr>
+        </thead>
+        @if (ViewBag.CountOfProduct > 0)
+        {
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle" style="width: 150px; height:150px;">
+                            <img src="~/Uploads/product/images/@item.Thumbnail" style="width: 100%; height:100%" />
+                        </td>
+                        <td class="align-middle">
+                            <div class="ms-2">
+                                <h6 class="fw-bold">
+                                    @Html.DisplayFor(modelItem => item.BrandName)
+                                </h6>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </div>
+                        </td>
+                        <td class="align-middle" style="width: 110px;">
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td class="align-middle text-center">
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td class="align-middle">
+
+
+                            @{switch (item.ShelfStatus)
+                                {
+                                    case "上架中":
+                                        <div><span class="badge rounded-pill bg-warning fs-6">@Html.DisplayFor(modelItem => item.ShelfStatus)</span></div>
+                                        break;
+                                    case "已下架":
+                                        <div><span class="badge rounded-pill bg-secondary fs-6">@Html.DisplayFor(modelItem => item.ShelfStatus)</span></div>
+                                        break;
+                                }
+                            }
+                        </td>
+                        <td class="align-middle">
+                            <a class="btn btn-warning mb-2" data-id="@item.Id" href="@Url.Action("Edit", "Products", new { id=@item.Id,pageNumber=ViewBag.PageNumber,Name = criteria.Name, Code = criteria.Code, FirstCategoryId = criteria.FirstCategoryId, SecondCategoryId = criteria.SecondCategoryId, ThirdCategoryId = criteria.ThirdCategoryId, BrandId = criteria.BrandId, MinPrice = criteria.MinPrice, MaxPrice = criteria.MaxPrice})">
+                                修改
+                            </a>
+                            <br>
+                            @{switch (item.ShelfStatus)
+                                {
+                                    case "上架中":
+                                        <button class="btn btn-secondary mb-2" data-id="@item.Id" onclick="updateShelfStatus(@item.Id,'已下架')">下架</button>
+                                        break;
+                                    case "已下架":
+                                        <button class="btn btn-success mb-2" data-id="@item.Id" onclick="updateShelfStatus(@item.Id,'上架中')">上架</button>
+                                        break;
+                                }
+                            }
+                            <br>
+                            <button class="btn btn-danger" data-id="@item.Id" onclick="deleteProduct(@item.Id)">刪除</button>
+                        </td>
+                        <td class="align-middle text-center text-muted" style="width: 110px;">
+                            @Html.DisplayFor(modelItem => item.CreateAt)
+                        </td>
+                        <td class="align-middle text-center text-muted" style="width: 110px;">
+                            @Html.DisplayFor(modelItem => item.UpdateTime)
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        }
+    </table>
+</div>
+@if (ViewBag.CountOfProduct < 1)
+{
+    <h2 class="text-center text-secondary" style="position: relative; top: -25vh">無資料</h2>
+}
+else
+{
+    <nav class="table-responsive">
+        <ul class="pagination justify-content-center d-flex flex-wrap mb-1">
+            <li class="page-item @(ViewBag.PageNumber > 1 ? "enabled" : "disabled")">
+                <a class="page-link" href="@Url.Action("Index", "Products", new { Name = criteria.Name, Code = criteria.Code, FirstCategoryId = criteria.FirstCategoryId, SecondCategoryId = criteria.SecondCategoryId, ThirdCategoryId = criteria.ThirdCategoryId, BrandId = criteria.BrandId, MinPrice = criteria.MinPrice, MaxPrice = criteria.MaxPrice, pageNumber = 1 })">
+                    首頁
+                </a>
+            </li>
+            <li class="page-item @(ViewBag.PageNumber > 1 ? "enabled" : "disabled")">
+                <a class="page-link" href="@Url.Action("Index", "Products", new { Name = criteria.Name, Code = criteria.Code, FirstCategoryId = criteria.FirstCategoryId, SecondCategoryId = criteria.SecondCategoryId, ThirdCategoryId = criteria.ThirdCategoryId, BrandId = criteria.BrandId, MinPrice = criteria.MinPrice, MaxPrice = criteria.MaxPrice, pageNumber = ViewBag.PageNumber - 1 })">
+                    <i class="fa-solid fa-circle-chevron-left"></i>
+                </a>
+            </li>
+            @for (int i = @ViewBag.FirstPageNum; i <= @ViewBag.EndPageNum; i++)
+            {
+                <li class="page-item @(ViewBag.PageNumber == i ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Products", new { Name = criteria.Name, Code = criteria.Code, FirstCategoryId = criteria.FirstCategoryId, SecondCategoryId = criteria.SecondCategoryId, ThirdCategoryId = criteria.ThirdCategoryId, BrandId = criteria.BrandId, MinPrice = criteria.MinPrice, MaxPrice = criteria.MaxPrice, pageNumber = @i })">
+                        @i
+                    </a>
+                </li>
+            }
+
+            <li class="page-item @(ViewBag.PageNumber < ViewBag.TotalPages ? "enabled" : "disabled")">
+                <a class="page-link" href="@Url.Action("Index", "Products", new { Name = criteria.Name, Code = criteria.Code, FirstCategoryId = criteria.FirstCategoryId, SecondCategoryId = criteria.SecondCategoryId, ThirdCategoryId = criteria.ThirdCategoryId, BrandId = criteria.BrandId, MinPrice = criteria.MinPrice, MaxPrice = criteria.MaxPrice, pageNumber = ViewBag.PageNumber + 1 })">
+                    <i class="fa-solid fa-circle-chevron-right"></i>
+                </a>
+            </li>
+            <li class="page-item @(ViewBag.PageNumber < ViewBag.TotalPages ? "enabled" : "disabled")">
+                <a class="page-link" href="@Url.Action("Index", "Products", new { Name = criteria.Name, Code = criteria.Code, FirstCategoryId = criteria.FirstCategoryId, SecondCategoryId = criteria.SecondCategoryId, ThirdCategoryId = criteria.ThirdCategoryId, BrandId = criteria.BrandId, MinPrice = criteria.MinPrice, MaxPrice = criteria.MaxPrice, pageNumber = ViewBag.TotalPages })">頁尾</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jquery")
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        //各分類的資料來源
+        let firstOptions = @Html.Raw(firstcategories);
+        let secondOptions = @Html.Raw(secondcategories);
+        let thirdOptions = @Html.Raw(thirdcategories);
+        //取得各分類 criteria ID
+        let criteriaFirstCategoryId = '@(criteria.FirstCategoryId)';
+        let criteriaSecondCategoryId = '@(criteria.SecondCategoryId)';
+        let criteriaThirdCategoryId = '@(criteria.ThirdCategoryId)';
+
+        //取得各分類選擇元素
+        let selectFCategoryElement = document.querySelector('#f_categoryId');
+        let selectSCategoryElement = document.querySelector('#s_categoryId');
+        let selectTCategoryElement = document.querySelector('#t_categoryId');
+
+        //設定第一分類option
+        firstOptions.map((arr) => {
+            let option = document.createElement('option');
+            criteriaFirstCategoryId == arr.FirstCategoryId ? option.selected = true : option.selected = false
+            option.value = arr.FirstCategoryId;
+            option.text = arr.FirstCategoryName;
+            selectFCategoryElement.appendChild(option);
+        })
+
+        //帶入criteria刷新前請求的篩選分類資料
+        if (criteriaFirstCategoryId > 0) {
+            selectSCategoryElement.disabled = false;
+            secondOptions
+                .filter(arr => arr.FirstCategoryId == selectFCategoryElement.value)
+                .map((arr) => {
+                    let option = document.createElement('option');
+                    criteriaSecondCategoryId == arr.SecondCategoryId ? option.selected = true : option.selected = false
+
+
+                option.value = arr.SecondCategoryId;
+                    option.text = arr.SecondCategoryName;
+                    selectSCategoryElement.appendChild(option);
+                });
+                                    }
+        if (criteriaSecondCategoryId > 0) {
+            selectTCategoryElement.disabled = false;
+            thirdOptions
+                .filter(arr => arr.SecondCategoryId == selectSCategoryElement.value)
+                .map((arr) => {
+                    console.log("da")
+
+
+                let option = document.createElement('option');
+                    criteriaThirdCategoryId == arr.ThirdCategoryId ? option.selected = true : option.selected = false
+
+
+                option.value = arr.ThirdCategoryId;
+                    option.text = arr.ThirdCategoryName;
+                    selectTCategoryElement.appendChild(option);
+                });
+        }
+
+        selectFCategoryElement.addEventListener('change', function () {
+            selectSCategoryElement.innerHTML = '';
+            selectTCategoryElement.innerHTML = '';
+            selectSCategoryElement.appendChild(createDefaultOption());
+            selectTCategoryElement.appendChild(createDefaultOption());
+
+            selectFCategoryElement.value > 0 ? selectSCategoryElement.disabled = false : selectSCategoryElement.disabled = true;
+            selectTCategoryElement.disabled = true;
+
+            secondOptions
+                .filter(arr => arr.FirstCategoryId == selectFCategoryElement.value)
+                .map((arr) => {
+                    let option = document.createElement('option');
+                    criteriaSecondCategoryId == arr.SecondCategoryId ? option.selected = true : option.selected = false
+
+
+                    option.value = arr.SecondCategoryId;
+                    option.text = arr.SecondCategoryName;
+                    selectSCategoryElement.appendChild(option);
+                })
+        });
+
+        selectSCategoryElement.addEventListener('change', function () {
+            selectTCategoryElement.innerHTML = '';
+            selectTCategoryElement.appendChild(createDefaultOption());
+
+            selectSCategoryElement.value != "" ? selectTCategoryElement.disabled = false : selectTCategoryElement.disabled = true;
+
+            thirdOptions
+                .filter(arr => arr.SecondCategoryId == selectSCategoryElement.value)
+                .map((arr) => {
+                    let option = document.createElement('option');
+                    criteriaThirdCategoryId == arr.ThirdCategoryId ? option.selected = true : option.selected = false
+
+
+                    option.value = arr.ThirdCategoryId;
+                    option.text = arr.ThirdCategoryName;
+                    selectTCategoryElement.appendChild(option);
+                })
+        });
+
+        function createDefaultOption() {
+            let option = document.createElement('option');
+            option.value = "";
+            option.text = '請選擇';
+            option.selected = true;
+            return option
+        }
+
+        //清除button
+        function clearFilters(event) {
+            document.querySelector("#s_name").value = "";
+            document.querySelector("#s_code").value = "";
+            document.querySelector("#f_categoryId").selectedIndex = 0;
+            selectSCategoryElement.innerHTML = '';
+            selectTCategoryElement.innerHTML = '';
+            selectSCategoryElement.appendChild(createDefaultOption());
+            selectTCategoryElement.appendChild(createDefaultOption());
+            selectSCategoryElement.disabled = true;
+            selectTCategoryElement.disabled = true;
+            document.querySelector("#s_brandId").selectedIndex = 0;
+            document.querySelector("#s_minPrice").value = "";
+            document.querySelector("#s_maxPrice").value = "";
+            event.preventDefault();
+        }
+
+
+        function updateShelfStatus(id, status) {
+            Swal.fire({
+                title: '確認',
+                text: "您確定要修改商品狀態嗎?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: '取消',
+                confirmButtonText: '確定'
+            }).then((result) => {
+                console.log(result)
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/Products/UpdateShelfStatus",
+                        type: "POST",
+                        data: { id: id, shelfStatus: status },
+                        success: function (result) {
+                            Swal.fire({
+                                text: "修改成功!",
+                                icon: 'warning',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: '確定'
+                            }).then((result) => {location.reload(); });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                title: '修改失敗',
+                                text: "請再嘗試一次..",
+                                icon: 'warning',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: '確定'
+                            });
+                        }
+                    });
+                }
+
+            });
+        }
+
+        function deleteProduct(id) {
+            Swal.fire({
+                title: '確認',
+                text: "您確定要執行刪除該筆資料嗎?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: '取消',
+                confirmButtonText: '確定'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/Products/DeleteProduct",
+                        type: "POST",
+                        data: { id: id },
+                        success: function (result) {
+                            Swal.fire({
+                                text: "刪除成功!",
+                                icon: 'warning',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: '確定'
+                            }).then((result) => { location.reload(); });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                title: '刪除失敗',
+                                text: "請檢查是否有相依其他資料表，或者重新整理後再嘗試..",
+                                icon: 'warning',
+                                showCancelButton: false,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: '確定'
+                            });
+                        }
+                    });
+                }
+
+            });
+        }
+
+        $('#ordertable').DataTable({
+            "searching": false, //搜尋功能, 預設是開啟
+            "paging": false, //分頁功能, 預設是開啟
+            "ordering": true //排序功能, 預設是開啟
+        });
+
+    </script>
+}

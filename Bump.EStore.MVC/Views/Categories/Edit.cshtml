@@ -1,0 +1,226 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+}
+@{
+    var options = ViewBag.FirstCategoryName;
+    var options2 = ViewBag.SecondCategoryName;
+    var options3 = ViewBag.ThirdCategoryName;
+    var jsOptions = Newtonsoft.Json.JsonConvert.SerializeObject(options);
+    var jsOptions2 = Newtonsoft.Json.JsonConvert.SerializeObject(options2);
+    var jsOptions3 = Newtonsoft.Json.JsonConvert.SerializeObject(options3);
+}
+
+<style>
+    .w200 {
+        width: 200px;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("Edit", "Categories", FormMethod.Post, new { @id = "create-form" }))
+{
+    <input type="hidden" name="categoryLevel" value="0" id="categoryLevel" />
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <div class="mx-auto">
+                <h2 class="mb-5 mt-3">修改產品分類</h2>
+                <div class="mb-5">
+                    <h4>選擇分類位置</h4>
+                    <select id="selectCategory" class="form-select mb-3 w200">
+                        <option value="" disabled selected>分類層</option>
+                        <option value="firstCategory">第一分類</option>
+                        <option value="secondCategory">第二分類</option>
+                        <option value="thirdCategory">第三分類</option>
+                    </select>
+                </div>
+                <h4 class="mb-3">選擇分類名稱</h4>
+                <div class="mb-3">
+                    <h5>選擇第一分類</h5>
+                    <select id="categoryName1" name="categoryName1" class="form-select mb-3 w200">
+                        <option value="" disabled selected>第一分類層</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <h5>選擇第二分類</h5>
+                    <select id="categoryName2" name="categoryName2" class="form-select mb-3 w200">
+                        <option value="" disabled selected>第二分類層</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <h5>選擇第三分類</h5>
+                    <select id="categoryName3" name="categoryName3" class="form-select mb-5 w200">
+                        <option value="" disabled selected>第三分類層</option>
+                    </select>
+                    <input class="form-control border border-warning rounded-0110 mb-3 w200" type="text" id="editCategoeyName"
+                           placeholder="請輸入更改類別名稱" name="editCategoeyName">
+                </div>
+
+                <div class="mb-3">
+                    <input type="submit" value="修改" class="btn btn-warning text-white" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        var options = @Html.Raw(jsOptions);
+        var options2 = @Html.Raw(jsOptions2);
+        var options3 = @Html.Raw(jsOptions3);
+        //console.log(options);
+        $("#categoryName1").prop('disabled', true);
+        $("#categoryName2").prop('disabled', true);
+        $("#categoryName3").prop('disabled', true);
+
+        let categoryLevel;
+
+        $(document).ready(function () {
+            // 監聽第一個選單的變化
+            $('#selectCategory').change(function () {
+                var selectedValue = $(this).val();  // 獲取選取的值
+
+                // 根據選取的值生成對應的選項
+                if (selectedValue === 'firstCategory') {
+                    $("#categoryName1").prop('disabled', false).empty().append($('<option value="" disabled selected>第一分類層</option>'));
+                    $("#categoryName2").prop('disabled', true).empty().append($('<option value="" disabled selected>第二分類層</option>'));
+                    $("#categoryName3").prop('disabled', true).empty().append($('<option value="" disabled selected>第三分類層</option>'));
+                    $('#categoryLevel').val(1);
+                    $('#editCategoeyName').val("");
+
+                } else if (selectedValue === 'secondCategory') {
+                    $('#categoryLevel').val(2);
+                    $("#categoryName1").prop('disabled', false).empty().append($('<option value="" disabled selected>第一分類層</option>'));
+                    $("#categoryName2").prop('disabled', false).empty().append($('<option value="" disabled selected>第二分類層</option>'));
+                    $("#categoryName3").prop('disabled', true).empty().append($('<option value="" disabled selected>第三分類層</option>'));
+                    $('#editCategoeyName').val("");
+
+                } else if (selectedValue === 'thirdCategory') {
+                    $('#categoryLevel').val(3);
+                    $("#categoryName1").prop('disabled', false).empty().append($('<option value="" disabled selected>第一分類層</option>'));
+                    $("#categoryName2").prop('disabled', false).empty().append($('<option value="" disabled selected>第二分類層</option>'));
+                    $("#categoryName3").prop('disabled', false).empty().append($('<option value="" disabled selected>第三分類層</option>'));
+                    $('#editCategoeyName').val("");
+                }
+                $('#categoryName1').empty();
+
+                $("#categoryName1").append($('<option value="" disabled selected>第一分類層</option>'));
+
+                for (var i = 0; i < options.length; i++) {
+                    var option = $("<option>").val(options[i].FirstCategoryId).text(options[i].FirstCategoryName);
+                    $("#categoryName1").append(option);
+                }
+
+                categoryLevel = $('#categoryLevel').val();
+
+            });
+        });
+
+
+
+
+        $(document).ready(function () {
+            // 監聽第二個選單的變化
+            $('#categoryName1').change(function () {
+
+                var selectedValue1 = $(this).val();
+                $('#categoryName2').empty();
+                $("#categoryName2").append($('<option value="" disabled selected>第二分類層</option>'));
+                // 清空第三個選單
+
+                $('#categoryName3').empty();
+                $("#categoryName3").append($('<option value="" disabled selected>第三分類層</option>'));
+
+                //console.log(typeof categoryLevel);
+                if (categoryLevel.trim() === "1") {
+                    $('#editCategoeyName').val($("#categoryName1 option:checked").text().trim());
+                } else {
+                    $('#editCategoeyName').val("");
+                }
+
+                for (var i = 0; i < options2.length; i++) {
+                    if (+selectedValue1 === +options2[i].FirstCategoryId)
+                    {
+                        var option2 = $("<option>").val(options2[i].SecondCategoryId).text(options2[i].SecondCategoryName);
+                        $("#categoryName2").append(option2);
+                    }
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+            // 監聽第三個選單的變化
+            $('#categoryName2').change(function () {
+
+                var selectedValue2 = $(this).val();
+
+                // 清空第四個選單
+                $('#categoryName3').empty();
+                $("#categoryName3").append($('<option value="" disabled selected>第三分類層</option>'));
+
+                if (categoryLevel.trim() === "2") {
+                    $('#editCategoeyName').val($("#categoryName2 option:checked").text().trim());
+                } else {
+                    $('#editCategoeyName').val("");
+                }
+
+                for (var i = 0; i < options3.length; i++) {
+                    if (+selectedValue2 === +options3[i].SecondCategoryId)
+                    {
+                        var option3 = $("<option>").val(options3[i].ThirdCategoryId).text(options3[i].ThirdCategoryName);
+                        $("#categoryName3").append(option3);
+                    }
+
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+            // 監聽第三個選單的變化
+            $('#categoryName3').change(function () {
+
+                if (categoryLevel.trim() === "3") {
+                    $('#editCategoeyName').val($("#categoryName3 option:checked").text().trim());
+                } else {
+                    $('#editCategoeyName').val("");
+                }
+
+            });
+        });
+
+        $('#create-form').on('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '確定修改類別?',
+                text: "還是要再想一下!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                cancelButtonText: '取消',
+                confirmButtonText: '確定!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        '成功!',
+                        '已修改一個類別',
+                        'success'
+                    )
+                    setTimeout(() => {
+                        e.target.submit();
+                    }, 2000);
+                }
+            })
+        });
+
+
+    </script>
+}

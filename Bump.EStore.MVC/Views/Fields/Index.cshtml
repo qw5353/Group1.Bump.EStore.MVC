@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.FieldIndexVM>
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@{
+    ViewBag.Title = "場館管理";
+    ViewBag.Breadcrumbs = new string[] { "課程管理", "場館管理" };
+}
+@section customStyles{
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+
+}
+
+<h2>場館管理</h2>
+
+<p>
+    @*@Html.ActionLink("加入新場館", "Create")*@
+    <a class="btn btn-success" href="@Url.Action("Create")">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"></path>
+        </svg>
+        加入新場館
+    </a>
+</p>
+<p>
+    @Html.ActionLink("查看場館禁用時間", "Index", "BanDates")
+</p>
+<table class="table table-hover table-striped">
+    <tr>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.IndoorText)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.BusinessWeekdayStartTime)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.BusinessWeekdayEndTime)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.BusinessWeekendStartTime)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.BusinessWeekendEndTime)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.IndoorText)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.BusinessWeekdayStartTime)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.BusinessWeekdayEndTime)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.BusinessWeekendStartTime)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.BusinessWeekendEndTime)
+            </td>
+            <td style="text-align: center;">
+                <a href="@Url.Action("Details", new { id = item.Id })" class="btn">
+                    <i class="fa-solid fa-xl fa-circle-info" style="color: #ab962b;"></i>
+                </a>
+                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn">
+                    <i class="fa-regular fa-trash-can fa-xl" style="color: #de5d17;"></i>
+                </a>
+                @*@Html.ActionLink("詳細資訊", "Details", new { id = item.Id }, new { @class = "btn btn-secondary" }) |*@
+                @*@Html.ActionLink("刪除", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })*@
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="mb-12 col-md-12 align-self-end d-flex justify-content-end">
+
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))
+</div>

@@ -1,0 +1,253 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.Inventories.InventoryProductIndexVM>
+
+@{
+    ViewBag.Title = "庫存管理";
+    ViewBag.Breadcrumbs = new string[] { "商品中心", "庫存管理" };
+
+    var data = Model
+        .SelectMany(product => product.ProductStyles, (product, productStyle) => new { product, productStyle })
+        .Select(productAndStyle => new
+        {
+            ProductName = productAndStyle.product.Name,
+            ProductCode = productAndStyle.product.Code,
+            Style = productAndStyle.productStyle.Style,
+            Inventory = productAndStyle.productStyle.Inventory,
+            MinimumStock = productAndStyle.productStyle.MinimumStock
+        });
+
+    var jsData = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+}
+
+@section customStyles{
+    <style>
+        .bg-primary-orange {
+            background-color: #f3e9df;
+        }
+
+        .accordion-button::after {
+            display: none;
+        }
+
+        .accordion-button-customize {
+            background-color: #f3e9df !important;
+        }
+
+        .container-padding-6rem {
+            padding-left: 6rem !important;
+            padding-right: 6rem !important;
+        }
+
+        .w-48 {
+            width: 48%;
+        }
+
+        .danger-cell {
+            background-color: rgba(255,0,0,0.1) !important;
+        }
+
+        .edit-btn-bg {
+            background-color: #E1BD6B;
+        }
+
+            .edit-btn-bg:hover {
+                background-color: #FEBA01;
+            }
+
+
+        .table-row::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .table-row::-webkit-scrollbar-track {
+            border-radius: 10px;
+            background-color: rgb(187, 187, 187, 0.2);
+        }
+
+        .table-row::-webkit-scrollbar-thumb {
+            height: 50px;
+            border-radius: 10px;
+            background-color: rgb(187, 187, 187, 0.84);
+        }
+    </style>
+}
+
+<div class="container container-padding-6rem">
+    <div class="row">
+        <div class="col-auto">
+            <h2 class="mt-2 mb-4">庫存管理</h2>
+
+            <p class="d-flex">
+                <button onclick="downloadXLSX()" class="btn btn-info ms-2 text-light">下載EXCEL</button>
+            </p>
+        </div>
+        <div class="col d-flex ms-4 mt-3">
+            <span class="mb-3">
+                <label for="product-name-search" class="form-label">商品名稱:</label>
+                <input class="form-control" id="product-name-search" />
+            </span>
+            <span class="mb-3 ms-5">
+                <label for="product-code-search" class="form-label">商品ID:</label>
+                <input class="form-control" id="product-code-search" />
+            </span>
+            <span class="mb-3 ms-5 form-check form-switch form-check-reverse fs-4 align-self-center">
+                <label for="product-invalid-switch" class="form-check-label">需訂貨</label>
+                <input class="form-check-input" id="product-invalid-switch" role="switch" type="checkbox"/>
+            </span>
+        </div>
+    </div>
+    <div class="row table-row" style="max-height: 70vh; overflow-y: auto">
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+            @foreach (var item in Model)
+            {
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button accordion-button-customize fs-5 fw-light" type="button" data-bs-target="#panelsStayOpen-collapseOne-@item.Id" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                            <span class="product-name">@item.Name</span><span class="ms-2 product-code">[ @item.Code ]</span>
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseOne-@item.Id" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-1">
+                                    <img src="~/Uploads/product/images/@item.Thumbnail" class="w-100 object-fit-contain" />
+                                </div>
+                                <div class="col-11">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>款式</th>
+                                                <th class="w-25">庫存量</th>
+                                                <th class="w-25">安全庫存量</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var style in item.ProductStyles)
+                                            {
+                                                <tr>
+                                                    <td>@style.Style</td>
+                                                    <td class="inventory-cell @style.ParaTextClass @style.CellClass">@style.Inventory</td>
+                                                    <td class="minimum-stock-cell">@style.MinimumStock</td>
+                                                    <td style="width: 7%" class="p-0 m-0">
+                                                        <a class="edit-btn-bg btn w-100 border-box fs-6" href="~/Inventories/Edit/@style.Id">Edit</a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <!-- use xlsx.full.min.js from version 0.20.0 -->
+    <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+
+    <script>
+        const rawData = @Html.Raw(@jsData);
+        const nameSearchInput = document.getElementById('product-name-search');
+        const codeSearchInput = document.getElementById('product-code-search');
+        const validSearchInput = document.getElementById('product-invalid-switch');
+
+        const accordionItems = [...document.querySelectorAll('.accordion-item')];
+
+        const rows = [
+            ["商品名", "商品編號", "商品款式", "商品庫存量", "商品安全存量"],
+            ...rawData.map(row => {
+                const { ProductName, ProductCode, Style, Inventory, MinimumStock } = row;
+                return [ProductName, ProductCode, Style, Inventory, MinimumStock];
+            })
+        ];
+
+        nameSearchInput.addEventListener('input', function (e) {
+            if (!this.value) {
+                showAllAccordionItems();
+                return;
+            }
+            accordionItems.forEach(item => {
+                const productName = item.querySelector('.accordion-header span.product-name').textContent.toLowerCase();
+                if (productName.includes(this.value.toLowerCase())) {
+                    showElement(item);
+                } else {
+                    hideElement(item);
+                }
+            });
+        });
+
+        codeSearchInput.addEventListener('input', function (e) {
+            if (!this.value) {
+                showAllAccordionItems();
+                return;
+            }
+            accordionItems.forEach(item => {
+                const productCode = item.querySelector('.accordion-header span.product-code').textContent.toLowerCase();
+                if (productCode.includes(this.value.toLowerCase())) {
+                    showElement(item);
+                } else {
+                    hideElement(item);
+                }
+            });
+        });
+
+        validSearchInput.addEventListener('input', function (e) {
+            if (!this.checked) {
+                showAllAccordionItems();
+                showAllTableRowsItems();
+                return;
+            }
+            accordionItems.forEach(item => {
+                const trs = item.querySelectorAll('.accordion tbody tr');
+                trs.forEach(tr => {
+                    const inventory = +tr.querySelector('.inventory-cell').textContent.trim();
+                    const minimumStock = +tr.querySelector('.minimum-stock-cell').textContent.trim();
+
+                    if (inventory < minimumStock) {
+                        showElement(tr);
+                    } else {
+                        hideElement(tr);
+                    }
+                })
+
+                if ([...trs].filter(tr => !tr.classList.contains('d-none')).length == 0) {
+                    hideElement(item);
+                }
+            });
+        });
+
+
+        function downloadXLSX() {
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+            XLSX.utils.book_append_sheet(wb, ws, "庫存報表");
+            XLSX.writeFile(wb, `庫存報表-${crypto.randomUUID()}.xlsx`);
+        }
+
+        function hideElement(ele) {
+            ele.classList.add('d-none');
+        }
+
+        function showElement(ele) {
+            ele.classList.remove('d-none');
+        }
+
+        function showAllAccordionItems() {
+            accordionItems.forEach(showElement);
+        }
+
+        function getClosestAccordionItem(ele) {
+            return ele.closest('.accordion-item');
+        }
+
+        function showAllTableRowsItems() {
+            document.querySelectorAll('tr').forEach(tr => showElement(tr));
+        }
+
+    </script>
+
+}

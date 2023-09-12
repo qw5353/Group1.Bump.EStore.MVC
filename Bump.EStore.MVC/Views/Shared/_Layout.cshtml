@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Bump</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("customStyles", false)
+    @RenderSection("customScripts", false)
+    @RenderSection("scripts2", required: false)
+</head>
+<body>
+    <div class="container-fluid m-0 p-0">
+        <div class="row m-0 p-0 w-100 shadow-header">
+            <header class="container-fluid">
+                <div class="row header">
+                    <div class="col-2 col-lg-2 logo d-flex p-0 m-0">
+                        <a class="p-0 mx-auto text-white logo-text align-self-center text-decoration-none" href="~/">
+                            BUMP
+                        </a>
+                    </div>
+                    @*<div class="col-10 banner p-0 d-flex align-items-center">
+                        <div class="stickers d-flex ms-auto">
+                            <img
+                                src="/content/images/headshot.png"
+                                alt=""
+                                class="m-auto rounded-circle me-2"
+                            />
+                        </div>
+                        <span class="fs-5 text-white ms-2 text-opacity-75"
+                            >歡迎你，種種</span
+                        >
+                        <div
+                            class="btn logout-btn d-flex align-items-center justify-content-center text-darkred ms-2 me-5"
+                        >
+                            登出
+                        </div>
+                    </div>*@
+                <div class="col-10 banner p-0 d-flex align-items-center">
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="stickers d-flex ms-auto">
+                            @*<img src="@(User.Identity)"
+                alt=""
+                class="m-auto rounded-circle me-2" />*@
+                            <img src="~/Uploads/EmployeeImg/@Html.Action("GetAvatar", "Employees")"
+                                 alt=""
+                                 class="m-auto rounded-circle me-2" />
+                        </div>
+                        <span class="fs-5 text-white mx-3 text-opacity-75">歡迎你，@(User.Identity.Name)</span>
+                        <a href="/Employees/Logout" class="btn logout-btn text-decoration-none text-white text-opacity-75 ms-2 border-1 border-white border-opacity-75 rounded-pill">登出</a>
+                    }
+                    else
+                    {
+                        <a href="/Employees/Login" class="btn logout-btn text-decoration-none text-white text-opacity-75 ms-auto border-1 border-white border-opacity-75 rounded-pill">登入</a>
+                    }
+
+                </div>
+                </div>
+            </header>    
+        </div>
+        <div class="row m-0 p-0 w-100">
+            <div class="container-fluid m-0 p-0">
+                <div class="row w-100 m-0 g-0 p-0" id="second-row">
+                    @{Html.RenderPartial("_asidePartial");}
+                    <main class="col-10 col-lg-10 g-0 p-0 m-0">
+                        <div class="container-fluid">
+                            <div class="row mt-4 ms-5">
+                               @{Html.RenderPartial("_breadcrumbPartial");}
+                            </div>
+                            <div class="row mx-5 bg-white rounded-2 p-2 shadow-body">
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </main>                    
+                </div>
+            </div>    
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script>
+        document.querySelector(`a[href*="${new URL(location.href).pathname.split('/')[1]}"]`)?.closest('.shadow-block-list')?.previousSibling?.previousSibling.click();
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

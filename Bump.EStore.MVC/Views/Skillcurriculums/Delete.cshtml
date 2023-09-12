@@ -1,0 +1,92 @@
+﻿@model Bump.EStore.MVC.ViewModels.SkillcurriculumDeleteVM
+
+@{
+    ViewBag.Title = "刪除課表";
+}
+
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+@*<h2 class="mb-3">刪除課表</h2>*@
+
+<h3 class="text-danger">你確定要刪除嗎?</h3>
+<div>
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">基本資料</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-0 p-1" style="background-color: rgb(87,55,25)">
+        </div>
+    </div>
+    <div class="row  border border-secondary p-3 px-5">
+        <dl class="row">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Field)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Field)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Coach)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Coach)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.StartDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Week)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Week)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.StartTime)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EndTime)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="確定刪除" class="btn btn-danger" /> 
+                @*@Html.ActionLink("返回課表清單", "Index")*@
+            </div>
+        }
+    </div>
+    @Html.ActionLink("返回課表清單", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+
+</div>

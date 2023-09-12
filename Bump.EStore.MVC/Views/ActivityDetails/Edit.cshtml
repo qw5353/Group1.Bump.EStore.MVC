@@ -1,0 +1,396 @@
+﻿@model Bump.EStore.MVC.ViewModels.Activities.ActivityDetailEditVM
+
+@{
+    int activityId = ViewBag.ActivityId;
+    int activityDetailId = ViewBag.ActivityDetailId;
+    string activityDetailName = ViewBag.ActivityDetailName;
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <div class="m-2 mt-4"><h2>編輯活動細項</h2></div>
+                <div class="m-2 mt-3 text-secondary"><h5>@activityDetailName</h5></div>
+            </div>
+            <div>
+                <div class="pt-2">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+                    <p class="h6 text-white">基本設定</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-0 p-1" style="background-color: rgb(87,55,25)">
+                </div>
+            </div>
+
+            <div class="row  border border-secondary p-3 px-5">
+                <div class="mb-3 d-none">
+                    @Html.LabelFor(model => model.ActivityId, "ActivityId", htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ActivityId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ActivityId, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3 d-none">
+                    @Html.LabelFor(model => model.ActivityDiscountId, "ActivityId", htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ActivityDiscountId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ActivityDiscountId, "", new { @class = "text-danger" })
+                </div>
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+                        </div>
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                            <p>活動區間</p>
+                        </div>
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "form-label" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                        </div>
+
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "form-label" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="row d-flex">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label" })
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3 d-none">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.CreatedAt, htmlAttributes: new { @class = "form-label" })
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextAreaFor(model => model.CreatedAt, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.CreatedAt, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+                    <p class="h6 text-white">活動條件設定</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 mb-0 p-1" style="background-color: rgb(87,55,25)">
+                </div>
+            </div>
+
+            <div class="row  border border-secondary p-3 px-5">
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.TargetTypeId, htmlAttributes: new { @class = "form-label" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.DropDownList("TargetTypeId", null, htmlAttributes: new { @class = "form-select" })
+                        </div>
+                        <div class="col-md-3 load">
+                            @Html.DropDownList("MemberLevelId", null, htmlAttributes: new { @class = "form-select" })
+                            @Html.DropDownList("MemberTagId", null, htmlAttributes: new { @class = "form-select" })
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.TargetTypeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.MemberLevelId, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.MemberTagId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.PromotionProductTypeId, htmlAttributes: new { @class = "form-label" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.DropDownList("PromotionProductTypeId", null, htmlAttributes: new { @class = "form-select" })
+                        </div>
+                        <div class="col-md-3 load">
+                            @Html.DropDownList("ThirdCategoryId", null, htmlAttributes: new { @class = "form-select" })
+                            @Html.DropDownList("ProductTagId", null, htmlAttributes: new { @class = "form-select" })
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.PromotionProductTypeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.ThirdCategoryId, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.ProductTagId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.DiscountTypeId, htmlAttributes: new { @class = "form-label" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.DropDownList("DiscountTypeId", null, htmlAttributes: new { @class = "form-select" })
+                        </div>
+                        <div class="col-md-3 load">
+                            @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.DiscountQty, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.DropDownList("FreebieId", null, htmlAttributes: new { @class = "form-select" })
+                            @Html.DropDownList("GiftCouponId", null, htmlAttributes: new { @class = "form-select" })
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.DiscountTypeId, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.DiscountQty, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.FreebieId, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.GiftCouponId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.PriceThreshold, htmlAttributes: new { @class = "form-label" })
+                        </div>
+                        <div class="col-md-1">
+                            最低消費
+                        </div>
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.PriceThreshold, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-md-1">
+                            元
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.PriceThreshold, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="row d-flex">
+                        <div class="col-md-1">
+                            @Html.LabelFor(model => model.ExtraSalesUsage, htmlAttributes: new { @class = "form-check-label" })
+                        </div>
+                        <div class="col-md-3 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="ExtraSalesUsage" value="true" @(Model.ExtraSalesUsage ? "checked" : "")>
+                            <label class="form-check-label" for="flexSwitchCheckDefault" id="toggleLabel"></label>
+                        </div>
+                        <div class="col-md-3">
+                            @Html.ValidationMessageFor(model => model.ExtraSalesUsage, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-2 mt-3 d-flex justify-content-end">
+                    <input type="submit" value="確定修改" class="btn btn-success" />
+                </div>
+                <div class="col-md-2 mt-3">
+                    <a class="btn btn-danger" href="@Url.Action("Index","ActivityDetails",  new { id = activityId })" role="button"><i class="fa-solid fa-xmark"></i>取消修改</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            targetType();
+            promotionProductType();
+            discountType();
+            $("#TargetTypeId").change(function () {
+                targetType();
+                $("#MemberTagId").val(0);
+                $("#MemberLevelId").val(0);
+            });
+
+            $("#PromotionProductTypeId").change(function () {
+                promotionProductType();
+                $("#ThirdCategoryId").val(0);
+                $("#ProductTagId").val(0);
+            })
+
+
+            $("#DiscountTypeId").change(function () {
+                discountType();
+                $('#DiscountQty').val(0);
+                $('#Amount').val(0);
+                $('#FreebieId').val(0);
+                $('#GiftCouponId').val(0);
+            })
+
+
+            const toggle = document.querySelector('#flexSwitchCheckDefault');
+            const toggleLabel = document.querySelector('#toggleLabel');
+
+            toggleLabel.innerHTML = toggle.checked == true ? 'ON' : 'OFF';
+
+            toggle.addEventListener('change', function () {
+                toggleLabel.innerHTML = toggle.checked == true ? 'ON' : 'OFF';
+            })
+
+            function targetType() {
+                if ($("#TargetTypeId").val() == 1) {
+                    $("#MemberTagId").hide();
+                    $("#MemberLevelId").hide();
+                }
+
+                if ($("#TargetTypeId").val() == 2) {
+                    $("#MemberTagId").hide();
+                    $("#MemberLevelId").show();
+                }
+
+                if ($("#TargetTypeId").val() == 3) {
+                    $("#MemberTagId").show();
+                    $("#MemberLevelId").hide();
+                }
+            }
+
+            function promotionProductType() {
+                if ($("#PromotionProductTypeId").val() == 1) {
+                    $("#ThirdCategoryId").hide();
+                    $("#ProductTagId").hide();
+                }
+
+                if ($("#PromotionProductTypeId").val() == 2) {
+                    $("#ThirdCategoryId").show();
+                    $("#ProductTagId").hide();
+                }
+
+                if ($("#PromotionProductTypeId").val() == 3) {
+                    $("#ThirdCategoryId").hide();
+                    $("#ProductTagId").show();
+                }
+            }
+
+            function discountType() {
+                if ($("#DiscountTypeId").val() == 1) {
+                    $('#DiscountQty').hide();
+                    $('#Amount').show();
+                    $('#FreebieId').hide();
+                    $('#GiftCouponId').hide();
+                }
+
+                if ($("#DiscountTypeId").val() == 2) {
+                    $('#DiscountQty').hide();
+                    $('#Amount').show();
+                    $('#FreebieId').hide();
+                    $('#GiftCouponId').hide();
+                }
+
+                if ($("#DiscountTypeId").val() == 3) {
+                    $('#DiscountQty').hide();
+                    $('#Amount').hide();
+                    $('#FreebieId').show();
+                    $('#GiftCouponId').hide();
+                }
+
+                if ($("#DiscountTypeId").val() == 4) {
+                    $('#DiscountQty').hide();
+                    $('#Amount').show();
+                    $('#FreebieId').hide();
+                    $('#GiftCouponId').hide();
+                }
+
+                if ($("#DiscountTypeId").val() == 5) {
+                    $('#DiscountQty').show();
+                    $('#Amount').show();
+                    $('#FreebieId').hide();
+                    $('#GiftCouponId').hide();
+                }
+
+                if ($("#DiscountTypeId").val() == 6) {
+                    $('#DiscountQty').hide();
+                    $('#Amount').show();
+                    $('#FreebieId').hide();
+                    $('#GiftCouponId').hide();
+                }
+
+                if ($("#DiscountTypeId").val() == 7) {
+                    $('#DiscountQty').hide();
+                    $('#Amount').hide();
+                    $('#FreebieId').hide();
+                    $('#GiftCouponId').show();
+                }
+            }
+
+        });
+    </script>
+}

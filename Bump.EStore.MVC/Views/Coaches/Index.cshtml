@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.CoachIndexVM>
+@using X.PagedList.Mvc;
+@using X.PagedList;
+
+@{
+    ViewBag.Title = "教練管理";
+    ViewBag.Breadcrumbs = new string[] { "課程管理", "教練管理" };
+
+    var criteria = ViewBag.Criteria as Bump.EStore.MVC.ViewModels.CoachCriteria;
+   
+
+}
+@section customStyles{
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+    <style>
+        .btn-bottom-left {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+        }
+       
+    </style>
+}
+
+<h2>教練管理</h2>
+
+<p>
+    @*@Html.ActionLink("新增教練夥伴", "Create")*@
+    <a class="btn btn-success" href="@Url.Action("Create")">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"></path>
+        </svg>
+        新增教練夥伴
+    </a>
+</p>
+<section class="container">
+    <form method="get">
+        <div class="row">
+            <div class="mb-3 col-md-3">
+                <label for="s_number">教練ID</label>
+                <input type="text" class="form-control" name="Id" id="s_number" value="@criteria.Id">
+
+            </div>
+            <div class="mb-3 col-md-3">
+                <label for="s_name">教練名字</label>
+                <input type="text" class="form-control" name="Name" id="s_name" value="@criteria.Name">
+
+            </div>
+            <div class="mb-3 col-md-3 position-relative">
+                <button class="btn fa-solid fa-magnifying-glass fa-2xl btn-bottom-left"></button>
+            
+            </div>
+        </div>
+    </form>
+</section>
+<table class="table table-hover table-striped">
+    <tr>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.Img)
+        </th>
+        <th style="text-align: center;">
+            @Html.DisplayNameFor(model => model.StatusText)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td style="text-align: center;">
+                <img src="~/Uploads/Coach_imgs/@item.Img" width="100" height="100" />
+            </td>
+            <td style="text-align: center;">
+                @Html.DisplayFor(modelItem => item.StatusText)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn">
+                    <i class="fa fa-2xl fa-pen-to-square"></i>
+                </a>
+                <a href="@Url.Action("EditImg", new { id = item.Id })" class="btn">
+                    <i class="fa-regular fa-image fa-2xl" style="color: #ab962b;"></i>
+                </a>
+            </td>
+        </tr>
+    }
+    
+</table>
+<div class="mb-12 col-md-12 align-self-end d-flex justify-content-end">
+    @Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))
+</div>

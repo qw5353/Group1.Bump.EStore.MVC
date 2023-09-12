@@ -1,0 +1,71 @@
+﻿@model Bump.EStore.MVC.ViewModels.SkillCoursEditVM
+
+@{
+    ViewBag.Title = "修改課程資料";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+@*<h2>@Model.Name</h2>*@
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="container">
+    <h2 class="m-2 mb-3">@Model.Name</h2>
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">修改課程資料</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-0 p-1" style="background-color: rgb(87,55,25)">
+        </div>
+    </div>
+
+    <div class="row  border border-secondary p-3 px-5">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3  col-md-6">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label" })
+            @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3  col-md-6">
+            @Html.LabelFor(model => model.PeopleMin, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.PeopleMin, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PeopleMin, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.PeopleMax, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.PeopleMax, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PeopleMax, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="確認修改" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+    }
+
+<div>
+    @*@Html.ActionLink("不更新返回", "Index")*@
+    @Html.ActionLink("不更新返回", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+
+</div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

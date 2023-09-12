@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container d-flex justify-content-center">
+    <video id="vid1" style="width: 100%" muted autoplay>
+        <source src="https://cdn.shopify.com/videos/c/o/v/0eb54203a1794da5a686513fc791816e.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+    </video>
+
+    <button onclick="play()" hidden id="play"></button>
+</div>
+
+@section Scripts{
+    <script type="module">
+        const video = document.getElementById('vid1');
+        video.currentTime = 8;
+
+        var playPromise = video.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                // Automatic playback started!
+                // Show playing UI.
+            })
+            .catch(error => {
+                // Auto-play was prevented
+                // Show paused UI.
+            });
+        }
+    </script>
+}

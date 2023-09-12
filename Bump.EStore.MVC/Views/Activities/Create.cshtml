@@ -1,0 +1,114 @@
+﻿@model Bump.EStore.MVC.ViewModels.Activities.ActivityCreateVM
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <h2 class="m-2 mb-3 mt-4">新增活動</h2>
+        <div class="pt-2">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</div>
+        <div class="row">
+            <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+                <p class="h6 text-white">基本設定</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mb-0 p-1" style="background-color: rgb(87,55,25)">
+            </div>
+        </div>
+
+        <div class="row  border border-secondary p-3 px-5">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="mb-3">
+                <div class="row d-flex">
+                    <div class="col-md-1">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder= "請輸入活動名稱" } })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="row d-flex">
+                    <div class="col-md-1">
+                        <p>活動區間</p>
+                    </div>
+                    <div class="col-md-1">
+                        @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                    </div>
+
+                    <div class="col-md-1">
+                        @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4">
+                <div class="row d-flex">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-3">
+                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-3">
+                        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="row d-flex">
+                    <div class="col-md-1">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @placeholder= "說明此項活動的目的、地點、目標對象等等" })
+                    </div>
+                    <div class="col-md-3">
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="mb-3">
+                    @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Thumbnail, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Thumbnail, "", new { @class = "text-danger" })
+
+                </div>*@
+
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-2 mt-3 d-flex justify-content-end">
+                <input type="submit" value="確定新增" class="btn btn-success" />
+            </div>
+            <div class="col-md-2 mt-3">
+                <a class="btn btn-danger" href="@Url.Action("Index")" role="button"><i class="fa-solid fa-plus"></i>取消新增</a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var startTime = document.querySelector('#StartTime');
+        startTime.DefaultValue = new Date();
+
+    </script>
+}

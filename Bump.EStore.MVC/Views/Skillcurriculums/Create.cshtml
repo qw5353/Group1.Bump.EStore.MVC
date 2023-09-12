@@ -1,0 +1,105 @@
+﻿@model Bump.EStore.MVC.ViewModels.SkillcurriculumCreateVM
+
+@{
+    ViewBag.Title = "新增技巧課課表";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+@*<h2>新增技巧課課表</h2>*@
+
+
+@using (Html.BeginForm("Create", "Skillcurriculums", FormMethod.Post, new { @id = "my-form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <h2 class="m-2 mb-3">開新課表</h2>
+        <div class="row">
+            <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+                <p class="h6 text-white">課表設定</p>
+            </div>
+        </div>
+        <div class="row border border-secondary p-3 px-5">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="mb-3 col-md-6">
+                @Html.LabelFor(model => model.SkillCoursesId, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownList("SkillCoursesId", null, htmlAttributes: new { @class = "form-select", id = "myInput1" })
+                @Html.ValidationMessageFor(model => model.SkillCoursesId, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3 col-md-6">
+                @Html.LabelFor(model => model.FieldId, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownList("FieldId", null, htmlAttributes: new { @class = "form-select", id = "myInput2" })
+                @Html.ValidationMessageFor(model => model.FieldId, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3 col-md-6">
+                @Html.LabelFor(model => model.CoachId, htmlAttributes: new { @class = "form-label" })
+                @Html.DropDownList("CoachId", null, htmlAttributes: new { @class = "form-select", id = "myInput3" })
+                @Html.ValidationMessageFor(model => model.CoachId, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3 col-md-6">
+                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", id = "StartDate", type = "date" })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+
+            </div>
+
+
+            <div class="mb-3 col-md-4">
+                @Html.LabelFor(model => model.Week, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Week, new { htmlAttributes = new { @class = "form-control", id = "Week" } })
+                @Html.ValidationMessageFor(model => model.Week, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3 col-md-4">
+                @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", id = "StartTime", type = "time" } })
+                @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3 col-md-4">
+                @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", id = "EndTime", type = "time" } })
+                @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3">
+                <input id="myButton" type="submit" value="新增" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="mb-3 col-md-10">
+        @*@Html.ActionLink("不新增返回", "Index")*@
+        @Html.ActionLink("不新增返回", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+    </div>
+    <div class="mb-3 col-md-2">
+        <input type="button" value="DEMO" id="fillDataButton1" />
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('#fillDataButton1').click(function () {
+                $('#StartDate').val('2023-07-15');
+                $('#Week').val('4');
+                $('#StartTime').val('13:00');
+                $('#EndTime').val('15:00');
+             
+            });
+        });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

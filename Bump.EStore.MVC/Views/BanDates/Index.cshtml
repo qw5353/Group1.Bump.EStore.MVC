@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.BanDates.BanDateIndexVM>
+
+@{
+    ViewBag.Title = "場館禁用時間";
+    ViewBag.Breadcrumbs = new string[] { "課程管理", "場館管理", "場館禁用時間" };
+}
+@section customStyles
+    {
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" />
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+<h2>場館禁用時間</h2>
+
+<p>
+    <a class="btn btn-success" href="@Url.Action("Create")">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"></path>
+        </svg>
+        新增場館禁用時間
+    </a>
+</p>
+<table id="mytable" class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th style="text-align: center;">
+                @Html.DisplayNameFor(model => model.Field)
+            </th>
+
+            <th style="text-align: center;">
+                @Html.DisplayNameFor(model => model.BanStartDateTime)
+            </th>
+
+            <th style="text-align: center;">
+                @Html.DisplayNameFor(model => model.BanEndDateTime)
+            </th>
+            <th style="text-align: center;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.Field)
+                </td>
+
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.BanStartDateTime)
+                </td>
+
+                <td style="text-align: center;">
+                    @Html.DisplayFor(modelItem => item.BanEndDateTime)
+                </td>
+                <td style="text-align: center;">
+                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn">
+                        <i class="fa-regular fa-trash-can fa-xl" style="color: #de5d17;"></i>
+                    </a>
+                    @*@Html.ActionLink("刪除", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script>
+        $('#mytable').DataTable({
+            "scrollCollapse": true, // 預設為false 是否開始滾軸功能控制X、Y軸
+            "scrollY": "300px", // 若有設置為Y軸(垂直)最大高度
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json"
+            },
+        });
+    </script>
+}

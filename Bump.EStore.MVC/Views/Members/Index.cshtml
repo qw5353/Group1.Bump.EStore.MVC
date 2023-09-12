@@ -1,0 +1,496 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.MemberIndexVM>
+@using X.PagedList.Mvc;
+@using X.PagedList;
+
+@{
+    ViewBag.Title = "會員列表";
+    ViewBag.Breadcrumbs = new string[] { "會員管理", "會員列表" };
+    var memberCount = ViewBag.MemberCount;
+    var criteria = ViewBag.Criteria as Bump.EStore.Infrastructure.Criteria.MemberCriteria;
+    var levelOrder = ViewBag.MemberLevel as SelectList;
+    var memberTag = ViewBag.MemberTag as SelectList;
+    var s_memberLevel = criteria.MemberLevel.HasValue ? criteria.MemberLevel : null;
+    var s_memberTag = criteria.MemberTag.HasValue ? criteria.MemberTag : null;
+
+}
+
+@section customStyles{
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <style>
+        .card-group {
+            display: flex;
+            flex-direction: row;
+            height: 100%
+        }
+
+        .profile-image {
+            width: 30%
+        }
+
+            .profile-image img {
+                padding: 2%;
+                width: 100%
+            }
+
+        dl .topic {
+            padding: 0;
+        }
+
+        .topic div {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+            .topic div dt {
+                min-width: 3em;
+                margin-bottom: 6px
+            }
+
+            .topic div dd {
+                margin: 0;
+            }
+
+        .card-body {
+            padding: 1px
+        }
+
+        .card-body {
+            padding: 0px
+        }
+
+        .scrollable-table {
+            height: 58vh;
+            overflow-y: scroll;
+        }
+
+            .scrollable-table::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            .scrollable-table::-webkit-scrollbar-track {
+                border-radius: 10px;
+                margin: 40px 130px 20px 130px;
+                background-color: rgb(187, 187, 187, 0.2);
+            }
+
+            .scrollable-table::-webkit-scrollbar-thumb {
+                height: 50px;
+                border-radius: 10px;
+                background-color: rgb(187, 187, 187, 0.84);
+            }
+
+        .card {
+            min-height: 350px;
+        }
+
+        
+    </style>
+}
+
+<h2>會員列表</h2>
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+
+<section class="container">
+    <form method="get">
+        <div class="row align-items-center">
+            <div class="mb-3 col-md-6">
+                <label class="form-label">&nbsp;</label>
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" class="form-control" name="Search" id="s_name" placeholder="關鍵字搜尋" value="@criteria.Search" />
+                </div>
+            </div>
+            <div class="mb-3 col-md-2">
+                <label for="s_memberLevel" class="form-label">會員等級</label>
+                <select name="MemberLevel" id="s_memberLevel" class="form-select">
+                    <option value=""></option>
+                    @foreach (var item in levelOrder)
+                    {
+                        <option value="@item.Value" @(s_memberLevel.ToString() == item.Value ? "selected" : "")>@item.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3 col-md-2">
+                <label for="s_memberTag" class="form-label">會員標籤</label>
+                <select name="MemberTag" id="s_memberTag" class="form-select">
+                    <option value=""></option>
+                    @foreach (var item in memberTag)
+                    {
+
+                        <option value="@item.Value" @(s_memberTag.ToString() == item.Value ? "selected" : "")>@item.Text</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-1 mt-3">
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <div>會員合計<span class="fs-4">@memberCount</span> 人</div>
+</section>
+
+
+@*<table class="table" id="memberIndex">
+        <thead>
+            <tr>
+                <th scope="col">
+                    #
+                </th>
+                <th scope="col">
+
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Account)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Nickname)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.MemberLevel)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Points)
+                </th>
+
+                <th class="p-2 g-col-3" scope="col">
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Birthday)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.DMSubscribe)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.LastModified)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.IsConfirm)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.MemberTag)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>
+                        <img src="@item.Thumbnail" class="rounded-circle" style="width:100px">
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Account)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nickname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MemberLevel)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Points)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Birthday)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DMSubscribe)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastModified)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsConfirm)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MemberTag)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>*@
+
+<div class="scrollable-table">
+    <div class="row row-cols-1 row-cols-md-2 g-4 d-flex flex-row" id="myDiv">
+        @foreach (var item in Model)
+        {
+
+            <div class="col">
+                <div class="card">
+                    <div class="card-header text-dark bg-light-subtle">
+                        <div class="d-flex justify-content-between">
+                            <span class="fs-5 card-title me-3">
+                                @Html.DisplayFor(modelItem => item.Account)
+                            </span>
+                            <span class="ms-auto justify-content-center"><a class="btn" data-bs-toggle="collapse" href="#collapse-@item.Id" role="button"><i class="fa-solid fa-ellipsis fa-xl"></i></a></span>
+
+                        </div>
+                    </div>
+                    <div class="card-body align-items-center">
+                        <div class="card-text mt-4">
+                            <div class="d-flex">
+                                <div class="profile-image">
+                                    <img src="@item.Thumbnail" class="rounded-circle profile-image img-thumbnail ms-4">
+                                </div>
+                                <dl class="topic ms-5">
+                                    <div>
+                                        <dt class="fs-3 me-3">@item.Name</dt>
+                                        <dd>
+                                            @if (item.MemberLevel == "怪力")
+                                            {
+                                                <span class="fs-5 badge rounded-pill border border-warning bg-warning text-light mx-0">@Html.DisplayFor(modelItem => item.MemberLevel)</span>
+                                            }
+                                            @if (item.MemberLevel == "豪力")
+                                            {
+                                                <span class="fs-5 badge rounded-pill border border-warning bg-warning-subtle text-warning mx-0">@Html.DisplayFor(modelItem => item.MemberLevel)</span>
+                                            }
+                                            @if (item.MemberLevel == "腕力")
+                                            {
+                                                <span class="fs-5 badge rounded-pill border border-warning text-warning mx-0">@Html.DisplayFor(modelItem => item.MemberLevel)</span>
+                                            }
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt>性別</dt>
+                                        <dd>@Html.DisplayFor(modelItem => item.Gender)</dd>
+                                    </div>
+                                    <div>
+                                        <dt>生日</dt>
+                                        <dd>@Html.DisplayFor(modelItem => item.Birthday)</dd>
+
+                                    </div>
+                                    <div>
+                                        <dt>信箱</dt>
+                                        <dd>@Html.DisplayFor(modelItem => item.Email)</dd>
+
+                                    </div>
+                                    <div>
+                                        <dd class="d-flex flex-wrap">
+                                            @{
+                                                var memberTags = @item.MemberTag.Split('|');
+                                            }
+                                            @foreach (var tag in memberTags)
+                                            {
+                                                <div class="fs-6 mx-1 my-1 badge rounded-pill text-black bg-primary-subtle">@tag</div>
+                                            }
+                                        </dd>
+                                    </div>
+
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white text-body-secondary border border-0  mx-3">@item.LastModified  最後修改</div>
+                </div>
+            </div>
+            <div class="col d-none">
+                <div class="collapse" id="collapse-@item.Id">
+                    <div class="card card-body position-relative">
+                        <dl class="ms-5 mt-5">
+                            <div>
+                                <dt>暱稱</dt>
+                                <dd>@Html.DisplayFor(modelItem => item.Nickname)</dd>
+                            </div>
+                            <div>
+                                <dt>會員點數</dt>
+                                <dd>@Html.DisplayFor(modelItem => item.Points)</dd>
+
+                            </div>
+                            <div>
+                                <dt>手機</dt>
+                                <dd>@Html.DisplayFor(modelItem => item.PhoneNumber)</dd>
+                            </div>
+                            <div>
+                                <dt>訂閱電子報</dt>
+                                @if (item.DMSubscribe != true)
+                                {
+                                    <dd><i class="fa-solid fa-circle-xmark" style="color: #a71b30;"></i></dd>
+                                }
+                                else
+                                {
+                                    <dd><i class="fa-solid fa-circle-check" style="color: #21a207;"></i></dd>
+                                }
+
+                            </div>
+
+                            <div>
+                                <dt>認證會員</dt>
+                                @if (item.IsConfirm != true)
+                                {
+                                    <dd><i class="fa-solid fa-circle-xmark" style="color: #a71b30;"></i></dd>
+                                }
+                                else
+                                {
+                                    <dd><i class="fa-solid fa-circle-check" style="color: #21a207;"></i></dd>
+                                }
+                            </div>
+                        </dl>
+
+                        @*@Html.ActionLink("Edit", "Edit", new { id = item.Id })*@
+                        
+                        <div class="position-absolute botton-0 end-0 me-5 mt-5">
+                            <a class="btn btn-success" href="@Url.Action("Edit" , new { id = item.Id })" role="button"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;">編輯</i></a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+
+
+@*@{
+        int currentPage = ViewBag.CurrentPage;
+        int totalPages = ViewBag.TotalPages;
+    }
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @if (currentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { pageNumber = currentPage - 1 })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
+
+            @if (currentPage > 4)
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+            }
+
+            @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(currentPage + 2, totalPages); i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+                </li>
+            }
+
+            @if (currentPage < totalPages - 3)
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+            }
+
+            @if (currentPage < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { pageNumber = currentPage + 1 })" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>*@
+
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page, Search = criteria.Search, MemberLevel = criteria.MemberLevel, MemberTag = criteria.MemberTag }))
+@section scripts{
+    <script src="https://kit.fontawesome.com/aeb06b2407.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+    <script>
+
+        //$(document).ready(function () {
+        //    $('#memberIndex').DataTable({
+        //        "searching": false, // 預設為true 搜尋功能，若要開啟不用特別設定
+        //        "paging": false, // 預設為true 分頁功能，若要開啟不用特別設定
+        //        "ordering": true, // 預設為true 排序功能，若要開啟不用特別設定
+        //        //"sPaginationType": "full_numbers", // 分頁樣式 預設為"full_numbers"，若需其他樣式才需設定
+        //        //"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]], //顯示筆數設定 預設為[10, 25, 50, 100]
+        //        //"pageLength": '50',// 預設為'10'，若需更改初始每頁顯示筆數，才需設定
+        //        //"processing": true, // 預設為false 是否要顯示當前資料處理狀態資訊
+        //        "serverSide": false, // 預設為false 是否透過Server端處理分頁…等
+        //        //"stateSave": true, // 預設為false 在頁面刷新時，是否要保存當前表格資料與狀態
+        //        //"destroy": true, // 預設為false 是否銷毀當前暫存資料
+        //        //"info": true, // 預設為true　是否要顯示"目前有 x  筆資料"
+        //        //"autoWidth": false, // 預設為true　設置是否要自動調整表格寬度(false代表不要自適應)
+        //        "scrollCollapse": true, // 預設為false 是否開始滾軸功能控制X、Y軸
+        //        "scrollY": "500px", // 若有設置為Y軸(垂直)最大高度
+        //        //"dom": 'lrtip',// 設置搜尋div、頁碼div...等基本位置/外觀..等，詳細可看官網
+
+
+        //    });
+        //});
+
+
+        $(document).ready(function () {
+            $('.collapse-btn').click(function () {
+                var collapseId = $(this).attr('href');
+                //var $myDiv = $('#myDiv');
+
+
+                $('.collapse').not(collapseId).collapse('hide');
+                //$myDiv.removeClass('row-cols-md-2 g-4')
+            });
+
+            $('.card-header a.btn').click(function () {
+                const isInvisible = this.closest('.col').nextElementSibling.classList.contains('d-none');
+                const row = $(this.closest('.row'));
+                const thisCol = $(this.closest('.col'));
+
+
+                if (isInvisible) {
+                    const index = row.find('.col').not('.d-none').index(thisCol);
+                    if (index % 2 == 1) {
+                        thisCol.before('<div class="empty-col col"></div>');
+                    }
+                    this.closest('.col').nextElementSibling.classList.remove('d-none');
+                } else {
+                    if (thisCol.prev().hasClass('empty-col')) {
+                        thisCol.prev().remove();
+                    }
+                    this.closest('.col').nextElementSibling.classList.add('d-none');
+                }
+            })
+        });
+
+    </script>
+}

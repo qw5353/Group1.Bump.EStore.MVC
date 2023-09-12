@@ -1,0 +1,94 @@
+﻿@model Bump.EStore.MVC.ViewModels.FieldEditVM
+
+@{
+    ViewBag.Title = "修改場館資料";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+<h2>@Model.Name</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="container">
+    @*<h2 class="m-2 mb-3">修改場館資料</h2>*@
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">修改場館資料</p>
+        </div>
+    </div>
+    <div class="row border border-secondary p-3 px-5">
+       
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3 col-md-9">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3 col-md-3">
+            @Html.LabelFor(model => model.Indoor, htmlAttributes: new { @class = "form-label" })
+            <div class="checkbox">
+                @Html.EditorFor(model => model.Indoor)
+                @Html.ValidationMessageFor(model => model.Indoor, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "form-label" })
+            @Html.TextAreaFor(model => model.ShortDescription, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Link, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3 col-md-3">
+            @Html.LabelFor(model => model.BusinessWeekdayStartTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BusinessWeekdayStartTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BusinessWeekdayStartTime, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3 col-md-3">
+            @Html.LabelFor(model => model.BusinessWeekdayEndTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BusinessWeekdayEndTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BusinessWeekdayEndTime, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3 col-md-3">
+            @Html.LabelFor(model => model.BusinessWeekendStartTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BusinessWeekendStartTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BusinessWeekendStartTime, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3 col-md-3">
+            @Html.LabelFor(model => model.BusinessWeekendEndTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BusinessWeekendEndTime, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.BusinessWeekendEndTime, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="確認修改" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+    }
+
+    @*<div>
+        @Html.ActionLink("不更新返回", "Details", new { id = @Model.Id })
+    </div>*@
+<div>
+    @Html.ActionLink("不更新返回", "Details", new { id = @Model.Id }, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+</div>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

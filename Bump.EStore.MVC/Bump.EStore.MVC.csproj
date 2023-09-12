@@ -1,0 +1,845 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{56D0F780-0C71-4A8D-8374-A16F9BEE8983}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bump.EStore.MVC</RootNamespace>
+    <AssemblyName>Bump.EStore.MVC</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44350</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.7.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.1\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="X.PagedList, Version=8.0.7.0, Culture=neutral, PublicKeyToken=525ccaa9023f010c, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.8.0.7\lib\netstandard2.0\X.PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="X.PagedList.Mvc, Version=8.0.7.0, Culture=neutral, PublicKeyToken=525ccaa9023f010c, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.Mvc.8.0.7\lib\net48\X.PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="X.PagedList.Web.Common, Version=8.0.7.0, Culture=neutral, PublicKeyToken=525ccaa9023f010c, processorArchitecture=MSIL">
+      <HintPath>..\packages\X.PagedList.Web.Common.8.0.7\lib\netstandard2.0\X.PagedList.Web.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BanDatesController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\ActivitiesController.cs" />
+    <Compile Include="Controllers\ActivityDetailsController.cs" />
+    <Compile Include="Controllers\ContactUsController.cs" />
+    <Compile Include="Controllers\CoachesController.cs" />
+    <Compile Include="Controllers\CouponsController.cs" />
+    <Compile Include="Controllers\CourseEnrollmentsController.cs" />
+    <Compile Include="Controllers\CouponSendＭembersController.cs" />
+    <Compile Include="Controllers\ExperienceCoursePlansController.cs" />
+    <Compile Include="Controllers\DealersController.cs" />
+    <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Controllers\FieldsController.cs" />
+    <Compile Include="Controllers\FreebiesController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventoriesController.cs" />
+    <Compile Include="Controllers\MemberLevelsController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\MemberTagsController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\SkillCoursController.cs" />
+    <Compile Include="Controllers\SkillcurriculumsController.cs" />
+    <Compile Include="Controllers\TrendingQuestionsController.cs" />
+    <Compile Include="Controllers\TrendingQuestionTypesController.cs" />
+    <Compile Include="Filter\AuthorizeFilter.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\BanDates\BanDateCreateVM.cs" />
+    <Compile Include="ViewModels\BanDates\BanDateDeleteVM.cs" />
+    <Compile Include="ViewModels\Activities\ActivityDetailCreateVM.cs" />
+    <Compile Include="ViewModels\Activities\ActivityDetailEditVM.cs" />
+    <Compile Include="ViewModels\Coupons\CouponCreateVM.cs" />
+    <Compile Include="ViewModels\Coupons\CouponDetailVM.cs" />
+    <Compile Include="ViewModels\Coupons\CouponEditVM.cs" />
+    <Compile Include="ViewModels\Coupons\CouponIndexVM.cs" />
+    <Compile Include="ViewModels\Employees\EmployeeEditImgVM.cs" />
+    <Compile Include="ViewModels\Coupons\CouponSendMemberIndexVM.cs" />
+    <Compile Include="ViewModels\Employees\EmployeeEditVM.cs" />
+    <Compile Include="ViewModels\Employees\EmployeeIndexVM.cs" />
+    <Compile Include="ViewModels\Employees\LoginVM.cs" />
+    <Compile Include="ViewModels\Employees\RegisterVM.cs" />
+    <Compile Include="ViewModels\Employees\UploadImgVM.cs" />
+    <Compile Include="ViewModels\Freebies\FreebieCreateVM.cs" />
+    <Compile Include="ViewModels\Freebies\FreebieEditImgVM.cs" />
+    <Compile Include="ViewModels\Freebies\FreebieEditVM.cs" />
+    <Compile Include="ViewModels\BanDates\BanDateIndexVM.cs" />
+    <Compile Include="ViewModels\BanDates\BanDateExtsVM.cs" />
+    <Compile Include="ViewModels\Dealers\DealerCreateVM.cs" />
+    <Compile Include="ViewModels\Dealers\DealerEditVM.cs" />
+    <Compile Include="ViewModels\ExperienceCoursePlans\ExperienceCoursePlanCreateVM.cs" />
+    <Compile Include="ViewModels\ExperienceCoursePlans\ExperienceCoursePlanDeleteVM.cs" />
+    <Compile Include="ViewModels\ExperienceCoursePlans\ExperienceCoursePlanEditVM.cs" />
+    <Compile Include="ViewModels\Inventories\InventoryProductStyleEditVM.cs" />
+    <Compile Include="ViewModels\Inventories\InventoryProductStyleIndexVM.cs" />
+    <Compile Include="ViewModels\Inventories\InventoryProductIndexVM.cs" />
+    <Compile Include="ViewModels\MemberLevels\MemberLevelCreateVM.cs" />
+    <Compile Include="ViewModels\MemberLevels\MemberLevelEditVM.cs" />
+    <Compile Include="ViewModels\MemberLevels\MemberLevelIndexVM.cs" />
+    <Compile Include="ViewModels\Members\EditProfileVM.cs" />
+    <Compile Include="ViewModels\MemberTags\CreateTagVM.cs" />
+    <Compile Include="ViewModels\MemberTags\EditTagVM.cs" />
+    <Compile Include="ViewModels\MemberTags\MemberTagIndexVM.cs" />
+    <Compile Include="ViewModels\Products\ProductCriteriaVM.cs" />
+    <Compile Include="ViewModels\Products\ProductCreateVM.cs" />
+    <Compile Include="ViewModels\Products\ProductEditVM.cs" />
+    <Compile Include="ViewModels\Products\ProductIndexVM.cs" />
+    <Compile Include="ViewModels\Activities\ActivityCreateVM.cs" />
+    <Compile Include="ViewModels\Activities\ActivityDetailIndexVM.cs" />
+    <Compile Include="ViewModels\Activities\ActivityEditVM.cs" />
+    <Compile Include="ViewModels\Activities\ActivityIndexVM.cs" />
+    <Compile Include="ViewModels\Coaches\CoachCreateVM.cs" />
+    <Compile Include="ViewModels\Coaches\CoachCriteria.cs" />
+    <Compile Include="ViewModels\Coaches\CoachEditImgVM.cs" />
+    <Compile Include="ViewModels\Coaches\CoachEditVM.cs" />
+    <Compile Include="ViewModels\Coaches\CoachExtsVM.cs" />
+    <Compile Include="ViewModels\Coaches\CoachIndexVM.cs" />
+    <Compile Include="ViewModels\ContactUs\ContactUsCriteriaVM.cs" />
+    <Compile Include="ViewModels\ContactUs\ContactUsEditVM.cs" />
+    <Compile Include="ViewModels\ContactUs\ContactUsIndexVM.cs" />
+    <Compile Include="ViewModels\ExperienceCoursePlans\ExperienceCoursePlanExtsVM.cs" />
+    <Compile Include="ViewModels\ExperienceCoursePlans\ExperienceCoursePlanIndexVM.cs" />
+    <Compile Include="ViewModels\SkillcurriculumCreateVM.cs" />
+    <Compile Include="ViewModels\SkillcurriculumDeleteVM.cs" />
+    <Compile Include="ViewModels\SkillcurriculumEditVM.cs" />
+    <Compile Include="ViewModels\SkillcurriculumExtsVM.cs" />
+    <Compile Include="ViewModels\SkillcurriculumIndexVM.cs" />
+    <Compile Include="ViewModels\Dealers\DealerCriteriaVM.cs" />
+    <Compile Include="ViewModels\Dealers\DealerIndexVM.cs" />
+    <Compile Include="ViewModels\Fields\FieldCreateVM.cs" />
+    <Compile Include="ViewModels\Fields\FieldDeleteVM.cs" />
+    <Compile Include="ViewModels\Fields\FieldDetailsVM.cs" />
+    <Compile Include="ViewModels\Fields\FieldEditImgVM.cs" />
+    <Compile Include="ViewModels\Fields\FieldEditVM.cs" />
+    <Compile Include="ViewModels\Members\MemberIndexVM.cs" />
+    <Compile Include="ViewModels\Members\RegisterVM.cs" />
+    <Compile Include="ViewModels\SkillCourses\SkillCoursCreateVM.cs" />
+    <Compile Include="ViewModels\SkillCourses\SkillCoursDeleteVM.cs" />
+    <Compile Include="ViewModels\SkillCourses\SkillCoursEditImgVM.cs" />
+    <Compile Include="ViewModels\SkillCourses\SkillCoursEditVM.cs" />
+    <Compile Include="ViewModels\SkillCourses\SkillCoursExtVM.cs" />
+    <Compile Include="ViewModels\SkillCourses\SkillCoursIndexVM.cs" />
+    <Compile Include="ViewModels\TrendingQuestions\TrendingQuestionCreateVM.cs" />
+    <Compile Include="ViewModels\TrendingQuestions\TrendingQuestionCriteriaVM.cs" />
+    <Compile Include="ViewModels\TrendingQuestions\TrendingQuestionEditVM.cs" />
+    <Compile Include="ViewModels\TrendingQuestions\TrendingQuestionIndexVM.cs" />
+    <Compile Include="ViewModels\TrendingQuestions\TrendingQuestionTypeVM.cs" />
+    <Compile Include="ViewModels\Fields\FieldExtsVM.cs" />
+    <Compile Include="ViewModels\Fields\FieldIndexVM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\AssemblyVersions.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.0.0.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.1.0.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.1.1.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.1.2.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.2.0.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.2.2.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.2.3.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.2.4.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.2.6.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.2.7.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.2.8.xml" />
+    <Content Include="CodeTemplates\PackageVersions5.2.9.xml" />
+    <Content Include="Content\aside-logo\calendar.svg" />
+    <Content Include="Content\aside-logo\comment.svg" />
+    <Content Include="Content\aside-logo\megaphone.svg" />
+    <Content Include="Content\aside-logo\shopping-bag.svg" />
+    <Content Include="Content\aside-logo\shopping-cart.svg" />
+    <Content Include="Content\aside-logo\stats.svg" />
+    <Content Include="Content\aside-logo\user.svg" />
+    <Content Include="Content\aside-nav-bar.css" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-grid.rtl.css" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css" />
+    <Content Include="Content\bootstrap-icons.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Content\bootstrap-utilities.css" />
+    <Content Include="Content\bootstrap-utilities.min.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.rtl.css" />
+    <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\images\headshot.png" />
+    <Content Include="favicon-16x16.png" />
+    <Content Include="favicon-32x32.png" />
+    <Content Include="Uploads\Orders\SnapShot\1196.jpg" />
+    <Content Include="Uploads\Orders\SnapShot\1197.jpg" />
+    <Content Include="Uploads\Orders\SnapShot\1200.jpg" />
+    <Content Include="Uploads\product\images\%257B0273CDBC-7B39-423A-A41A-83D13DCCFC8B%257D.jpg" />
+    <Content Include="Uploads\product\images\%257B334BE8FB-B4B0-4502-89DC-5B2BE71884AD%257D.jpg" />
+    <Content Include="Uploads\product\images\%257B3A9D236A-B4D4-49B7-B501-32B508ACB433%257D.jpg" />
+    <Content Include="Uploads\product\images\%257B40F11C18-648F-41E0-9233-B5A387A33804%257D.jpg" />
+    <Content Include="Uploads\product\images\%257B6E746637-F27C-4F04-B6A9-C8D9195A827C%257D.jpg" />
+    <Content Include="Uploads\product\images\%257B7F3633CD-F146-4DA6-927C-9091597772A9%257D.jpg" />
+    <Content Include="Uploads\product\images\%257B80771C1F-30B0-4ACA-A288-756185B6DD08%257D.jpg" />
+    <Content Include="Uploads\product\images\%257BD70501E9-EC91-4C7F-8479-9FEFB5F37739%257D.jpg" />
+    <Content Include="Uploads\product\images\0102ce05-56ef-40d4-9908-c187c56102e4.jpg" />
+    <Content Include="Uploads\product\images\014b86e9-6809-48c8-be74-325f07a22b52.jpg" />
+    <Content Include="Uploads\product\images\02c4a9ad-9755-4c1d-a644-45225ccbd2bf.jpg" />
+    <Content Include="Uploads\product\images\03c1255d-f939-4670-96c8-0995609d1d38.jpg" />
+    <Content Include="Uploads\product\images\0513bd26-97c1-4ce3-8baa-7219a21a727f.jpg" />
+    <Content Include="Uploads\product\images\05b7ed16-75b5-4a36-8679-9119755e74c4.jpg" />
+    <Content Include="Uploads\product\images\08a335c8-5659-43b6-9628-2dc6c30fd1ba.jpg" />
+    <Content Include="Uploads\product\images\09820e71-2e76-4246-9a3c-12608675c8b6.jpg" />
+    <Content Include="Uploads\product\images\0989004e-b241-4633-a13d-8c4e45b64321.jpg" />
+    <Content Include="Uploads\product\images\0a2c609c-c0d8-4513-bf2c-23f4e1877675.jpg" />
+    <Content Include="Uploads\product\images\0a64d98d-6c69-4849-99cd-d68ea1122d5b.jpg" />
+    <Content Include="Uploads\product\images\0ad358e1-0c54-4775-bb5a-52e2abd84287.jpg" />
+    <Content Include="Uploads\product\images\0c9252df-5746-4171-8c8d-5d98ba7ba21a.jpg" />
+    <Content Include="Uploads\product\images\0c94f4e9-faa8-4730-8094-e3c7814dfcdb.jpg" />
+    <Content Include="Uploads\product\images\0d8c0778-99dc-4126-ba64-96ef60125eec.jpg" />
+    <Content Include="Uploads\product\images\0e6333ee-9548-4e53-8dc3-e7a0d2ba3fc2.jpg" />
+    <Content Include="Uploads\product\images\0f13a435-7bda-4f25-8e1a-49aaa0d7d995.jpg" />
+    <Content Include="Uploads\product\images\10dca474-c33d-4a6e-a293-ca16ad3289e8.jpg" />
+    <Content Include="Uploads\product\images\122a2188-0424-4c0a-8b11-d10db9ff4bf3.png" />
+    <Content Include="Uploads\product\images\13c43445-1b65-4a0d-8e87-373cf9d51097.jpg" />
+    <Content Include="Uploads\product\images\15ed040c-c53b-4d8d-9177-0db2864f05f8.jpg" />
+    <Content Include="Uploads\product\images\170e15df-69be-470e-8281-e3ffa9801a52.jpg" />
+    <Content Include="Uploads\product\images\17fcdead-76ef-4699-bfe0-18a2fd610ce1.jpg" />
+    <Content Include="Uploads\product\images\19218eba-dbf6-46b5-8544-bfa2c5970e05.jpg" />
+    <Content Include="Uploads\product\images\19bdcf6f-cf57-4a2f-8fce-d41ce1c1993e.jpg" />
+    <Content Include="Uploads\product\images\1c271555-9dbd-4f18-9650-56ed7236de12.jpg" />
+    <Content Include="Uploads\product\images\1c3dabde-31ea-449b-867b-13491648ea04.jpg" />
+    <Content Include="Uploads\product\images\1cd0e307-33ae-4f84-9bfe-54f47dba36f2.jpg" />
+    <Content Include="Uploads\product\images\1daf943c-542f-4f9d-b34a-0bc4c9e17129.jpg" />
+    <Content Include="Uploads\product\images\20345a7b-4acd-42d9-aed9-4be4def732dd.jpg" />
+    <Content Include="Uploads\product\images\22308429-c3be-4c16-b615-0813241bf87b.jpg" />
+    <Content Include="Uploads\product\images\2269179c-9df0-4d77-9d1e-77af42d6f27b.jpg" />
+    <Content Include="Uploads\product\images\22f07da4-cada-4c65-9bea-20ce491cee6a.jpg" />
+    <Content Include="Uploads\product\images\231dea9a-55c4-4cd2-b117-411e0aa902e6.jpg" />
+    <Content Include="Uploads\product\images\25347a7c-a325-421f-955a-6123c0a84c9f.jpg" />
+    <Content Include="Uploads\product\images\265d6cba-13b4-4cbf-a36f-b95d244fddd1.jpg" />
+    <Content Include="Uploads\product\images\26b450b4-8db9-4a59-a3a8-e0db7e300042.jpg" />
+    <Content Include="Uploads\product\images\271fe431-c3aa-4d5c-9242-fb9b6376fa53.jpg" />
+    <Content Include="Uploads\product\images\28515d85-f418-4526-84af-351a2d4b075b.jpg" />
+    <Content Include="Uploads\product\images\291957df-ab4d-4024-8d17-09641faf0021.jpg" />
+    <Content Include="Uploads\product\images\292b7715-8ddf-4273-a7ae-08173e35c12e.jpg" />
+    <Content Include="Uploads\product\images\2f570307-df24-4c55-a0e7-d454c4819201.jpg" />
+    <Content Include="Uploads\product\images\3361080b-63a6-4807-9f9b-7bd3ed09d697.jpg" />
+    <Content Include="Uploads\product\images\356e217d-5d7a-4220-966e-3cca0b7726a9.jpg" />
+    <Content Include="Uploads\product\images\36675b3e-2e92-4c57-a3af-db5dc0a4a799.jpg" />
+    <Content Include="Uploads\product\images\391368fa-4acf-46a4-8ef5-03de7ec5bace.jpg" />
+    <Content Include="Uploads\product\images\39b9b275-ffde-41af-b70b-fa0819d0e521.jpg" />
+    <Content Include="Uploads\product\images\3bbe1175-02fb-4d1b-b623-b188c62b1c28.jpg" />
+    <Content Include="Uploads\product\images\3bd4bbbd-3e96-4a31-837f-8a93372735af.jpg" />
+    <Content Include="Uploads\product\images\41a1b797-a152-4c3c-8686-edcfdabe26b8.jpg" />
+    <Content Include="Uploads\product\images\41fbafb1-d025-4019-ab07-ed6c4b457113.jpg" />
+    <Content Include="Uploads\product\images\42532299-fc4b-42e7-b879-f8d263b378a7.jpg" />
+    <Content Include="Uploads\product\images\43c4917d-08e1-4627-9e9c-6ebb5743dde7.jpg" />
+    <Content Include="Uploads\product\images\44bbbf17-24e4-4bb1-b26a-265010b8ed97.jpg" />
+    <Content Include="Uploads\product\images\44c401d8-087c-4e9b-af4d-189abdfe4e14.jpg" />
+    <Content Include="Uploads\product\images\45120203-e942-4aa4-88cb-a493cdbeb5ec.jpg" />
+    <Content Include="Uploads\product\images\45854474-3208-4bc1-97be-41a8ce84644d.jpg" />
+    <Content Include="Uploads\product\images\45b0a3d2-5fa7-46fe-9abe-9f5739feefc5.jpg" />
+    <Content Include="Uploads\product\images\45c7b45d-ec91-4353-b207-cf9aadffdc9e.jpg" />
+    <Content Include="Uploads\product\images\491dbd7e-b472-41b9-8524-290773d1c036.jpg" />
+    <Content Include="Uploads\product\images\4a3ba10a-a6fe-460f-b38a-0f4c06bd1895.jpg" />
+    <Content Include="Uploads\product\images\4a68c121-7d61-4feb-89b6-3ada0cdad18b.jpg" />
+    <Content Include="Uploads\product\images\4d74230e-551a-40ed-b468-1613a49bac91.jpg" />
+    <Content Include="Uploads\product\images\4eda218c-943f-4e71-ba58-ff837b35f196.jpg" />
+    <Content Include="Uploads\product\images\4fe3cfe8-f656-45a4-ab25-c1262740080b.jpg" />
+    <Content Include="Uploads\product\images\52344903-bde7-43f0-a0b4-2888cd6b9d4a.jpg" />
+    <Content Include="Uploads\product\images\523bb85f-06d7-4568-b8b4-3dfae1856e11.png" />
+    <Content Include="Uploads\product\images\523e42b3-9a31-44c4-8444-4f31f7b1c211.jpg" />
+    <Content Include="Uploads\product\images\531b758a-4d2c-47c2-a2d5-76e185bcad63.jpg" />
+    <Content Include="Uploads\product\images\532e0456-8fd0-4ea1-9cca-a38037a42c4c.jpg" />
+    <Content Include="Uploads\product\images\5376ebf5-6190-4c84-a761-5840a0526e93.jpg" />
+    <Content Include="Uploads\product\images\54aaa7e0-75c7-42cc-8a4a-e4875ea6d1b3.jpg" />
+    <Content Include="Uploads\product\images\54eff1d2-4889-4681-b294-8329460d98bb.jpg" />
+    <Content Include="Uploads\product\images\54fb836f-9ae2-49c2-95dc-b4183f79fbbf.jpg" />
+    <Content Include="Uploads\product\images\5525ed24-d6b8-4b78-adc8-ae07bb61fa27.jpg" />
+    <Content Include="Uploads\product\images\5657c3d7-0c13-487d-b6a5-1547c3a57968.jpg" />
+    <Content Include="Uploads\product\images\569c5090-f7c2-4e3f-98c5-b93796e05c17.jpg" />
+    <Content Include="Uploads\product\images\5beae6fe-7527-4476-a744-3933a3f848d8.jpg" />
+    <Content Include="Uploads\product\images\5c92e5ce-650a-4919-bdac-af704f132ed2.jpg" />
+    <Content Include="Uploads\product\images\5dc7b36c-5076-49fe-8dcd-d3766cd729c9.jpg" />
+    <Content Include="Uploads\product\images\5e036bdd-8d8a-412b-9cb3-973cd8eb8120.jpg" />
+    <Content Include="Uploads\product\images\5f41a359-73e1-4f72-9a29-d01992f6e3fe.jpg" />
+    <Content Include="Uploads\product\images\5f63cf91-f1e1-4a2d-83c3-c8d49bb9e3a2.jpg" />
+    <Content Include="Uploads\product\images\5fa5c0a9-1f21-425d-9fe7-bc8e6bf5c23c.jpg" />
+    <Content Include="Uploads\product\images\602a02cc-f302-44a0-b1a8-e5b0b6a6c863.jpg" />
+    <Content Include="Uploads\product\images\6125a2ca-dda4-4195-b40e-671d246f744a.jpg" />
+    <Content Include="Uploads\product\images\66470ec2-deb6-4208-822d-5546e4046ced.jpg" />
+    <Content Include="Uploads\product\images\680bc151-cd8b-44bf-beb7-bf5a07cb00be.jpg" />
+    <Content Include="Uploads\product\images\6a5f5153-9682-4861-8d14-e16236b02075.jpg" />
+    <Content Include="Uploads\product\images\6ba0cc0d-2476-48eb-89b2-540a02a86161.jpg" />
+    <Content Include="Uploads\product\images\6ce43bf7-f728-43b1-adb5-f7221a4424c8.jpg" />
+    <Content Include="Uploads\product\images\6d5e95a8-e52f-44e4-a1ee-f0c75311732b.jpg" />
+    <Content Include="Uploads\product\images\6d9141b6-f2d8-4f7b-b991-e71e9f2f9f1e.jpg" />
+    <Content Include="Uploads\product\images\6fb09e19-f032-4244-982a-6cf957d7da86.jpg" />
+    <Content Include="Uploads\product\images\70e3881d-669d-401c-bef4-f48a32cb0448.jpg" />
+    <Content Include="Uploads\product\images\70e73a15-961f-4bf4-9b36-8af8e5e0f06a.jpg" />
+    <Content Include="Uploads\product\images\70f852ff-7457-41e4-b485-d28d05289b96.jpg" />
+    <Content Include="Uploads\product\images\72d8bc94-39a4-48f8-ab53-1292e18895fe.jfif" />
+    <Content Include="Uploads\product\images\72f84633-dcc2-4219-854e-6913e1d42770.jpg" />
+    <Content Include="Uploads\product\images\72fae3e0-12e0-4302-8711-241f4b78c814.jpg" />
+    <Content Include="Uploads\product\images\74ba3589-b589-4e4a-94a7-8c0f96cbc6e4.jpg" />
+    <Content Include="Uploads\product\images\74d6abd8-e938-4c2b-894b-a2cb3c110082.jpg" />
+    <Content Include="Uploads\product\images\760766a7-d955-42c9-b314-6c5ce07354de.jpg" />
+    <Content Include="Uploads\product\images\7b52a681-295d-4dd5-9e28-dc5d67c089df.jpg" />
+    <Content Include="Uploads\product\images\7c137ade-5d68-479b-94d5-f7e6efd48ac8.jpg" />
+    <Content Include="Uploads\product\images\7cb03b95-46d0-4866-aa54-87424fb46e16.jpg" />
+    <Content Include="Uploads\product\images\7d01914f-aeec-4d10-8924-713a48b84e59.jpg" />
+    <Content Include="Uploads\product\images\7d8b3263-22ed-4e02-86df-bb394211ae90.jpg" />
+    <Content Include="Uploads\product\images\7eb7a920-af38-41a6-9271-2241d0a113ad.jpg" />
+    <Content Include="Uploads\product\images\7ee17918-d840-40c7-a0fe-e8026e381b67.jpg" />
+    <Content Include="Uploads\product\images\7ffa1532-af2c-415f-aa1c-d33dd5a7365d.jpg" />
+    <Content Include="Uploads\product\images\80dd08e3-bec5-4760-a875-bb0baa27b8f7.jpg" />
+    <Content Include="Uploads\product\images\876ae050-18b8-4672-8f8a-332787ba574f.jpg" />
+    <Content Include="Uploads\product\images\879b0118-e513-4c88-8301-6de145b04192.jpg" />
+    <Content Include="Uploads\product\images\8d1bcae8-e1ea-495e-b9f5-43859334f08b.jpg" />
+    <Content Include="Uploads\product\images\905176a1-30fd-471a-ba25-eb0b40c916bd.jpg" />
+    <Content Include="Uploads\product\images\909ca142-4614-45f8-9775-dcfe272cebe1.jpg" />
+    <Content Include="Uploads\product\images\91b8b69d-a0b4-4318-84f1-5987d9a460ed.jpg" />
+    <Content Include="Uploads\product\images\92a4b5ff-5f9f-45f3-803f-ebeace048fb8.jpg" />
+    <Content Include="Uploads\product\images\94b4bc98-5cc2-425e-a7a9-2e584a3c87de.jpg" />
+    <Content Include="Uploads\product\images\94c0307d-d2c0-4504-bc53-a64c44aeb9df.jpg" />
+    <Content Include="Uploads\product\images\95f7bd7b-4825-4d6d-873a-31ee3ea8e0be.jpg" />
+    <Content Include="Uploads\product\images\9717e6c2-2225-480a-9334-4d2381365f80.jpg" />
+    <Content Include="Uploads\product\images\97e8897d-7e94-4794-bc43-09130d20ca50.jpg" />
+    <Content Include="Uploads\product\images\984c5048-bcab-45b6-af98-d85ca202024d.jpg" />
+    <Content Include="Uploads\product\images\99be1ee8-cd64-445a-9942-106cd3f66852.jpg" />
+    <Content Include="Uploads\product\images\99f4c6cc-04a6-45e3-9603-04a171e9c771.jpg" />
+    <Content Include="Uploads\product\images\9b845e89-0bcd-4a1b-adb1-ec8cfb9260a3.jpg" />
+    <Content Include="Uploads\product\images\9c022697-9950-438e-9853-c626cec6ae24.jpg" />
+    <Content Include="Uploads\product\images\9c18635d-7fa7-4b1f-8ebc-fcffb7b28ee9.jpg" />
+    <Content Include="Uploads\product\images\9e8d0820-4a21-488e-a358-c632b5ceecc6.jpg" />
+    <Content Include="Uploads\product\images\9fbf1962-37d2-4ad7-a439-71f677b09cca.jpg" />
+    <Content Include="Uploads\product\images\a47c91a8-db60-4ffb-90bc-8849a2315184.jpg" />
+    <Content Include="Uploads\product\images\a6595e5a-6c45-4fd6-b557-4896e8aa8526.jpg" />
+    <Content Include="Uploads\product\images\a6668378-aecf-4b88-8118-5e5822610132.jpg" />
+    <Content Include="Uploads\product\images\a762c073-892b-4789-afc6-8fb5a84202b2.jpg" />
+    <Content Include="Uploads\product\images\a7e0ae47-17bf-455a-9386-167bead1c648.jpg" />
+    <Content Include="Uploads\product\images\a9c3b51f-bdf3-489c-886b-f5923ec183ff.jpg" />
+    <Content Include="Uploads\product\images\aae6e7f2-60df-48ca-82e9-9e5ea3afe38f.jpg" />
+    <Content Include="Uploads\product\images\ab1a939f-06bb-4156-b47d-0ac3303689a2.jpg" />
+    <Content Include="Uploads\product\images\ab954e8d-0790-4443-8fe6-e76d89cdd51c.jpg" />
+    <Content Include="Uploads\product\images\ac6a91c1-89f0-4be1-bf62-9905ca882534.jpg" />
+    <Content Include="Uploads\product\images\ad51ffbc-223e-4f17-a253-586c7b9dea8c.jpg" />
+    <Content Include="Uploads\product\images\adf23063-5725-43cf-bae5-743a3d6b84c5.jpg" />
+    <Content Include="Uploads\product\images\af0b5484-26e0-41b9-b4dd-e572b9cc8136.jpg" />
+    <Content Include="Uploads\product\images\afd98118-2d8b-4156-a1df-8afae8c6ae58.jpg" />
+    <Content Include="Uploads\product\images\b0ec6d01-7ff0-45fe-8c46-21854a838b69.jpg" />
+    <Content Include="Uploads\product\images\b10ba28f-9f3a-4e01-ab90-96aa8ad38089.jpg" />
+    <Content Include="Uploads\product\images\b1a6830c-d5a1-4182-bffa-be9c9599e266.jpg" />
+    <Content Include="Uploads\product\images\b1ac808d-0eaa-43d2-b261-889ba3b20196.jpg" />
+    <Content Include="Uploads\product\images\b3a10a32-c782-48bd-9ee1-eb5d7e3935a6.jpg" />
+    <Content Include="Uploads\product\images\b3b3bb77-9970-4195-8845-b4e2ec5dd804.JPG" />
+    <Content Include="Uploads\product\images\b5adc2e2-5ee7-4f02-81be-e7cafe514ecd.jpg" />
+    <Content Include="Uploads\product\images\b5d81199-8bfd-49b2-97ba-cebd08141faf.jpg" />
+    <Content Include="Uploads\product\images\b608494f-2db1-4e37-91ba-107f2c8468bf.jpg" />
+    <Content Include="Uploads\product\images\b6ac1711-9294-4445-b62e-4fb9c69f3bea.jpg" />
+    <Content Include="Uploads\product\images\b6caae06-238c-4f64-8517-01cf6e5b2107.jpg" />
+    <Content Include="Uploads\product\images\b725ef33-b86d-427b-810f-f7165e61efee.jpg" />
+    <Content Include="Uploads\product\images\b7d50737-a0da-4661-84d2-72980d883aa1.jpg" />
+    <Content Include="Uploads\product\images\b7fec3a7-b974-4f6a-a2ca-8c91f0b95058.jpg" />
+    <Content Include="Uploads\product\images\b858caa5-ad49-4e47-8046-d0e4c5217a0f.jpg" />
+    <Content Include="Uploads\product\images\b8838565-4207-4c46-9a5a-11d106ea2fd3.jpg" />
+    <Content Include="Uploads\product\images\bb710716-090f-4043-b882-1efb3efa3cf6.jpg" />
+    <Content Include="Uploads\product\images\bc1f17b1-bd95-4473-9aef-cc3f58ccc374.jpg" />
+    <Content Include="Uploads\product\images\bc982ac8-6026-417a-9283-64e4cebdf5e3.jpg" />
+    <Content Include="Uploads\product\images\bd0010b5-7b03-42ff-ab7a-4be2adf1d160.jpg" />
+    <Content Include="Uploads\product\images\bf801e2c-0762-4ab5-8149-f699e5a3bada.jpg" />
+    <Content Include="Uploads\product\images\bf8a7f18-8fb8-4163-8f57-687c4ffe9c72.jpg" />
+    <Content Include="Uploads\product\images\c0b1475e-dfff-4e72-b893-a95dee7edf4a.jpg" />
+    <Content Include="Uploads\product\images\c5888fa4-667c-47c8-a875-ae1bae21472a.jpg" />
+    <Content Include="Uploads\product\images\c94559c0-10c3-440a-815e-3e59d95adaa5.jpg" />
+    <Content Include="Uploads\product\images\c9725673-e9db-44ab-b045-b9665985a933.jpg" />
+    <Content Include="Uploads\product\images\c979d223-fcdb-4aff-92e7-18b282086f56.jpg" />
+    <Content Include="Uploads\product\images\c9fa5c56-cd07-4d67-87b9-d90876db0f6f.jpg" />
+    <Content Include="Uploads\product\images\ca169881-92ac-4dc4-a4ba-c5b06013d489.jpg" />
+    <Content Include="Uploads\product\images\cb919f25-48e8-430b-b2ca-89a24e5effac.jpg" />
+    <Content Include="Uploads\product\images\ce348005-2131-4a36-9355-264a4138a44d.jpg" />
+    <Content Include="Uploads\product\images\d0b5a2ca-2835-4f78-aba6-9b0e453da469.jpg" />
+    <Content Include="Uploads\product\images\d36eb987-51f6-4e8c-bcd6-3f3a248b0c17.jpg" />
+    <Content Include="Uploads\product\images\d5ca030a-1a01-45ec-aadd-2552063ae14f.jpg" />
+    <Content Include="Uploads\product\images\d7105064-487b-463c-978c-3d5a92362ee6.jpg" />
+    <Content Include="Uploads\product\images\d991d0e4-8714-4bff-b73e-2b36675c9fe9.jpg" />
+    <Content Include="Uploads\product\images\da391a2e-2ba1-4e31-a3ce-9b4a4e531632.jpg" />
+    <Content Include="Uploads\product\images\dacc76a6-fcae-45fa-9592-ff7ab53d0115.jpg" />
+    <Content Include="Uploads\product\images\df758841-ffd6-4b52-8a75-1c655d80e42c.jpg" />
+    <Content Include="Uploads\product\images\e059e11b-832c-4744-b43b-db3246b68e7a.jpg" />
+    <Content Include="Uploads\product\images\e19bff14-386d-4098-a33c-8c4d81e25a88.jpg" />
+    <Content Include="Uploads\product\images\e21d48c9-f830-468b-98c8-5123c7c499ac.jpg" />
+    <Content Include="Uploads\product\images\e3152ad8-07ea-46d2-bafa-782aea6a039c.png" />
+    <Content Include="Uploads\product\images\e34a5daa-9b90-4996-a358-c22bfc7e0136.jpg" />
+    <Content Include="Uploads\product\images\e3782992-dd2e-4a05-bb21-2d2808ba58ed.jpg" />
+    <Content Include="Uploads\product\images\e3e74926-5052-491e-8a8c-6b37006746ed.jpg" />
+    <Content Include="Uploads\product\images\e483c1ab-9866-426b-9ab5-f05e5c8f766a.jpg" />
+    <Content Include="Uploads\product\images\e5b56c2b-eae9-42ea-bc36-c8d3b718f412.jpg" />
+    <Content Include="Uploads\product\images\e6bd9880-2cad-4424-97fd-85b3096442a2.jpg" />
+    <Content Include="Uploads\product\images\e6d48301-36d7-47d4-949f-67c8bf2786d4.jpg" />
+    <Content Include="Uploads\product\images\e7c9b8b4-c595-411a-b185-269748acc930.jpg" />
+    <Content Include="Uploads\product\images\e85dca77-03f3-46f5-ba27-98bd096d4e66.jpg" />
+    <Content Include="Uploads\product\images\e8cfad7d-c82f-4c1b-b29f-9078862144b8.jpg" />
+    <Content Include="Uploads\product\images\e912ecc1-0aa7-4c35-947d-b0a3f9aade19.jpg" />
+    <Content Include="Uploads\product\images\eb1060d7-c22c-4b30-836f-9079a50ee761.jpg" />
+    <Content Include="Uploads\product\images\ec3f4bae-f0b5-44be-afc2-22e275968725.jpg" />
+    <Content Include="Uploads\product\images\ecae2762-9294-4857-81b0-2358d21c39b2.jpg" />
+    <Content Include="Uploads\product\images\ed60e02f-213d-4282-9d90-0de4b362ebff.jpg" />
+    <Content Include="Uploads\product\images\edbfeb5a-a887-4bce-b72a-082ba64f2cdb.jpg" />
+    <Content Include="Uploads\product\images\efaba993-0c5d-4d47-94a5-f5f52e0909d6.jpg" />
+    <Content Include="Uploads\product\images\eff4d16a-66aa-41c8-8b65-649e99be889d.jpg" />
+    <Content Include="Uploads\product\images\f1b1a266-0c05-4fb4-8cf1-74d95cd0dfa7.jpg" />
+    <Content Include="Uploads\product\images\f1ff8f1b-5791-4d73-803e-c61b2a553691.jpg" />
+    <Content Include="Uploads\product\images\f512ac93-dafb-4505-b9b6-7d40cd3f05ec.jpg" />
+    <Content Include="Uploads\product\images\f560e703-0d1b-465c-881d-261d423f3eff.jpg" />
+    <Content Include="Uploads\product\images\f594a601-a4cd-48a4-b9d6-1afbf3cbbc7a.jpg" />
+    <Content Include="Uploads\product\images\f6f8cd60-9acb-4d1c-87a6-02de0774a558.jpg" />
+    <Content Include="Uploads\product\images\f76db078-bb9b-49bc-873e-2ebebb7302b3.jpg" />
+    <Content Include="Uploads\product\images\fa0ae860-468a-4e28-8faf-a95aa722b1dd.jpg" />
+    <Content Include="Uploads\product\images\fa5762a7-4767-4fbf-9acd-e2d221445585.jpg" />
+    <Content Include="Uploads\product\images\fad089d6-b984-49d2-ac8c-9755380ba1e4.jpg" />
+    <Content Include="Uploads\product\images\fb3d6db3-90c3-46d6-a733-15592046527d.jpg" />
+    <Content Include="Uploads\product\images\fbf5e26b-d0c7-4dde-888d-0c0805178947.jpg" />
+    <Content Include="Uploads\product\images\fce77dea-f4fb-4866-9242-9765e5582141.jpg" />
+    <Content Include="Uploads\product\images\fd4a6b18-920f-4980-845e-ebb8c46fce3d.jpg" />
+    <Content Include="Uploads\product\images\fda17a15-843b-43c3-a8c9-cf37a0121c74.jpg" />
+    <Content Include="Uploads\product\images\fe32a8c8-0869-40ad-8261-aaf82709aaa0.jpg" />
+    <Content Include="Uploads\product\images\ff0efb4d-395a-424d-b2d1-86a421e2e773.jpg" />
+    <Content Include="Uploads\product\images\{0273CDBC-7B39-423A-A41A-83D13DCCFC8B}.jpg" />
+    <Content Include="Uploads\product\images\{334BE8FB-B4B0-4502-89DC-5B2BE71884AD}.jpg" />
+    <Content Include="Uploads\product\images\{3A9D236A-B4D4-49B7-B501-32B508ACB433}.jpg" />
+    <Content Include="Uploads\product\images\{40F11C18-648F-41E0-9233-B5A387A33804}.jpg" />
+    <Content Include="Uploads\product\images\{6E746637-F27C-4F04-B6A9-C8D9195A827C}.jpg" />
+    <Content Include="Uploads\product\images\{7F3633CD-F146-4DA6-927C-9091597772A9}.jpg" />
+    <Content Include="Uploads\product\images\{80771C1F-30B0-4ACA-A288-756185B6DD08}.jpg" />
+    <Content Include="Uploads\product\images\{D70501E9-EC91-4C7F-8479-9FEFB5F37739}.jpg" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.esm.min.js.map" />
+    <Content Include="Scripts\bootstrap.esm.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Content\bootstrap.rtl.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Content\bootstrap-utilities.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="CodeTemplates\ODataControllerWithContext\Controller.vb.t4" />
+    <Content Include="CodeTemplates\ODataControllerWithContext\Controller.cs.t4" />
+    <Content Include="CodeTemplates\ODataControllerWithActions\Controller.vb.t4" />
+    <Content Include="CodeTemplates\ODataControllerWithActions\Controller.cs.t4" />
+    <Content Include="CodeTemplates\MvcView\ModelMetadataFunctions.vb.include.t4" />
+    <Content Include="CodeTemplates\MvcView\ModelMetadataFunctions.cs.include.t4" />
+    <Content Include="CodeTemplates\MvcView\List.vb.t4" />
+    <Content Include="CodeTemplates\MvcView\List.cs.t4" />
+    <Content Include="CodeTemplates\MvcView\Imports.include.t4" />
+    <Content Include="CodeTemplates\MvcView\Empty.vb.t4" />
+    <Content Include="CodeTemplates\MvcView\Empty.cs.t4" />
+    <Content Include="CodeTemplates\MvcView\Edit.vb.t4" />
+    <Content Include="CodeTemplates\MvcView\Edit.cs.t4" />
+    <Content Include="CodeTemplates\MvcView\Details.vb.t4" />
+    <Content Include="CodeTemplates\MvcView\Details.cs.t4" />
+    <Content Include="CodeTemplates\MvcView\Delete.vb.t4" />
+    <Content Include="CodeTemplates\MvcView\Delete.cs.t4" />
+    <Content Include="CodeTemplates\MvcView\Create.vb.t4" />
+    <Content Include="CodeTemplates\MvcView\Create.cs.t4" />
+    <Content Include="CodeTemplates\MvcViewWithoutModel\Imports.include.t4" />
+    <Content Include="CodeTemplates\MvcViewWithoutModel\Empty.vb.t4" />
+    <Content Include="CodeTemplates\MvcViewWithoutModel\Empty.cs.t4" />
+    <Content Include="CodeTemplates\MvcMinimalDependencyCodeGenerator\web.vb.t4" />
+    <Content Include="CodeTemplates\MvcMinimalDependencyCodeGenerator\web.cs.t4" />
+    <Content Include="CodeTemplates\MvcMinimalDependencyCodeGenerator\RouteConfig.vb.t4" />
+    <Content Include="CodeTemplates\MvcMinimalDependencyCodeGenerator\RouteConfig.cs.t4" />
+    <Content Include="CodeTemplates\MvcMinimalDependencyCodeGenerator\Global.vb.t4" />
+    <Content Include="CodeTemplates\MvcMinimalDependencyCodeGenerator\Global.cs.t4" />
+    <Content Include="CodeTemplates\MvcMinimalDependencyCodeGenerator\Global.asax.vb.t4" />
+    <Content Include="CodeTemplates\MvcMinimalDependencyCodeGenerator\Global.asax.cs.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\_ViewStart.vb.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\_ViewStart.cs.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\_Layout.vb.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\_Layout.cs.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\web.vb.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\web.cs.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\Site.vb.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\Site.cs.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\RouteConfig.vb.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\RouteConfig.cs.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\Global.vb.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\Global.cs.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\Global.asax.vb.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\Global.asax.cs.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\FilterConfig.vb.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\FilterConfig.cs.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\Error.vbhtml" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\Error.cshtml" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\BundleConfig.vb.t4" />
+    <Content Include="CodeTemplates\MvcFullDependencyCodeGenerator\BundleConfig.cs.t4" />
+    <Content Include="CodeTemplates\MvcControllerWithContext\Controller.vb.t4" />
+    <Content Include="CodeTemplates\MvcControllerWithContext\Controller.cs.t4" />
+    <Content Include="CodeTemplates\MvcControllerWithActions\Controller.vb.t4" />
+    <Content Include="CodeTemplates\MvcControllerWithActions\Controller.cs.t4" />
+    <Content Include="CodeTemplates\MvcControllerEmpty\Controller.vb.t4" />
+    <Content Include="CodeTemplates\MvcControllerEmpty\Controller.cs.t4" />
+    <Content Include="CodeTemplates\MvcArea\web.vb.t4" />
+    <Content Include="CodeTemplates\MvcArea\web.cs.t4" />
+    <Content Include="CodeTemplates\MvcArea\Area.vb.t4" />
+    <Content Include="CodeTemplates\MvcArea\Area.cs.t4" />
+    <Content Include="CodeTemplates\ApiDependencyCodeGenerator\WebApiConfig.vb.t4" />
+    <Content Include="CodeTemplates\ApiDependencyCodeGenerator\WebApiConfig.cs.t4" />
+    <Content Include="CodeTemplates\ApiDependencyCodeGenerator\Global.vb.t4" />
+    <Content Include="CodeTemplates\ApiDependencyCodeGenerator\Global.cs.t4" />
+    <Content Include="CodeTemplates\ApiDependencyCodeGenerator\Global.asax.vb.t4" />
+    <Content Include="CodeTemplates\ApiDependencyCodeGenerator\Global.asax.cs.t4" />
+    <Content Include="CodeTemplates\ApiControllerWithContext\Controller.vb.t4" />
+    <Content Include="CodeTemplates\ApiControllerWithContext\Controller.cs.t4" />
+    <Content Include="CodeTemplates\ApiControllerWithActions\Controller.vb.t4" />
+    <Content Include="CodeTemplates\ApiControllerWithActions\Controller.cs.t4" />
+    <Content Include="CodeTemplates\ApiControllerEmpty\Controller.vb.t4" />
+    <Content Include="CodeTemplates\ApiControllerEmpty\Controller.cs.t4" />
+    <None Include="Scripts\jquery-3.7.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.7.0.js" />
+    <Content Include="Scripts\jquery-3.7.0.min.js" />
+    <Content Include="Scripts\jquery-3.7.0.slim.js" />
+    <Content Include="Scripts\jquery-3.7.0.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\lodash.core.js" />
+    <Content Include="Scripts\lodash.core.min.js" />
+    <Content Include="Scripts\lodash.js" />
+    <Content Include="Scripts\lodash.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_asidePartial.cshtml" />
+    <Content Include="Views\TrendingQuestions\Index.cshtml" />
+    <Content Include="Views\Activities\Create.cshtml" />
+    <Content Include="Views\Activities\Edit.cshtml" />
+    <Content Include="Views\Activities\Index.cshtml" />
+    <Content Include="Views\Coaches\Index.cshtml" />
+    <Content Include="Views\Coaches\Create.cshtml" />
+    <Content Include="Views\Coaches\Edit.cshtml" />
+    <Content Include="Views\Coaches\EditImg.cshtml" />
+    <Content Include="Views\TrendingQuestions\Create.cshtml" />
+    <Content Include="Views\TrendingQuestions\Update.cshtml" />
+    <Content Include="Views\Products\Delete.cshtml" />
+    <Content Include="Views\Products\Details.cshtml" />
+    <Content Include="Views\Products\Edit.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Categories\Create.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\TrendingQuestionTypes\Index.cshtml" />
+    <Content Include="Views\Shared\_breadcrumbPartial.cshtml" />
+    <Content Include="Views\TrendingQuestionTypes\Create.cshtml" />
+    <Content Include="Views\TrendingQuestionTypes\Delete.cshtml" />
+    <Content Include="Views\TrendingQuestionTypes\Edit.cshtml" />
+    <Content Include="Views\Fields\Index.cshtml" />
+    <Content Include="Views\Fields\Details.cshtml" />
+    <Content Include="Views\BanDates\Create.cshtml" />
+    <Content Include="Views\Fields\Edit.cshtml" />
+    <Content Include="Views\Fields\EditImg.cshtml" />
+    <Content Include="Views\Fields\Delete.cshtml" />
+    <Content Include="Views\Members\Index.cshtml" />
+    <Content Include="Views\Members\Edit.cshtml" />
+    <Content Include="Views\MemberLevels\Delete.cshtml" />
+    <Content Include="Views\MemberLevels\Details.cshtml" />
+    <Content Include="Views\MemberLevels\Index.cshtml" />
+    <Content Include="Views\MemberTags\Delete.cshtml" />
+    <Content Include="Views\MemberTags\Edit.cshtml" />
+    <Content Include="Views\ActivityDetails\Create.cshtml" />
+    <Content Include="Views\ActivityDetails\Edit.cshtml" />
+    <Content Include="Views\ActivityDetails\Index.cshtml" />
+    <Content Include="Views\ContactUs\Index.cshtml" />
+    <Content Include="Views\Categories\Delete.cshtml" />
+    <Content Include="Views\SkillCours\Index.cshtml" />
+    <Content Include="Views\SkillCours\Create.cshtml" />
+    <Content Include="Views\SkillCours\Edit.cshtml" />
+    <Content Include="Views\SkillCours\EditImg.cshtml" />
+    <Content Include="Views\SkillCours\Delete.cshtml" />
+    <Content Include="Views\ContactUs\Edit.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\Skillcurriculums\Index.cshtml" />
+    <Content Include="Views\Skillcurriculums\Create.cshtml" />
+    <Content Include="Views\Skillcurriculums\Edit.cshtml" />
+    <Content Include="Views\Skillcurriculums\Delete.cshtml" />
+    <Content Include="Views\ExperienceCoursePlans\Index.cshtml" />
+    <Content Include="Views\Dealers\Index.cshtml" />
+    <Content Include="Views\Coupons\Create.cshtml" />
+    <Content Include="Views\Coupons\Details.cshtml" />
+    <Content Include="Views\Coupons\Edit.cshtml" />
+    <Content Include="Views\Coupons\Index.cshtml" />
+    <Content Include="Views\Dealers\Delete.cshtml" />
+    <Content Include="Views\Employees\Register.cshtml" />
+    <Content Include="Views\Employees\Delete.cshtml" />
+    <Content Include="Views\Employees\Details.cshtml" />
+    <Content Include="Views\Employees\Edit.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
+    <Content Include="Views\Employees\Login.cshtml" />
+    <Content Include="Views\Dealers\Create.cshtml" />
+    <Content Include="Views\Dealers\Edit.cshtml" />
+    <Content Include="Views\ExperienceCoursePlans\Create.cshtml" />
+    <Content Include="Views\ExperienceCoursePlans\Edit.cshtml" />
+    <Content Include="Views\ExperienceCoursePlans\Delete.cshtml" />
+    <Content Include="Views\BanDates\Index.cshtml" />
+    <Content Include="Views\Inventories\Index.cshtml" />
+    <Content Include="Views\Fields\Create.cshtml" />
+    <Content Include="Views\BanDates\Delete.cshtml" />
+    <Content Include="Views\Inventories\Edit.cshtml" />
+    <Content Include="Views\Products\Create.cshtml" />
+    <Content Include="Views\MemberLevels\Create.cshtml" />
+    <Content Include="Views\MemberLevels\Edit.cshtml" />
+    <Content Include="Views\MemberTags\Index.cshtml" />
+    <Content Include="Views\MemberTags\Create.cshtml" />
+    <Content Include="Views\CourseEnrollments\Index.cshtml" />
+    <Content Include="Views\Orders\Chart.cshtml" />
+    <Content Include="Views\Employees\EditImg.cshtml" />
+    <Content Include="Views\CouponSendＭembers\Index.cshtml" />
+    <Content Include="Views\Freebies\Create.cshtml" />
+    <Content Include="Views\Freebies\Delete.cshtml" />
+    <Content Include="Views\Freebies\Details.cshtml" />
+    <Content Include="Views\Freebies\Edit.cshtml" />
+    <Content Include="Views\Freebies\Index.cshtml" />
+    <Content Include="Views\Freebies\EditImg.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Fonts\" />
+    <Folder Include="Models\" />
+    <Folder Include="Uploads\Coach_imgs\" />
+    <Folder Include="Uploads\EmployeeImg\" />
+    <Folder Include="Uploads\Field_imgs\" />
+    <Folder Include="Uploads\Freebie_imgs\" />
+    <Folder Include="Uploads\SkillCours_imgs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.7.0.slim.min.map" />
+    <Content Include="Scripts\jquery-3.7.0.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bump.EStore.Core\Bump.EStore.Core.csproj">
+      <Project>{90a31a72-362c-41d7-93bc-f32852d07364}</Project>
+      <Name>Bump.EStore.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bump.EStore.Infrastructure\Bump.EStore.Infrastructure.csproj">
+      <Project>{30441d8d-f321-42f2-8846-03f3f55dd3b2}</Project>
+      <Name>Bump.EStore.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>55705</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:44350/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>此專案參考這部電腦上所缺少的 NuGet 套件。請啟用 NuGet 套件還原，以下載該套件。如需詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的檔案是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

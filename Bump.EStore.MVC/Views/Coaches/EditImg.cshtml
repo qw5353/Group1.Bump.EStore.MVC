@@ -1,0 +1,52 @@
+﻿@model Bump.EStore.MVC.ViewModels.CoachEditImgVM
+
+@{
+    ViewBag.Title = "修改圖片";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+@*<h2>修改圖片</h2>*@
+
+
+@using (Html.BeginForm("EditImg", "Coaches", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+<div class="container">
+    <h2 class="m-2 mb-3">修改圖片</h2>
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">圖片設定</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-0 p-1" style="background-color: rgb(87,55,25)">
+        </div>
+    </div>
+
+    <div class="row  border border-secondary p-3 px-5">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        <div class="mb-3 col-md-3">
+            <img src="~/Uploads/Coach_imgs/@Model.Img" class="img-thumbnail" style="width: 250px; height: 250px;" />
+        </div>
+        <div class="mb-3 col-md-9ㄉ">
+            @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "form-label col-md-2" })
+            <input type="file" name="file1" class="form-control" />
+            @Html.ValidationMessageFor(model => model.Img, "", new { @class = "text-danger" })
+
+        </div>
+        <div class="mb-3 align-self-end d-flex justify-content-end">
+            <input type="submit" value="確定變更" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+    }
+
+    <div>
+        @Html.ActionLink("返回教練管理", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

@@ -1,0 +1,276 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.Employees.EmployeeIndexVM>
+@using X.PagedList.Mvc;
+@using X.PagedList;
+
+@{
+    ViewBag.Title = "員工列表";
+    ViewBag.Breadcrumbs = new string[] { "員工管理", "員工列表" };
+    var criteria = ViewBag.Criteria as Bump.EStore.Infrastructure.Criteria.EmployeeCriteria;
+    var s_role = string.IsNullOrEmpty(criteria.Role) ? "" : criteria.Role;
+}
+
+@section customStyles{
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <style>
+        .card-group {
+            display: flex;
+            flex-direction: row;
+            height: 100%
+        }
+
+        .profile-image {
+            width: 30%
+        }
+
+            .profile-image img {
+                padding: 2%;
+                width: 100%
+            }
+
+        dl .topic {
+            padding: 0;
+        }
+
+        .topic div {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+            .topic div dt {
+                min-width: 3em;
+                margin-bottom: 6px
+            }
+
+            .topic div dd {
+                margin: 0;
+            }
+
+        .card-body {
+            padding: 1px
+        }
+
+        .card-body {
+            padding: 0px
+        }
+
+        .scrollable-table {
+            height: 58vh;
+            overflow-y: scroll;
+        }
+
+            .scrollable-table::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            .scrollable-table::-webkit-scrollbar-track {
+                border-radius: 10px;
+                margin: 40px 130px 20px 130px;
+                background-color: rgb(187, 187, 187, 0.2);
+            }
+
+            .scrollable-table::-webkit-scrollbar-thumb {
+                height: 50px;
+                border-radius: 10px;
+                background-color: rgb(187, 187, 187, 0.84);
+            }
+
+        .amr {
+            margin-left: 100px;
+        }
+    </style>
+}
+
+<section class="container">
+    <form method="get">
+        <div class="row align-items-center">
+            <div class="mb-3 col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping">員工編號</span>
+                    <input type="number" class="form-control" name="Id" id="s_Id" value="@criteria.Id" />
+                </div>
+            </div>
+            <div class="mb-3 col-md-4">
+                <label class="form-label">&nbsp;</label>
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" class="form-control" name="Search" id="s_name" value="@criteria.Search" placeholder="關鍵字搜尋" />
+                </div>
+            </div>
+            <div class="mb-3 col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping">職位</span>
+                    <select name="Role" id="s_employee" class="form-select">
+                        @foreach (var item in ViewBag.Role)
+                        {
+                            <option value="@item.Value" @(s_role == item.Value ? "selected" : "")>@item.Text</option>
+                        }
+                    </select>
+                </div>
+
+                @*<label for="s_employee" class="form-label">職位</label>
+                    <select name="Role" id="s_employee" class="form-select">
+                        @foreach (var item in ViewBag.Role)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>*@
+            </div>
+            <div class="col-md-1 mt-3">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+            <div class="col-md-1 mt-3">
+                <button type="button" class="btn btn-secondary" id="clearBtn">Clear</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+@if (User.IsInRole("管理員"))
+{
+<p>
+    <span class="ms-auto d-flex">
+        <a class="btn btn-warning " href="/Employees/Register" role="button"><i class="fa-solid fa-plus me-2"></i>新增員工</a>
+    </span>
+</p>
+}
+
+
+
+@*<table class="table table-hover table-striped">*@
+@*<tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Img)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Account)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Role)
+        </th>
+        <th></th>
+    </tr>*@
+
+@foreach (var item in Model)
+{
+    @*<tr>*@
+    @*<td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>*@
+    <!--<th>
+        <img src="~/Uploads/EmployeeImg/@item.Img" class="rounded-circle" style="width:80px" />-->
+    @*<img src="../Bump.EStore.Infrastructure/UploadFiles/EmployeesImg/@item.Img" class="rounded-circle" style="width:100%" />*@
+    <!--</th>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>-->
+    @*<td>
+            @Html.DisplayFor(modelItem => item.Account)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Role)
+        </td>*@
+    @*<td class="d-flex">
+            <div class="p-1"> <a class="btn btn-success" href="@Url.Action("Edit" , new { id = item.Id })" role="button"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i></a></div>
+            <div class="p-1">
+                <button type="submit" class="btn btn-danger delete" id="@item.Id"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        </td>*@
+    @*</tr>*@
+}
+@*</table>*@
+
+<div class="scrollable-table">
+    <div class="row row-cols-1 row-cols-md-2 g-4" id="myDiv">
+        @foreach (var item in Model)
+        {
+
+            <div class="col">
+                <div class="card-group">
+                    <div class="card">
+                        <div class="card-header text-dark bg-white">
+                            <div class="d-flex justify-content-between">
+                                <span class="fs-5 card-title me-auto">
+                                    @Html.DisplayFor(modelItem => item.Id)
+                                </span>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    if (User.IsInRole("管理員"))
+                                    {
+                                        <div class="p-1"><a class="btn btn-success" href="@Url.Action("Edit" , new { id = item.Id })" role="button"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i></a></div>
+                                        <div class="p-1"><a class="btn btn-danger" href="@Url.Action("Delete" , new { id = item.Id })" role="button"><i class="fa-solid fa-trash"></i></a></div>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                        <div class="card-body align-items-center">
+                            <div class="card-text mt-4">
+                                <div class="d-flex  mb-3">
+                                    <div class="profile-image">
+                                        <a href="@Url.Action("EditImg", new { id = item.Id })" class="btn">
+                                            <img src="~/Uploads/EmployeeImg/@item.Img" class="rounded-circle profile-image img-thumbnail">
+                                        </a>
+                                    </div>
+                                    <dl class="topic">
+                                        <div>
+                                            <dt class="">
+                                                @if (item.Role == "管理員")
+                                                {
+                                                    <span class="fs-6 badge rounded-pill border border-warning bg-warning text-light mx-0">@Html.DisplayFor(modelItem => item.Role)</span>
+                                                }
+                                                @if (item.Role == "教練")
+                                                {
+                                                    <span class="fs-6 badge rounded-pill border border-warning bg-warning-subtle text-warning mx-0 ms-3">@Html.DisplayFor(modelItem => item.Role)</span>
+                                                }
+                                                @if (item.Role == "員工")
+                                                {
+                                                    <span class="fs-6 badge rounded-pill border border-warning text-warning mx-0 ms-3">@Html.DisplayFor(modelItem => item.Role)</span>
+                                                }
+                                            </dt>
+                                            <dd class="display-6 me-3 mb-4 ms-4 mt-4">
+                                                @item.Name
+                                            </dd>
+                                        </div>
+                                        <div class="amr">
+                                            <dt>@Html.DisplayNameFor(model => model.Account)</dt>
+                                            <dd>@Html.DisplayFor(modelItem => item.Account)</dd>
+                                        </div>
+
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page }))
+
+@section customScripts{
+    <script src="https://kit.fontawesome.com/aeb06b2407.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#clearBtn').click(function () {
+                $('#s_Id').val('');
+                $('#s_name').val('');
+                $('#s_employee').val('');
+            });
+        });
+    </script>
+
+}
+

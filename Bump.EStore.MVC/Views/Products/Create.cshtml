@@ -1,0 +1,620 @@
+﻿@model Bump.EStore.MVC.ViewModels.Products.ProductCreateVM
+
+@{
+    ViewBag.Title = "新增商品";
+    ViewBag.Breadcrumbs = new string[] { "商品中心", "商品新增" };
+    var brands = ViewBag.BrandId as SelectList;
+    var firstcategories = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.FirstCategoryId);
+    var secondcategories = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.SecondCategoryId);
+    var thirdcategories = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ThirdCategoryId);
+
+}
+@section customStyles{
+
+    <style>
+        .scrollable-table {
+            height: 78vh;
+            overflow-y: scroll;
+            border: 2px solid #BB5E00;
+            border-top: none;
+            border-radius: 0px 0px 5px 5px;
+        }
+
+        .headtitle {
+            background-color: #BB5E00;
+            color: aliceblue;
+            border-radius: 5px 5px 0px 0px;
+        }
+
+        .buttonBtn {
+            background-color: white;
+            position: sticky;
+            bottom: 0%;
+            z-index: 1;
+        }
+
+        .scrollable-table::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .scrollable-table::-webkit-scrollbar-track {
+            border-radius: 10px;
+            margin: 0px 130px 0px 130px;
+            background-color: rgb(187, 187, 187, 0.2);
+        }
+
+        .scrollable-table::-webkit-scrollbar-thumb {
+            height: 50px;
+            border-radius: 10px;
+            background-color: rgb(187, 187, 187, 0.84);
+        }
+
+        .row label {
+            font-weight: bold;
+            font-size: 25px;
+        }
+
+        #container {
+            width: 1000px;
+            margin: 20px auto;
+        }
+
+        .editor1 .ck-editor__editable[role="textbox"] {
+            /* editing area */
+            /*min-height: 200px;*/
+            height: 200px;
+            overflow: auto;
+        }
+
+        .editor2 .ck-editor__editable[role="textbox"] {
+            height: 700px;
+            overflow: auto;
+        }
+
+        .ck-content .image {
+            /* block images */
+            max-width: 80%;
+            margin: 20px auto;
+        }
+
+        .parent {
+            width: 60%;
+        }
+
+        .container {
+            display: block;
+            width: 100%;
+            height: auto;
+            position: relative;
+            overflow: hidden;
+            padding: 34.37% 0 0 0; /* 34.37% = 100 / (w / h) = 100 / (640 / 220) */
+        }
+
+            .container img {
+                display: block;
+                max-width: 100%;
+                max-height: 100%;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+
+        .form-check-input{
+            height:20px;
+            width:20px;
+            margin-top:10px;
+        }
+    </style>
+
+}
+<div class="headtitle align-middle">
+    <h2>商品新增</h2>
+</div>
+
+@using (Html.BeginForm("create", "products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row scrollable-table">
+        <hr />
+        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+        @*@Html.HiddenFor(model => model.Id)*@
+
+        <div class="mb-4 col-3">
+            <label for="f_categoryId">商品大分類</label>
+            <select name="FirstCategoryId" id="f_categoryId" class="form-select" value="">
+                <option value="">請選擇</option>
+            </select>
+            @*@Html.ValidationMessageFor(model => model.ThirdCategoryId, "", new { @class = "text-danger" })*@
+            <div id="categoryWarning" class="text-danger"></div>
+        </div>
+
+        <div class="mb-4 col-3">
+            <label for="s_categoryId">商品中分類</label>
+            <select name="SecondCategoryId" id="s_categoryId" class="form-select" value="" disabled>
+                <option value="">請選擇</option>
+            </select>
+        </div>
+
+        <div class="mb-4 col-3">
+            <label for="t_categoryId">商品小分類</label>
+            <select name="ThirdCategoryId" id="t_categoryId" class="form-select" value="" disabled>
+                <option value="">請選擇</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            @*@Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "form-label" })*@
+            @*<div class="parent">
+                    <div class="container">
+                        <img id="thumbnailImage" src="~/Uploads/product/images/@Model.Thumbnail" />
+                    </div>
+                </div>*@
+            @*<form id="uploadForm" enctype="multipart/form-data">*@
+            <input type="file" name="File1" id="File" class="form-control" />
+            @*<button type="button" id="uploadButton" class="btn btn-success mt-3">上傳圖片</button>*@
+
+            @Html.ValidationMessageFor(model => model.Thumbnail, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-4">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-4">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-4">
+            @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "form-label" })
+            <div class="editor1">
+                @Html.TextAreaFor(model => model.ShortDescription, new { @id = "editor1" })
+            </div>
+            @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-4">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label" })
+            <div class="editor2">
+                @Html.TextAreaFor(model => model.Description, new { @id = "editor2" })
+            </div>
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-4">
+            <label for="s_brand" class="form-label">品牌</label>
+            <select name="BrandId" id="s_brand" class="form-select" value="">
+                <option value="">請選擇</option>
+                @foreach (var item in brands)
+                {
+                    if (@item.Text == "") { continue; }
+                    <option value="@item.Value" @(Model.BrandId.ToString() == item.Value ? "selected" : "")>@item.Text</option>
+                }
+            </select>
+            <div id="brandWarning" class="text-danger"></div>
+        </div>
+
+        <div class="mb-4">
+            <div class="form-check">
+                @Html.EditorFor(model => model.ShelfStatus, new { htmlAttributes = new { @class = "form-check-input" } })
+                <label class="form-check-label ms-2" for="@Html.IdFor(model => model.ShelfStatus)">
+                    @Html.DisplayNameFor(model => model.ShelfStatus)
+                </label>
+                @*@Html.LabelFor(model => model.ShelfStatus, htmlAttributes: new { @class = "form-check-label" })*@
+                @Html.ValidationMessageFor(model => model.ShelfStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="d-flex justify-content:flex-end buttonBtn">
+            <a class="btn btn-warning btn-lg mb-2 me-3 ms-auto" href="@Url.Action("Create", "Products", new {})">
+                返回
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg mb-2 me-2">新增</button>
+        </div>
+    </div>
+}
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/super-build/ckeditor.js"></script>
+
+    @*<script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>*@
+    <script>
+        //各分類的資料來源
+        let firstOptions = @Html.Raw(firstcategories);
+        let secondOptions = @Html.Raw(secondcategories);
+        let thirdOptions = @Html.Raw(thirdcategories);
+
+
+        //取得各分類選擇元素
+        let selectFCategoryElement = document.querySelector('#f_categoryId');
+        let selectSCategoryElement = document.querySelector('#s_categoryId');
+        let selectTCategoryElement = document.querySelector('#t_categoryId');
+
+
+        //設定第一分類option
+        firstOptions.map((arr) => {
+            let option = document.createElement('option');
+            option.value = arr.FirstCategoryId;
+            option.text = arr.FirstCategoryName;
+            selectFCategoryElement.appendChild(option);
+        })
+
+        selectFCategoryElement.addEventListener('change', function () {
+            selectSCategoryElement.innerHTML = '';
+            selectTCategoryElement.innerHTML = '';
+            selectSCategoryElement.appendChild(createDefaultOption());
+            selectTCategoryElement.appendChild(createDefaultOption());
+
+            selectFCategoryElement.value > 0 ? selectSCategoryElement.disabled = false : selectSCategoryElement.disabled = true;
+            selectTCategoryElement.disabled = true;
+
+            secondOptions
+                .filter(arr => arr.FirstCategoryId == selectFCategoryElement.value)
+                .map((arr) => {
+                    let option = document.createElement('option');
+                    option.value = arr.SecondCategoryId;
+                    option.text = arr.SecondCategoryName;
+                    selectSCategoryElement.appendChild(option);
+                })
+        });
+
+        selectSCategoryElement.addEventListener('change', function () {
+            selectTCategoryElement.innerHTML = '';
+            selectTCategoryElement.appendChild(createDefaultOption());
+
+            selectSCategoryElement.value != "" ? selectTCategoryElement.disabled = false : selectTCategoryElement.disabled = true;
+
+            thirdOptions
+                .filter(arr => arr.SecondCategoryId == selectSCategoryElement.value)
+                .map((arr) => {
+                    let option = document.createElement('option');
+                    option.value = arr.ThirdCategoryId;
+                    option.text = arr.ThirdCategoryName;
+                    selectTCategoryElement.appendChild(option);
+                })
+        });
+
+        function createDefaultOption() {
+            let option = document.createElement('option');
+            option.value = "";
+            option.text = '請選擇';
+            option.selected = true;
+            return option
+        }
+
+        let errorMessage = '@ViewBag.ErrorMessage';
+        if (errorMessage.trim() !== '') {
+            alert(errorMessage);
+        }
+
+        document.querySelector('#s_brand').addEventListener('change', function () {
+            document.getElementById('brandWarning').innerHTML = '';
+        });
+        selectTCategoryElement.addEventListener('change', function () {
+            document.getElementById('categoryWarning').innerHTML = '';
+        });
+        $('form').submit(function () {
+            let result = true;
+            let selectedCategoryId = $('#t_categoryId').val();
+            let selectedBrandId = $('#s_brand').val();
+
+            if (selectedCategoryId === '') {
+                $('#categoryWarning').text('商品分類尚未選擇完成');
+                result = false;
+            }
+            if (selectedBrandId === '') {
+                $('#brandWarning').text('品牌尚未選擇');
+                result = false;
+            }
+
+            return result;
+        });
+
+
+
+        CKEDITOR.ClassicEditor.create(document.getElementById("editor1"), {
+        // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
+        toolbar: {
+            items: [
+                'exportPDF', 'exportWord', '|',
+                'findAndReplace', 'selectAll', '|',
+                'heading', '|',
+                'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'outdent', 'indent', '|',
+                'undo', 'redo',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                'alignment', '|',
+                'link',
+                'sourceEditing'
+            ],
+            shouldNotGroupWhenFull: true
+        },
+        // Changing the language of the interface requires loading the language file using the <script> tag.
+        // language: 'es',
+        list: {
+            properties: {
+                styles: true,
+                startIndex: true,
+                reversed: true
+            }
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+            ]
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+        placeholder: 'Welcome to CKEditor 5!',
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+        fontFamily: {
+            options: [
+                'default',
+                'Arial, Helvetica, sans-serif',
+                'Courier New, Courier, monospace',
+                'Georgia, serif',
+                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                'Tahoma, Geneva, sans-serif',
+                'Times New Roman, Times, serif',
+                'Trebuchet MS, Helvetica, sans-serif',
+                'Verdana, Geneva, sans-serif'
+            ],
+            supportAllValues: true
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+        fontSize: {
+            options: [10, 12, 14, 'default', 18, 20, 22],
+            supportAllValues: true
+        },
+        // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
+        // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
+        htmlSupport: {
+            allow: [
+                {
+                    name: /.*/,
+                    attributes: true,
+                    classes: true,
+                    styles: true
+                }
+            ]
+        },
+        // Be careful with enabling previews
+        // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
+        htmlEmbed: {
+            showPreviews: true
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
+        link: {
+            decorators: {
+                addTargetToExternalLinks: true,
+                defaultProtocol: 'https://',
+                toggleDownloadable: {
+                    mode: 'manual',
+                    label: 'Downloadable',
+                    attributes: {
+                        download: 'file'
+                    }
+                }
+            }
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
+        mention: {
+            feeds: [
+                {
+                    marker: '@@',
+                    feed: [
+                        '@@apple', '@@bears', '@@brownie', '@@cake', '@@cake', '@@candy', '@@canes', '@@chocolate', '@@cookie', '@@cotton', '@@cream',
+                        '@@cupcake', '@@danish', '@@donut', '@@dragée', '@@fruitcake', '@@gingerbread', '@@gummi', '@@ice', '@@jelly-o',
+                        '@@liquorice', '@@macaroon', '@@marzipan', '@@oat', '@@pie', '@@plum', '@@pudding', '@@sesame', '@@snaps', '@@soufflé',
+                        '@@sugar', '@@sweet', '@@topping', '@@wafer'
+                    ],
+                    minimumCharacters: 1
+                }
+            ]
+        },
+        // The "super-build" contains more premium features that require additional configuration, disable them below.
+        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+        removePlugins: [
+            // These two are commercial, but you can try them out without registering to a trial.
+            // 'ExportPdf',
+            // 'ExportWord',
+            'CKBox',
+            'CKFinder',
+            'EasyImage',
+            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+            // Storing images as Base64 is usually a very bad idea.
+            // Replace it on production website with other solutions:
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+            // 'Base64UploadAdapter',
+            'RealTimeCollaborativeComments',
+            'RealTimeCollaborativeTrackChanges',
+            'RealTimeCollaborativeRevisionHistory',
+            'PresenceList',
+            'Comments',
+            'TrackChanges',
+            'TrackChangesData',
+            'RevisionHistory',
+            'Pagination',
+            'WProofreader',
+            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+            // from a local file system (file://) - load this site via HTTP server if you enable MathType.
+            'MathType',
+            // The following features are part of the Productivity Pack and require additional license.
+            'SlashCommand',
+            'Template',
+            'DocumentOutline',
+            'FormatPainter',
+            'TableOfContents'
+        ]
+    }
+    )
+
+        CKEDITOR.ClassicEditor.create(document.getElementById("editor2"), {
+                // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
+                toolbar: {
+                    items: [
+                        'exportPDF', 'exportWord', '|',
+                        'findAndReplace', 'selectAll', '|',
+                        'heading', '|',
+                        'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
+                        'bulletedList', 'numberedList', 'todoList', '|',
+                        'outdent', 'indent', '|',
+                        'undo', 'redo',
+                        '-',
+                        'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                        'alignment', '|',
+                        'link', 'insertImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
+                        'specialCharacters', 'horizontalLine', 'pageBreak', '|',
+                        'textPartLanguage', '|',
+                        'sourceEditing'
+                    ],
+                    shouldNotGroupWhenFull: true
+                },
+
+                // Changing the language of the interface requires loading the language file using the <script> tag.
+                // language: 'es',
+                list: {
+                    properties: {
+                        styles: true,
+                        startIndex: true,
+                        reversed: true
+                    }
+                },
+                // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+                heading: {
+                    options: [
+                        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                        { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                        { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                        { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                        { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                        { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                        { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+                    ]
+                },
+                // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+                placeholder: 'Welcome to CKEditor 5!',
+                // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+                fontFamily: {
+                    options: [
+                        'default',
+                        'Arial, Helvetica, sans-serif',
+                        'Courier New, Courier, monospace',
+                        'Georgia, serif',
+                        'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                        'Tahoma, Geneva, sans-serif',
+                        'Times New Roman, Times, serif',
+                        'Trebuchet MS, Helvetica, sans-serif',
+                        'Verdana, Geneva, sans-serif'
+                    ],
+                    supportAllValues: true
+                },
+                // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+                fontSize: {
+                    options: [10, 12, 14, 'default', 18, 20, 22],
+                    supportAllValues: true
+                },
+                // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
+                // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
+                htmlSupport: {
+                    allow: [
+                        {
+                            name: /.*/,
+                            attributes: true,
+                            classes: true,
+                            styles: true
+                        }
+                    ]
+                },
+                // Be careful with enabling previews
+                // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
+                htmlEmbed: {
+                    showPreviews: true
+                },
+                // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
+                link: {
+                    decorators: {
+                        addTargetToExternalLinks: true,
+                        defaultProtocol: 'https://',
+                        toggleDownloadable: {
+                            mode: 'manual',
+                            label: 'Downloadable',
+                            attributes: {
+                                download: 'file'
+                            }
+                        }
+                    }
+                },
+                // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
+                mention: {
+                    feeds: [
+                        {
+                            marker: '@@',
+                            feed: [
+                                '@@apple', '@@bears', '@@brownie', '@@cake', '@@cake', '@@candy', '@@canes', '@@chocolate', '@@cookie', '@@cotton', '@@cream',
+                                '@@cupcake', '@@danish', '@@donut', '@@dragée', '@@fruitcake', '@@gingerbread', '@@gummi', '@@ice', '@@jelly-o',
+                                '@@liquorice', '@@macaroon', '@@marzipan', '@@oat', '@@pie', '@@plum', '@@pudding', '@@sesame', '@@snaps', '@@soufflé',
+                                '@@sugar', '@@sweet', '@@topping', '@@wafer'
+                            ],
+                            minimumCharacters: 1
+                        }
+                    ]
+                },
+                // The "super-build" contains more premium features that require additional configuration, disable them below.
+                // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+                removePlugins: [
+                    // These two are commercial, but you can try them out without registering to a trial.
+                    // 'ExportPdf',
+                    // 'ExportWord',
+                    'CKBox',
+                    'CKFinder',
+                    'EasyImage',
+                    // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+                    // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+                    // Storing images as Base64 is usually a very bad idea.
+                    // Replace it on production website with other solutions:
+                    // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+                    // 'Base64UploadAdapter',
+                    'RealTimeCollaborativeComments',
+                    'RealTimeCollaborativeTrackChanges',
+                    'RealTimeCollaborativeRevisionHistory',
+                    'PresenceList',
+                    'Comments',
+                    'TrackChanges',
+                    'TrackChangesData',
+                    'RevisionHistory',
+                    'Pagination',
+                    'WProofreader',
+                    // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+                    // from a local file system (file://) - load this site via HTTP server if you enable MathType.
+                    'MathType',
+                    // The following features are part of the Productivity Pack and require additional license.
+                    'SlashCommand',
+                    'Template',
+                    'DocumentOutline',
+                    'FormatPainter',
+                    'TableOfContents'
+                ]
+            }
+        )
+
+    </script>
+}

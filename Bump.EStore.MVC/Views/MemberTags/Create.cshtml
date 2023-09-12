@@ -1,0 +1,152 @@
+﻿@model Bump.EStore.MVC.ViewModels.MemberTags.CreateTagVM
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@section customStyles
+    {
+    <style>
+        th {
+            background-color: ghostwhite
+        }
+    </style>
+}
+
+<h2>新增會員標籤</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row  border border-0 p-3 px-5">
+        <div class="mb-3 col-md-1">
+            <a class="btn btn-dark" href="@Url.Action("Index", "MemberLevels")" role="button"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+        <div class="row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.TagName, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.TagName, new { htmlAttributes = new { @class = "form-control", @id = "tag-name-input" } })
+                @Html.ValidationMessageFor(model => model.TagName, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @id = "description-input" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+            </div>
+
+            <table id="conditionTable" class="table">
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.ConditionName, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Operator, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Value, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Unit, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                </tr>
+
+                <tr class="condition-row">
+                    <td>
+                        @Html.EditorFor(model => model.ConditionName, new
+                        {
+                            htmlAttributes = new
+                            {
+                                @class = "form-control",@*id = Model.Id*@}
+})
+                        @Html.ValidationMessageFor(model => model.ConditionName, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Operator, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Operator, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Unit, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Unit, "", new { @class = "text-danger" })
+                    </td>
+                </tr>
+            </table>
+            <div class="d-flex">
+                <div class="mb-3 p-2">
+                    <a class="btn btn-outline-success" id="add-condition" role="button"><i class="fa-solid fa-plus fa-bounce"></i></a>
+                </div>
+                <div class="mb-3 p-2">
+                    <input type="submit" value="新增標籤" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+    </div>
+        }
+
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+            <script src="https://kit.fontawesome.com/aeb06b2407.js" crossorigin="anonymous"></script>
+            <script>
+                $(document).ready(function () {
+                    $("#add-condition").click(function () {
+                        var newRow = '<tr class="condition-row">' +
+                            '<td><input class="form-control" name="ConditionName" /></td>' +
+                            '<td><input class="form-control" name="Operator" /></td>' +
+                            '<td><input class="form-control" name="Value" /></td>' +
+                            '<td><input class="form-control" name="Unit" /></td>' +
+                            '</tr>';
+                        $("#conditionTable").append(newRow);
+                    });
+
+                    $("form").submit(function (e) {
+                        e.preventDefault();
+                        const trs = [...document.querySelectorAll('tr.condition-row')];
+                        const form = new FormData();
+
+                        form.append('__RequestVerificationToken', document.querySelector('input[name="__RequestVerificationToken"]').value);
+
+                        trs.forEach((tr, index) => {
+                            const nameInput = tr.querySelector('input[name="ConditionName"]');
+                            const operatorInput = tr.querySelector('input[name="Operator"]');
+                            const valueInput = tr.querySelector('input[name="Value"]');
+                            const unitInput = tr.querySelector('input[name="Unit"]');
+
+
+                            form.append(`conditions[${index}].ConditionName`, nameInput.value);
+                            form.append(`conditions[${index}].Operator`, operatorInput.value);
+                            form.append(`conditions[${index}].Value`, valueInput.value);
+                            form.append(`conditions[${index}].Unit`, unitInput.value);
+                            form.append(`conditions[${index}].TagName`, document.getElementById('tag-name-input').value);
+                            form.append(`conditions[${index}].Description`, document.getElementById('description-input').value);
+                        });
+                        submitForm(form);
+                    })
+                });
+
+                function submitForm(form) {
+                    $.ajax({
+                        url: "/MemberTags/Create",
+                        method: "POST",
+                        processData: false,
+                        contentType: false,
+                        data: form
+                    })
+                        .done(data => {
+                            location.href = "/MemberTags";
+                        })
+                        .fail(err => console.log(err));
+                }
+
+            </script>
+        }

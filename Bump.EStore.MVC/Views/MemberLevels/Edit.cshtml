@@ -1,0 +1,91 @@
+﻿@model Bump.EStore.MVC.ViewModels.MemberLevels.MemberLevelEditVM
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>編輯會員等級</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+
+        <div class="row  border border-0 p-3 px-5">
+            <div class="mb-3 col-md-1">
+                <a class="btn btn-dark" href="@Url.Action("Index", "MemberLevels")" role="button"><i class="fa-solid fa-arrow-left"></i></a>
+            </div>
+            <div class="row">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="mb-3 row-cols-6">
+                    @Html.LabelFor(model => model.LevelOrder, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.LevelOrder, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LevelOrder, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="mb-3 row-cols-6">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+            <table id="conditionTable" class="table">
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.UpgradePrice, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.UpgradeOrderCount, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.TimePeriod, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.GainPointRate, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label" })
+                    </th>
+                </tr>
+
+                <tr class="condition-row">
+                    <td>
+                        @Html.EditorFor(model => model.UpgradePrice, new { htmlAttributes = new { @class = "form-control", placeholder = "單位:台幣" } })
+                        @Html.ValidationMessageFor(model => model.UpgradePrice, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.UpgradeOrderCount, new { htmlAttributes = new { @class = "form-control", placeholder = "單位:筆" } })
+                        @Html.ValidationMessageFor(model => model.UpgradeOrderCount, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.TimePeriod, new { htmlAttributes = new { @class = "form-control", placeholder = "單位:月份" } })
+                        @Html.ValidationMessageFor(model => model.TimePeriod, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.GainPointRate, new { htmlAttributes = new { @class = "form-control", placeholder = "單位:百分比" } })
+                        @Html.ValidationMessageFor(model => model.GainPointRate, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </td>
+                </tr>
+            </table>
+
+            <div class="mb-3 col-md-1 justify-content-center">
+                <input type="submit" value="修改會員等級" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://kit.fontawesome.com/aeb06b2407.js" crossorigin="anonymous"></script>
+
+}

@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Bump.EStore.Infrastructure.Repositories.DapperRepositories.CategoriesVM>
+
+@{
+    ViewBag.Title = "類別管理";
+    ViewBag.Breadcrumbs = new string[] { "商品中心", "類別管理" };
+}
+
+<style>
+    .custom-table-striped tbody tr:nth-child(odd) td {
+        background-color: #f3e9df;
+    }
+
+    .textSize {
+        font-size: 24px;
+    }
+
+    .tableFixHead {
+        overflow: auto;
+    }
+
+    .tableFixHead thead th {
+        position: sticky;
+        top: 0%;
+        z-index: 1;
+    }
+
+    .scrollable-table {
+        height: 70vh;
+        overflow-y: scroll;
+    }
+
+    .scrollable-table::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    .scrollable-table::-webkit-scrollbar-track {
+        border-radius: 10px;
+        margin: 40px 130px 20px 130px;
+        background-color: rgb(187, 187, 187, 0.2);
+    }
+
+    .scrollable-table::-webkit-scrollbar-thumb {
+        height: 50px;
+        border-radius: 10px;
+        background-color: rgb(187, 187, 187, 0.84);
+    }
+</style>
+
+<h2 class="mb-3 mt-3">產品分類管理</h2>
+
+<div class="d-flex row">
+    <span class="ms-auto d-flex">
+        <a class="btn btn-warning ms-auto" href="@Url.Action("Create")" role="button"><i class="fa-solid fa-plus me-2"></i>新增分類</a>
+        <a class="btn btn-warning ms-2" href="@Url.Action("Edit")" role="button"><i class="fa-solid fa-pen  me-2"></i>修改分類</a>
+        <a class="btn btn-danger ms-2" href="@Url.Action("Delete")" role="button"><i class="fa-solid fa-trash fa-shake me-2"></i>刪除分類</a>
+    </span>
+</div>
+
+<div class="scrollable-table">
+    <table class="table tableFixHead custom-table-striped table-hover">
+        <thead>
+            <tr class="textSize">
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstCategoryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SecondCategoryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ThirdCategoryName)
+                </th>
+
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstCategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SecondCategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThirdCategoryName)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+</div>
+
+@section Scripts{
+    <script src="https://kit.fontawesome.com/afa27cfccd.js" crossorigin="anonymous"></script>
+}
+

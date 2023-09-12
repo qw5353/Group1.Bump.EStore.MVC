@@ -1,0 +1,126 @@
+﻿@model Bump.EStore.Infrastructure.Repositories.DapperRepositories.ChartVM
+
+@{
+    ViewBag.Title = "Chart";
+    var options = ViewBag.Now;
+    var jsOptions = Newtonsoft.Json.JsonConvert.SerializeObject(options);
+}
+<style>
+    .w200 {
+        width: 200px;
+    }
+</style>
+
+<h3 class="mb-4 mt-3" id="title"></h3>
+
+<div class="row d-flex align-items-end">
+    <div class="mb-3 col-md-2">
+        <select id="selectYear" class="form-select w200">
+            <option value="2023" selected>2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+        </select>
+    </div>
+    <div class="mb-3 col-md-2">
+        <select id="selectMonth" class="form-select w200">
+            <option value="1">1月</option>
+            <option value="2">2月</option>
+            <option value="3">3月</option>
+            <option value="4">4月</option>
+            <option value="5">5月</option>
+            <option value="6" selected>6月</option>
+            <option value="7">7月</option>
+            <option value="8">8月</option>
+            <option value="9">9月</option>
+            <option value="10">10月</option>
+            <option value="11">11月</option>
+            <option value="12">12月</option>
+        </select>
+    </div>
+    <div class="mb-3 col-md-2 toRight">
+        <button class="btn btn-warning" onclick="showDate()">搜尋</button>
+    </div>
+</div>
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+                
+        function showDate() {
+            $.ajax({
+                url: '/Orders/WhichMonth',
+                data: {
+                    year: $("#selectYear").val(),
+                    month: $("#selectMonth").val() 
+                }
+            })
+            .done(data => {
+                const chart = Chart.getChart("myChart");
+                chart?.destroy();
+                makeChartData(data);
+                $("#title").empty();
+                var year = $("#selectYear").val();
+                var month = $("#selectMonth").val();
+                $("#title").text(`${year}年${month}月營收統計圖表`)
+            })
+            .fail(err => console.error(err));
+        };
+
+        var options = @Html.Raw(jsOptions);
+
+
+
+        function makeChartData(chartdata) {
+            var completeData = [];
+
+            for (var i = 1; i <= 31; i++) {
+                var item = chartdata.find(function (d) {
+                    return d.DayOfMonth === i;
+                });
+
+                if (item) {
+                    completeData.push(item);
+                } else {
+                    completeData.push({ DayOfMonth: i, TotalAmount: 0 });
+                }
+            }
+
+            var dayOfMonth = completeData.map(function (item) {
+                return item.DayOfMonth;
+            });
+            var totalAmount = completeData.map(function (item) {
+                return item.TotalAmount;
+            });
+
+            //console.log(completeData);
+            const ctx = document.getElementById('myChart');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: dayOfMonth,
+                    datasets: [{
+                        label: '當月日營收',
+                        data: totalAmount,
+                        backgroundColor: '#EA7500',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+
+
+    </script>
+}

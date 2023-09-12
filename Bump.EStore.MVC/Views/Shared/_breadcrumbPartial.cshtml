@@ -1,0 +1,26 @@
+﻿@{
+    IEnumerable<string> breadcrumbs = ViewBag.Breadcrumbs as string[];
+    string lastBreadCrumb = string.Empty;
+    IEnumerable<string> frontCrumbs = new string[] { };
+
+    if (breadcrumbs != null)
+    {
+        lastBreadCrumb = breadcrumbs.Last();
+        frontCrumbs = breadcrumbs.ToList().GetRange(0, breadcrumbs.Count() - 1);
+    }
+}
+
+
+
+@if (breadcrumbs != null)
+{
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            @foreach (string breadcrumb in frontCrumbs)
+            {
+                <li class="breadcrumb-item">@breadcrumb</li>
+            }
+            <li class="breadcrumb-item active">@lastBreadCrumb</li>
+        </ol>
+    </nav>
+}

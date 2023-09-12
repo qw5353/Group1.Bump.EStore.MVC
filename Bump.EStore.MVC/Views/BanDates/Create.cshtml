@@ -1,0 +1,62 @@
+﻿@model Bump.EStore.MVC.ViewModels.BanDates.BanDateCreateVM
+
+@{
+    ViewBag.Title = "新增禁用時間";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+@*<h2>新增禁用時間</h2>*@
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="container">
+    <h2 class="m-2 mb-3">新增禁用時間</h2>
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">禁用時間設定</p>
+        </div>
+    </div>
+    <div class="row border border-secondary p-3 px-5">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3">
+            @Html.LabelFor(model => model.FieldId, htmlAttributes: new { @class = "form-label" })
+            @Html.DropDownList("FieldId", null, htmlAttributes: new { @class = "form-select", id = "myInput2" })
+            @Html.ValidationMessageFor(model => model.FieldId, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.BanStartDateTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BanStartDateTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+            @Html.ValidationMessageFor(model => model.BanStartDateTime, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.BanEndDateTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BanEndDateTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
+            @Html.ValidationMessageFor(model => model.BanEndDateTime, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="新增" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+    }
+
+<div>
+    @Html.ActionLink("返回教練管理", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+</div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+
+        </script>
+
+    }

@@ -1,0 +1,228 @@
+﻿@model Bump.EStore.MVC.ViewModels.FieldCreateVM
+
+@{
+    ViewBag.Title = "新增場館";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+@*<h2>新增場館</h2>*@
+
+
+@using (Html.BeginForm("Create", "Fields", FormMethod.Post, new { enctype = "multipart/form-data", id = "your-form-id" }))
+{
+    @Html.AntiForgeryToken()
+<div class="container">
+    <h2 class="m-2 mb-3">新增場館</h2>
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">基本設定</p>
+        </div>
+    </div>
+    <div class="row border border-secondary p-3 px-5">
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "ex.OO館",Id="Name" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "ex.02-XXXXXXXX", Id = "PhoneNumber" } })
+            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "ex.OO市OO區OO路", Id = "Address" } })
+            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.Indoor, htmlAttributes: new { @class = "form-label" })
+            <div class="checkbox">
+                @Html.EditorFor(model => model.Indoor)
+                @Html.ValidationMessageFor(model => model.Indoor, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "form-label col-md-2" })
+            <input type="file" name="file1" class="form-control" />
+            @Html.ValidationMessageFor(model => model.Thumbnail, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 ">
+            @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "form-label" })
+            @Html.TextAreaFor(model => model.ShortDescription, new { @class = "form-control", placeholder = "請輸入簡介", rows = "3",Id = "ShortDescription" })
+            @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Link, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control", placeholder = "ex.example@example.com", Id = "Link" } })
+            @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-3">
+            @Html.LabelFor(model => model.BusinessWeekdayStartTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BusinessWeekdayStartTime, new { htmlAttributes = new { @class = "form-control", Id = "BusinessWeekdayStartTime" } })
+            @Html.ValidationMessageFor(model => model.BusinessWeekdayStartTime, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-3">
+            @Html.LabelFor(model => model.BusinessWeekdayEndTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BusinessWeekdayEndTime, new { htmlAttributes = new { @class = "form-control", Id = "BusinessWeekdayEndTime" } })
+            @Html.ValidationMessageFor(model => model.BusinessWeekdayEndTime, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-3">
+            @Html.LabelFor(model => model.BusinessWeekendStartTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BusinessWeekendStartTime, new { htmlAttributes = new { @class = "form-control", Id = "BusinessWeekendStartTime" } })
+            @Html.ValidationMessageFor(model => model.BusinessWeekendStartTime, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-3">
+            @Html.LabelFor(model => model.BusinessWeekendEndTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BusinessWeekendEndTime, new { htmlAttributes = new { @class = "form-control", Id = "BusinessWeekendEndTime" } })
+            @Html.ValidationMessageFor(model => model.BusinessWeekendEndTime, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <p></p>
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">限制時間設定</p>
+        </div>
+    </div>
+    <div class="row border border-secondary p-3 px-5">
+
+
+        <div class="mb-3 col-md-4">
+            <label for="Weekday" class="form-label">選擇星期:</label>
+            <select id="Weekday" name="Weekday" class="form-select">
+                <option value="0">暫無限制時間</option>
+                <option value="1">星期一</option>
+                <option value="2">星期二</option>
+                <option value="3">星期三</option>
+                <option value="4">星期四</option>
+                <option value="5">星期五</option>
+                <option value="6">星期六</option>
+                <option value="7">星期日</option>
+                <!-- 其他星期選項 -->
+            </select>
+
+        </div>
+
+        <div class="mb-3 col-md-4">
+            @Html.LabelFor(model => model.BanStartDateTime, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.BanStartDateTime, new { htmlAttributes = new { @class = "form-control", @type = "time", Id = "BanStartDateTime" } })
+            @Html.ValidationMessageFor(model => model.BanStartDateTime, "", new { @class = "text-danger" })
+
+        </div>
+
+
+
+        <div class="mb-3 col-md-4">
+            @Html.LabelFor(model => model.BanEndDateTime, htmlAttributes: new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.BanEndDateTime, "{0:yyyy-MM-dd HH:mm}", new { @class = "form-control", @type = "time", Id = "BanEndDateTime" })
+            @Html.ValidationMessageFor(model => model.BanEndDateTime, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+    <div class="mb-3">
+        <input type="submit" value="新增" class="btn btn-primary" />
+    </div>
+   
+</div>
+
+    }
+
+<div class="row">
+    <div class="mb-3 col-md-8">
+        @Html.ActionLink("返回教練管理", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+    </div>
+        <div class="mb-3 col-md-4">
+            <input type="button" value="填入数据1" id="fillDataButton1" />
+            <input type="button" value="填入数据2" id="fillDataButton2" />
+            <input type="button" value="填入数据3" id="fillDataButton3" />
+        </div>
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var form = document.getElementById('your-form-id');
+
+                form.addEventListener('submit', function (event) {
+                    var weekdaySelect = document.getElementById('Weekday');
+                    var banStartDateTimeInput = document.getElementById('BanStartDateTime');
+                    var banEndDateTimeInput = document.getElementById('BanEndDateTime');
+
+                    var selectedWeekday = parseInt(weekdaySelect.value);
+                    var banStartDateTime = banStartDateTimeInput.value;
+                    var banEndDateTime = banEndDateTimeInput.value;
+
+                    if (selectedWeekday !== 0 && (banStartDateTime === '' || banEndDateTime === '')) {
+                        event.preventDefault(); // 阻止表單提交
+
+                        // 顯示錯誤訊息或執行其他相應的操作
+                        alert('請輸入禁用日起始時間和結束時間');
+                    }
+                });
+            });
+            $(document).ready(function () {
+                $('#fillDataButton1').click(function () {
+                    $('#Name').val('資展國際攀岩館');
+                    $('#PhoneNumber').val('02-66316588');
+                    $('#Address').val('台北市大安區復興南路一段390號2樓');
+                    $('#ShortDescription').val('最適合小朋友的攀岩館親子活動歡樂的所在. 兒童成人全系列攀岩課程招生中! 運動攀登、傳統攀登、人工攀登、大牆攀登、登山求生繩索繩結運用、親子活動.');
+                    $('#Link').val('https://www.ispan.com.tw/');
+                    $('#BusinessWeekdayStartTime').val('08:00');
+                    $('#BusinessWeekdayEndTime').val('17:00');
+                    $('#BusinessWeekendStartTime').val('10:00');
+                    $('#BusinessWeekendEndTime').val('19:00');
+                });
+
+                $('#fillDataButton2').click(function () {
+                    $('#Name').val('聖德基督攀岩館');
+                    $('#PhoneNumber').val('03-4532632');
+                    $('#Address').val('桃園市中壢區新生路二段421號');
+                    $('#ShortDescription').val('最適合小朋友的攀岩館親子活動歡樂的所在. 兒童成人全系列攀岩課程招生中! 運動攀登、傳統攀登、人工攀登、大牆攀登、登山求生繩索繩結運用、親子活動.');
+                    $('#Link').val('https://shengte.college/');
+                    $('#BusinessWeekdayStartTime').val('08:00');
+                    $('#BusinessWeekdayEndTime').val('17:00');
+                    $('#BusinessWeekendStartTime').val('10:00');
+                    $('#BusinessWeekendEndTime').val('19:00');
+                    $('#Weekday').val('1');
+                    $('#BanStartDateTime').val('08:00');
+                    $('#BanEndDateTime').val('13:00');
+                });
+
+                $('#fillDataButton3').click(function () {
+                    $('#Name').val('熱海攀岩場');
+                    $('#Address').val('台北市北投區溫泉路銀光巷22號');
+                    $('#Link').val('https://hiking.biji.co/index.php?q=trail&act=detail&id=680');
+                    $('#ShortDescription').val('熱海攀岩場位於北投丹鳳山山腰，是最靠近市區的天然攀岩場，能夠遠眺陽明山群峰美景，感受被一片綠意包圍的愜意，早在5、60年代就有人在此進行攀岩活動，但熱海攀岩場攀登路線則到80年代才有較正式的開發與整理，而人稱小鬍子的戴昌盛教練當年就曾是參與整理熱海攀岩場攀登路線的一員。');
+
+                });
+            });
+        </script>
+
+    }

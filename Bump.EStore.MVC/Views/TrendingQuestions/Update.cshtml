@@ -1,0 +1,54 @@
+﻿@model Bump.EStore.MVC.ViewModels.TrendingQuestionEditVM
+
+@{
+    ViewBag.Title = "編輯常見問題";
+    ViewBag.Breadcrumbs = new string[] { "客服管理", "常見問題" };
+}
+
+@section customStyles{
+    <style>
+        .mw-60 {
+            max-width: 60%;
+        }
+    </style>
+}
+
+<h2>更新常見問題</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        <div class="mb-3">
+            @Html.Label("QuestionTypeId", "問題種類", htmlAttributes: new { @class = "form-label fw-bold" })
+            @Html.DropDownList("QuestionTypeId", ViewBag.TypeSelect as SelectList, "", new { @class = "form-select" })
+            @Html.ValidationMessage("QuestionTypeId", "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "form-label fw-bold" })
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label fw-bold" })
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = "15" })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            <input type="submit" value="修改" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("返回清單", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

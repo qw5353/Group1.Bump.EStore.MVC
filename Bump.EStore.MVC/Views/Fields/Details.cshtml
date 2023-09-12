@@ -1,0 +1,111 @@
+﻿@model Bump.EStore.MVC.ViewModels.FieldDetailsVM
+
+@{
+    ViewBag.Title = "場館詳細資訊";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+
+<h2> @Html.DisplayFor(model => model.Name)</h2>
+
+<div>
+
+
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">場館詳細資訊</p>
+        </div>
+    </div>
+    <div class="row border border-secondary p-3 px-5">
+        <dl class="row">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Thumbnail)
+            </dt>
+
+            <dd class="col-sm-9">
+                <img src="~/Uploads/Field_imgs/@Model.Thumbnail" width="200" height="200" />
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.IndoorText)
+            </dt>
+
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.IndoorText)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Link)
+            </dt>
+
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Link)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.ShortDescription)
+            </dt>
+
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.ShortDescription)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.BusinessWeekdayStartTime)
+            </dt>
+
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.BusinessWeekdayStartTime)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.BusinessWeekdayEndTime)
+            </dt>
+
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.BusinessWeekdayEndTime)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.BusinessWeekendStartTime)
+            </dt>
+
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.BusinessWeekendStartTime)
+            </dd>
+
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.BusinessWeekendEndTime)
+            </dt>
+
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.BusinessWeekendEndTime)
+            </dd>
+
+        </dl>
+        <p>
+            @Html.ActionLink("修改", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary" })
+            @Html.ActionLink("更新圖片", "EditImg", new { id = Model.Id }, new { @class = "btn btn-secondary" })
+        </p>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("返回教練管理", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+
+</div>

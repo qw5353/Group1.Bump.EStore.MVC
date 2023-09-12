@@ -1,0 +1,140 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.ContactUs.ContactUsIndexVM>
+
+@{
+    ViewBag.Title = "聯繫我們";
+    ViewBag.Breadcrumbs = new string[] { "客服管理", "聯繫我們" };
+    var criteria = ViewBag.CriteriaVM as Bump.EStore.MVC.ViewModels.ContactUs.ContactUsCriteriaVM;
+}
+@using X.PagedList.Mvc;
+@using X.PagedList;
+
+@section customStyles{
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <style>
+        
+    </style>
+}
+
+<h2>聯繫我們</h2>
+@using (@Html.BeginForm("Index", "ContactUs", FormMethod.Get, new { @id = "search"} ))
+{
+    <div class="row my-1">
+        <div class="col-auto">
+            <label class="form-label col-form-label" for="Name-input">名稱:</label>
+        </div>
+        <div class="col-auto me-2">
+            <input type="text" name="Name" id="Name-input" class="form-control" />
+        </div>
+
+        <div class="col-auto">
+            <label class="form-label col-form-label" for="email-input">Email:</label>
+        </div>
+        <div class="col-auto me-2">
+            <input type="text" name="Email" id="email-input" class="form-control" />
+        </div>
+
+        <div class="col-auto">
+            <label class="form-label col-form-label" for="phone-number-input">電話:</label>
+        </div>
+        <div class="col-auto me-2">
+            <input type="text" name="PhoneNumber" class="form-control" id="phone-number-input" />
+        </div>
+
+        <div class="col-auto">
+            <label class="form-label col-form-label" for="status-select">狀態:</label>
+        </div>
+        <div class="col-auto me-2">
+            <select name="Status" class="form-select" id="status-select">
+                <option value="已結案">已結案</option>
+                <option value="待回覆">待回覆</option>
+                <option value="處理中">處理中</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary">搜尋</button>
+        </div>
+    </div>
+
+}
+
+
+
+<table class="table table-hover table-striped mt-3">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Inquiry)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+    </tr>
+
+    @foreach (var item in ViewBag.OnePageOfContactUs)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.PhoneNumber
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.Subject
+            </td>
+            <td>
+                @item.Inquiry
+            </td>
+            <td>
+                @if (item.Status == "已結案")
+                {
+                    @item.Status
+                }
+                else
+                {
+                    <a href="~/ContactUs/Edit/@item.Id">
+                        @item.Status
+                    </a>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+ @Html.PagedListPager((IPagedList)ViewBag.OnePageOfContactUs, page => Url.Action("Index", new { page, Name = criteria.Name, Email = criteria.Email, PhoneNumber = criteria.PhoneNumber, Status = criteria.Status }))
+
+
+
+@section Scripts{
+    <script>
+        const queries = new URL(location.href).searchParams;
+        const form = document.getElementById('search');
+
+        form.querySelectorAll("select, input").forEach(ele => {
+            const nameAttr = ele.getAttribute("Name");
+            const q = queries.get(nameAttr);
+            if (q) {
+                ele.value = q;
+            }
+
+            if (nameAttr === "Status" && !q) {
+                ele.value = '處理中';
+            }
+        });
+    </script>    
+}

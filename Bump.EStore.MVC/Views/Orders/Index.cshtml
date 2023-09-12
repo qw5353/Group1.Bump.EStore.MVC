@@ -1,0 +1,687 @@
+﻿@model IEnumerable<Bump.EStore.Infrastructure.Repositories.DapperRepositories.OrdersVM>
+
+@{
+    ViewBag.Title = "訂單查詢";
+    ViewBag.Breadcrumbs = new string[] { "訂單管理", "訂單查詢" };
+    var criteria = ViewBag.Criteria as Bump.EStore.Infrastructure.Criteria.OrderCriteria;
+}
+
+@section customStyles{
+    <style>
+
+        .custom-table-striped td p:last-child {
+            margin-bottom: 0;
+        }
+
+        .custom-table-striped td {
+            padding-bottom: 1.4rem;
+            padding-top: 1.4rem;
+        }
+
+        .custom-table-striped tbody tr:nth-child(odd) td {
+            background-color: #f3e9df;
+        }
+
+
+        .tableFixHead {
+            overflow: auto;
+        }
+
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0%;
+            z-index: 1;
+        }
+
+        .scrollable-table {
+            height: 60vh;
+            overflow-y: scroll;
+        }
+
+        .scrollable-table::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .scrollable-table::-webkit-scrollbar-track {
+            border-radius: 10px;
+            margin: 40px 130px 20px 130px;
+            background-color: rgb(187, 187, 187, 0.2);
+        }
+
+        .scrollable-table::-webkit-scrollbar-thumb {
+            height: 50px;
+            border-radius: 10px;
+            background-color: rgb(187, 187, 187, 0.84);
+        }
+
+        th {
+            background-color: #BB5E00 !important;
+            color: aliceblue !important;
+        }
+
+        .btnColor {
+            background-color: #f3e9df;
+        }
+
+        .btnColor2 {
+            background-color: #E1BD6B;
+        }
+
+        .btnWidth {
+            width: 150px;
+        }
+
+        .btnColor:hover {
+            background-color: #E1BD6B;
+        }
+
+        .btnColor2:hover {
+            background-color: #FEBA01;
+        }
+
+        .toRight {
+            float: right;
+        }
+
+        textarea {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            padding: 10px;
+            max-width: 100%;
+            line-height: 1.5;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 1px #999;
+        }
+
+        .bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            height: 5px;
+            background-color: #ddd;
+            display: flex;
+            margin-top: 24px;
+        }
+
+        .bar {
+            background: linear-gradient(to right, #BB5E00 0, #BB5E00 12%, #ddd 12%);
+        }
+
+        .progress-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #bbb;
+            position: relative;
+        }
+
+        .progress-dot.completed {
+            background-color: #BB5E00;
+        }
+
+        .progress-dot span {
+            position: absolute;
+            bottom: 20px;
+            left: -10px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .barFlex {
+            display: flex;
+            justify-content: center;
+        }
+
+    </style>
+
+}
+
+
+<h2 class="mb-3">訂單查詢</h2>
+
+<section class="container">
+    <form method="get">
+        <div id="allSearch" class="accordion">
+            <div class="row d-flex align-items-end ">
+                <div class="mb-3 col-md-2">
+                    <input type="button" class="btn btnColor color-toggle-btn btnWidth" value="會員搜尋" id="memberSelect" data-bs-toggle="collapse" data-bs-target="#memberSearch" />
+                </div>
+                <div class="mb-3 col-md-2">
+                    <input type="button" class="btn btnColor color-toggle-btn btnWidth" value="收件人搜尋" id="recipientSelect" data-bs-toggle="collapse" data-bs-target="#recipientSearch" />
+                </div>
+                <div class="mb-3 col-md-2">
+                    <input type="button" class="btn btnColor color-toggle-btn btnWidth" value="商品搜尋" id="productSelect" data-bs-toggle="collapse" data-bs-target="#productSearch" />
+                </div>
+                <div class="mb-3 col-md-2">
+                    <input type="button" class="btn btnColor color-toggle-btn btnWidth" value="其他搜尋" id="otherSelect" data-bs-toggle="collapse" data-bs-target="#otherSearch" />
+                </div>
+                <div class="mb-3 col-md-2 align-self-center toRight">
+                    <button class="btn btn-warning">搜尋</button>
+                </div>
+            </div>
+
+            <div class="accordion-collapse collapse" id="memberSearch" data-bs-parent="#allSearch">
+                <div class="row d-flex align-items-end mb-2 ">
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">會員名稱</label>
+                        <input type="text" class="form-control" name="memberName" id="memberName" value="@criteria.MemberName" />
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">會員Email</label>
+                        <input type="text" class="form-control" name="memberEmail" id="memberEmail" value="@criteria.MemberEmail" />
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">會員電話</label>
+                        <input type="text" class="form-control" name="memberPhone" id="memberPhone" value="@criteria.MemberPhone" />
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">會員編號</label>
+                        <input type="text" class="form-control" name="memberId" id="memberId" value="@criteria.MemberId" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-collapse collapse" id="recipientSearch" data-bs-parent="#allSearch">
+                <div class="row d-flex align-items-end mb-2 accordion-collapse collapse" id="recipientSearch" data-bs-parent="#allSearch">
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">收件人名稱</label>
+                        <input type="text" class="form-control" name="recipientName" id="recipientName" value="@criteria.RecipientName" />
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">收件人電話</label>
+                        <input type="text" class="form-control" name="recipientPhone" id="recipientPhone" value="@criteria.RecipientPhone" />
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">收件人地址</label>
+                        <input type="text" class="form-control" name="recipientAddress" id="recipientAddress" value="@criteria.RecipientAddress" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-collapse collapse" id="productSearch" data-bs-parent="#allSearch">
+                <div class="row d-flex align-items-end mb-2 accordion-collapse collapse" id="productSearch" data-bs-parent="#allSearch">
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">商品名稱</label>
+                        <input type="text" class="form-control" name="productName" id="productName" value="@criteria.ProductName" />
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">商品編號</label>
+                        <input type="text" class="form-control" name="productCode" id="productCode" value="@criteria.ProductCode" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-collapse collapse" id="otherSearch" data-bs-parent="#allSearch">
+                <div class="row d-flex align-items-end mb-2 accordion-collapse collapse" id="otherSearch" data-bs-parent="#allSearch">
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">訂單編號</label>
+                        <input type="number" class="form-control" name="orderId" id="orderId" value="@criteria.OrderId" />
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">搜尋日期</label>
+                        <input type="text" class="form-control" name="createTime" id="createTime" value="@criteria.CreateTime" />
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">訂單狀態</label>
+                        <select name="orderStatus" id="orderStatus" class="form-select">
+                            <option value="" selected>狀態</option>
+                            <option value="1">已確認</option>
+                            <option value="2">已備貨</option>
+                            <option value="3">發貨中</option>
+                            <option value="4">已發貨</option>
+                            <option value="5">已到達</option>
+                            <option value="6">已取貨</option>
+                            <option value="7">七天鑑賞</option>
+                            <option value="8">已完成</option>
+                            <option value="9">已退貨</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <label class="mb-2 ms-3">總金額</label>
+                        <input type="number" class="form-control" name="minPrice" id="s_minPrice" value="@criteria.MinPrice">
+                    </div>
+                    <div class="mb-3 col-md-2">
+                        <input type="number" class="form-control" name="maxPrice" id="s_maxPrice" value="@criteria.MaxPrice">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+<div class="scrollable-table">
+    <table class="table tableFixHead custom-table-striped table-hover">
+
+        <thead>
+            <tr>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.OrderId)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.MemberName)
+                </th>
+                <th>商品名稱 </th>
+                <th class="text-center">數量</th>
+                <th class="text-center">單價</th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.TotalProductsPrice)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.CreateAt)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.OrderStatusName)
+                </th>
+
+                <th></th>
+
+            </tr>
+        </thead>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td align="center" valign="middle">
+                    @Html.DisplayFor(modelItem => item.OrderId)
+                </td>
+                <td align="center" valign="middle">
+                    @Html.DisplayFor(modelItem => item.MemberName)
+                </td>
+                <td valign="middle" class="mt-4">
+                    @foreach (var detail in item.Details)
+                    {
+                        <p>@detail.ProductName</p>
+                    }
+                </td>
+                <td align="center" valign="middle" class="mt-4">
+                    @foreach (var detail in item.Details)
+                    {
+                        <p>@detail.Quantity</p>
+                    }
+                </td>
+                <td align="center" valign="middle" class="mt-4">
+                    @foreach (var detail in item.Details)
+                    {
+                        <p>@detail.UnitPrice</p>
+                    }
+                </td>
+                <td align="center" valign="middle">
+                    @Html.DisplayFor(modelItem => item.TotalProductsPrice)
+                </td>
+                <td align="center" valign="middle">
+                    @Html.DisplayFor(modelItem => item.CreateAt)
+                </td>
+                <td align="center" valign="middle">
+                    @Html.DisplayFor(modelItem => item.OrderStatusName)
+                </td>
+
+                <td align="center" valign="middle">
+                    <button class="btn btn-warning ms-auto btn-launch" role="button" onclick="showDetail(@item.OrderId)" centered>查詢</button>
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-secondary" }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ }, new { @class = "btn btn-danger" })
+                    </td>*@
+            </tr>
+        }
+
+    </table>
+
+    @*<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-toggle="modal">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p id="modalCreateAt" class="text-end"></p>
+                    <div class="row d-flex align-items-end mb-2 ">
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">訂單編號</label>
+                            <input type="text" class="form-control" name="modalOrderId" id="modalOrderId" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">會員名稱</label>
+                            <input type="text" class="form-control" name="modalmemberName" id="modalmemberName" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">會員編號</label>
+                            <input type="text" class="form-control" name="modalmemberId" id="modalmemberId" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">收件人名稱</label>
+                            <input type="text" class="form-control" name="modalrecipientName" id="modalrecipientName" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">收件人電話</label>
+                            <input type="text" class="form-control" name="modalrecipientPhone" id="modalrecipientPhone" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:30%">
+                            <label class="mb-2 ms-2">收件人地址</label>
+                            <input type="text" class="form-control" name="modalrecipientAddress" id="modalrecipientAddress" value="" readonly />
+                        </div>
+                    </div>
+                    <div>
+                        <img id="modalSnapShot" src="" loading="lazy" width="1000" />
+                    </div>
+                    <div id="returns">
+
+                    </div>
+                    <div class="row d-flex align-items-center mb-2 " id="returnPrice">
+                        <div class="mb-3 col-md-5">
+
+                        </div>
+                        <div class="mb-3 col-md-2">
+
+                        </div>
+                        <div class="mb-3 col-md-2">
+
+                        </div>
+                        <div class="mb-3 col-md-3">
+                            <label class="mb-2 ms-3">退貨後金額</label>
+                            <input type="text" class="form-control border-warning" name="returnTotalPrice" id="returnTotalPrice" value="" readonly />
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="mb-3">
+                            <label class="mb-2 ms-2">備註</label>
+                            <textarea class="form-control" name="modalNote" id="modalNote" rows="3" cols="60" readonly></textarea>
+                        </div>
+                    </div>
+                    <div class="barFlex">
+                        <div class="bar mt-5 mb-5">
+                            <div class=""></div>
+                            <div class="progress-dot" id="dot1"><span>已確認</span></div>
+                            <div class="progress-dot" id="dot2"><span>備貨中</span></div>
+                            <div class="progress-dot" id="dot3"><span>發貨中</span></div>
+                            <div class="progress-dot" id="dot4"><span>已發貨</span></div>
+                            <div class="progress-dot" id="dot5"><span>已到達</span></div>
+                            <div class="progress-dot" id="dot6"><span>已取貨</span></div>
+                            <div class="progress-dot" id="dot7"><span>七天鑑賞</span></div>
+                            <div class="progress-dot" id="dot8"><span>已完成</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p id="modalCreateAt" class="text-end"></p>
+                    <div class="row d-flex align-items-end mb-2 ">
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">訂單編號</label>
+                            <input type="text" class="form-control" name="modalOrderId" id="modalOrderId" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">會員名稱</label>
+                            <input type="text" class="form-control" name="modalmemberName" id="modalmemberName" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">會員編號</label>
+                            <input type="text" class="form-control" name="modalmemberId" id="modalmemberId" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">收件人名稱</label>
+                            <input type="text" class="form-control" name="modalrecipientName" id="modalrecipientName" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:14%">
+                            <label class="mb-2 ms-2">收件人電話</label>
+                            <input type="text" class="form-control" name="modalrecipientPhone" id="modalrecipientPhone" value="" readonly />
+                        </div>
+                        <div class="mb-3" style="width:30%">
+                            <label class="mb-2 ms-2">收件人地址</label>
+                            <input type="text" class="form-control" name="modalrecipientAddress" id="modalrecipientAddress" value="" readonly />
+                        </div>
+                    </div>
+                    <div>
+                        <img id="modalSnapShot" src="" loading="lazy" width="1000" />
+                    </div>
+                    <div id="returns">
+
+                    </div>
+                    <div class="row d-flex align-items-center mb-2 " id="returnPrice">
+                        <div class="mb-3 col-md-5">
+
+                        </div>
+                        <div class="mb-3 col-md-2">
+
+                        </div>
+                        <div class="mb-3 col-md-2">
+
+                        </div>
+                        <div class="mb-3 col-md-3">
+                            <label class="mb-2 ms-3">退貨後金額</label>
+                            <input type="text" class="form-control border-warning" name="returnTotalPrice" id="returnTotalPrice" value="" readonly />
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="mb-3">
+                            <label class="mb-2 ms-2">備註</label>
+                            <textarea class="form-control" name="modalNote" id="modalNote" rows="3" cols="60" readonly></textarea>
+                        </div>
+                    </div>
+                    <div class="barFlex">
+                        <div class="bar mt-5 mb-5">
+                            <div class=""></div>
+                            <div class="progress-dot" id="dot1"><span>已確認</span></div>
+                            <div class="progress-dot" id="dot2"><span>備貨中</span></div>
+                            <div class="progress-dot" id="dot3"><span>發貨中</span></div>
+                            <div class="progress-dot" id="dot4"><span>已發貨</span></div>
+                            <div class="progress-dot" id="dot5"><span>已到達</span></div>
+                            <div class="progress-dot" id="dot6"><span>已取貨</span></div>
+                            <div class="progress-dot" id="dot7"><span>七天鑑賞</span></div>
+                            <div class="progress-dot" id="dot8"><span>已完成</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+            $('.color-toggle-btn').click(function () {
+                $('.color-toggle-btn').removeClass('btnColor2').addClass('btnColor');
+                $(this).removeClass('btnColor').addClass('btnColor2');
+            });
+        });
+        function showDetail(orderId) {
+            $.ajax({
+                type: "GET",
+                url:`/Orders/Details/${orderId}`
+            }).done(data => {
+       /*         console.log(data);*/
+                const returnTotal = data.Returns.reduce((acc, cur) => acc + (cur?.ReturnSubtotal ?? 0), 0);
+                const returnTotalPrice = data.TotalProductsPrice - returnTotal;
+                const isReturned = returnTotal !== 0
+
+                var myModal = new bootstrap.Modal(document.querySelector('#detailModal'), {
+                    backdrop: true,
+                });
+
+                $("#modalCreateAt").text(data.CreateAtString);
+                $("#modalOrderId").val(data.OrderId);
+                $("#modalmemberName").val(data.MemberName);
+                $("#modalmemberId").val(data.MemberId);
+                $("#modalrecipientName").val(data.RecipientName);
+                $("#modalrecipientPhone").val(data.RecipientPhone);
+                $("#modalrecipientAddress").val(data.RecipientAddress);
+                $("#modalSnapShot").attr('src', '/Uploads/Orders/SnapShot/' + data.Snapshot);
+                $("#modalNote").val(data.Note);
+                if (isReturned) {
+                    $("#returnPrice").removeClass('d-none');
+                } else {
+                    $("#returnPrice").addClass('d-none');
+                }
+                
+                $("#returnTotalPrice").val(returnTotalPrice);
+
+                
+                //if (data.ReturnProductName === null) {
+                //    $("#returns").addClass('d-none');
+                //    $("#returnPrice").addClass('d-none');
+                //} else {
+                //    $("#returns").removeClass('d-none');
+                //    $("#returnPrice").removeClass('d-none');
+                //}
+                $("#returns").empty();
+
+                data.Returns.filter(r => r !== null).forEach((r, index) => {
+                    const { ReturnQuantity, ReturnSubtotal, ReturnProductName } = r;
+                    let returnDiv = $(`<div class="row d-flex align-items-center mb-2 ">
+                            <div class="mb-3 col-md-5">
+                                <label class="mb-2 ms-3">退貨產品</label>
+                                <input type="text" class="form-control border-danger" name="returnProduct" id="returnProduct" value="${ReturnProductName}" readonly />
+                            </div>
+                            <div class="mb-3 col-md-2">
+                                <label class="mb-2 ms-3">數量</label>
+                                <input type="text" class="form-control border-danger" name="returnQuantity" id="returnQuantity" value="${ReturnQuantity}" readonly />
+                            </div>
+                            <div class="mb-3 col-md-2">
+                                <label class="mb-2 ms-3">金額</label>
+                                <input type="text" class="form-control border-danger" name="returnSubtotal" id="returnSubtotal" value="${ReturnSubtotal}" readonly />
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                <label class="mb-2 ms-3">退貨成立時間</label>
+                                <input type="text" class="form-control border-danger" name="returnCreateAt" id="returnCreateAt" value="${data.ReturnCreateAtString}" readonly />
+                            </div>
+                        </div>`);
+                    $("#returns").append(returnDiv);
+                })
+
+                
+
+                var progressPercentage = 0;
+                var gradientPercentage = progressPercentage + '%';
+                var barstatus = data.OrderStatusId;               
+                //console.log(typeof barstatus)
+                if (barstatus == 1) {
+                    progressPercentage = 12;
+                    gradientPercentage = progressPercentage + '%';
+                    for (var i = 8; i > barstatus; i--) {
+                        var dotID = "#dot" + i;
+                        $(dotID).removeClass('completed');
+                    }
+                    for (var i = 1; i < barstatus + 1; i++) {
+                        var dotID = "#dot" + i;
+                        $(dotID).addClass('completed');
+                    }
+                    $('.bar').css('background', 'linear-gradient(to right, #BB5E00 0, #BB5E00 ' + gradientPercentage + ', #ddd ' + gradientPercentage + ')');
+                } else if (barstatus == 2) {
+                    progressPercentage = 25;
+                    gradientPercentage = progressPercentage + '%';
+                    for (var i = 8; i > barstatus; i--) {
+                        var dotID = "#dot" + i;
+                        $(dotID).removeClass('completed');
+                    }
+                    for (var i = 1; i < barstatus + 1; i++) {
+                        var dotID = "#dot" + i;
+                        $(dotID).addClass('completed');
+                    }
+                    $('.bar').css('background', 'linear-gradient(to right, #BB5E00 0, #BB5E00 ' + gradientPercentage + ', #ddd ' + gradientPercentage + ')');
+                } else if (barstatus == 3) {
+                    progressPercentage = 37;
+                    gradientPercentage = progressPercentage + '%';
+                    for (var i = 8; i > barstatus; i--) {
+                        var dotID = "#dot" + i;
+                        $(dotID).removeClass('completed');
+                    }
+                    for (var i = 1; i < barstatus + 1; i++) {
+                        var dotID = "#dot" + i;
+                        $(dotID).addClass('completed');
+                    }
+                    $('.bar').css('background', 'linear-gradient(to right, #BB5E00 0, #BB5E00 ' + gradientPercentage + ', #ddd ' + gradientPercentage + ')');
+                } else if (barstatus == 4) {
+                    progressPercentage = 50;
+                    gradientPercentage = progressPercentage + '%';
+                    for (var i = 8; i > barstatus; i--) {
+                        var dotID = "#dot" + i;
+                        $(dotID).removeClass('completed');
+                    }
+                    for (var i = 1; i < barstatus + 1; i++) {
+                        var dotID = "#dot" + i;
+                        $(dotID).addClass('completed');
+                    }
+                    $('.bar').css('background', 'linear-gradient(to right, #BB5E00 0, #BB5E00 ' + gradientPercentage + ', #ddd ' + gradientPercentage + ')');
+                } else if (barstatus == 5) {
+                    progressPercentage = 62;
+                    gradientPercentage = progressPercentage + '%';
+                    for (var i = 8; i > barstatus; i--) {
+                        var dotID = "#dot" + i;
+                        $(dotID).removeClass('completed');
+                    }
+                    for (var i = 1; i < barstatus + 1; i++) {
+                        var dotID = "#dot" + i;
+                        $(dotID).addClass('completed');
+                    }
+                    $('.bar').css('background', 'linear-gradient(to right, #BB5E00 0, #BB5E00 ' + gradientPercentage + ', #ddd ' + gradientPercentage + ')');
+                } else if (barstatus == 6) {
+                    progressPercentage = 74;
+                    gradientPercentage = progressPercentage + '%';
+                    for (var i = 8; i > barstatus; i--) {
+                        var dotID = "#dot" + i;
+                        $(dotID).removeClass('completed');
+                    }
+                    for (var i = 1; i < barstatus + 1; i++) {
+                        var dotID = "#dot" + i;
+                        $(dotID).addClass('completed');
+                    }
+                    $('.bar').css('background', 'linear-gradient(to right, #BB5E00 0, #BB5E00 ' + gradientPercentage + ', #ddd ' + gradientPercentage + ')');
+                } else if (barstatus == 7) {
+                    progressPercentage = 87;
+                    gradientPercentage = progressPercentage + '%';
+                    for (var i = 8; i > barstatus; i--) {
+                        var dotID = "#dot" + i;
+                        $(dotID).removeClass('completed');
+                    }
+                    for (var i = 1; i < barstatus + 1; i++) {
+                        var dotID = "#dot" + i;
+                        $(dotID).addClass('completed');
+                    }
+                    $('.bar').css('background', 'linear-gradient(to right, #BB5E00 0, #BB5E00 ' + gradientPercentage + ', #ddd ' + gradientPercentage + ')');
+                } else if (barstatus == 8 || barstatus == 9) {
+                    progressPercentage = 100;
+                    gradientPercentage = progressPercentage + '%';
+                    for (var i = 8; i > barstatus; i--) {
+                        var dotID = "#dot" + i;
+                        $(dotID).removeClass('completed');
+                    }
+                    for (var i = 1; i < barstatus + 1; i++) {
+                        var dotID = "#dot" + i;
+                        $(dotID).addClass('completed');
+                    }
+                    $('.bar').css('background', 'linear-gradient(to right, #BB5E00 0, #BB5E00 ' + gradientPercentage + ', #ddd ' + gradientPercentage + ')');
+                } else {
+                    progressPercentage = 12;
+                    gradientPercentage = progressPercentage + '%';
+                    for (var i = 8; i > 1; i--) {
+                        var dotID = "#dot" + i;
+                        $(dotID).removeClass('completed');
+                    }
+                    $('#dot1').addClass('completed');
+                    $('.bar').css('background', 'linear-gradient(to right, #BB5E00 0, #BB5E00 ' + gradientPercentage + ', #ddd ' + gradientPercentage + ')');
+                }
+
+                myModal.show();
+            }).fail(err => {
+                alert(err.statusText)
+            })
+        };
+        //console.log(jsdata);
+
+
+
+
+
+    </script>
+}

@@ -1,0 +1,94 @@
+﻿@model Bump.EStore.MVC.ViewModels.SkillCoursCreateVM
+
+@{
+    ViewBag.Title = "新增課程";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+@*<h2>新增新課程</h2>*@
+
+
+@using (Html.BeginForm("Create", "SkillCours", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <h2 class="m-2 mb-3">新增課程</h2>
+        <div class="row">
+            <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+                <p class="h6 text-white">資料設定</p>
+            </div>
+        </div>
+        <div class="row border border-secondary p-3 px-5">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="mb-3 col-md-6">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入課程全名 ex:OO課程", Id = "Name" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3 col-md-6">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入課程一人價格 人/元?", Id = "Price" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "form-label" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", placeholder = "請輸入簡介", rows = "3", Id = "Description" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3 col-md-6">
+                @Html.LabelFor(model => model.PeopleMin, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.PeopleMin, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入課程開課最小人數", Id = "PeopleMin" } })
+                @Html.ValidationMessageFor(model => model.PeopleMin, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3 col-md-6">
+                @Html.LabelFor(model => model.PeopleMax, htmlAttributes: new { @class = "form-label" })
+                @Html.EditorFor(model => model.PeopleMax, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入課程開課最大人數", Id = "PeopleMax" } })
+                @Html.ValidationMessageFor(model => model.PeopleMax, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(model => model.Thumbnail, htmlAttributes: new { @class = "form-label col-md-2" })
+                <input type="file" name="file1" class="form-control" />
+                @Html.ValidationMessageFor(model => model.Thumbnail, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="新增" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="mb-3 col-md-10">
+        @Html.ActionLink("返回教練管理", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+    </div>
+    <div class="mb-3 col-md-2">
+        <input type="button" value="DEMO" id="fillDataButton1" />
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $('#fillDataButton1').click(function () {
+                $('#Name').val('攀岩證照先修班');
+                $('#Price').val('5000');
+                $('#Description').val('攀岩裝備認識 基礎繩結教學 確保器材操作&安全規範 確保動作教學&實作 攀登注意事項&安全檢查 岩場安全認知&危機應變。');
+                $('#PeopleMin').val('2');
+                $('#PeopleMax').val('4');
+            });
+        });
+    </script>
+}

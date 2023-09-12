@@ -1,0 +1,68 @@
+﻿@model Bump.EStore.MVC.ViewModels.ExperienceCoursePlans.ExperienceCoursePlanCreateVM
+
+@{
+    ViewBag.Title = "加入新方案";
+}
+@section customStyles{
+    <script src="https://kit.fontawesome.com/ad3e947694.js" crossorigin="anonymous"></script>
+}
+@*<h2>加入新方案</h2>*@
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="container">
+    <h2 class="m-2 mb-3">新增課程</h2>
+    <div class="row">
+        <div class="col-md-2 rounded-top mb-0 d-flex justify-content-center pt-2" style="background-color: rgb(87,55,25)">
+            <p class="h6 text-white">方案設定</p>
+        </div>
+    </div>
+    <div class="row border border-secondary p-3 px-5">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.PeopleMin, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.PeopleMin, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PeopleMin, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3 col-md-6">
+            @Html.LabelFor(model => model.PeopleMax, htmlAttributes: new { @class = "form-label" })
+            @Html.EditorFor(model => model.PeopleMax, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PeopleMax, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="mb-3">
+            <input type="submit" value="新增" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+    }
+
+<div>
+    @*@Html.ActionLink("返回清單", "Index")*@
+    @Html.ActionLink("返回方案清單", "Index", null, new { @class = "fa-solid fa-person-walking-arrow-loop-left" })
+
+</div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

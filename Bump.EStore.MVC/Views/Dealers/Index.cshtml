@@ -1,0 +1,154 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.Dealers.DealerIndexVM>
+
+@{
+    ViewBag.Title = "經銷商管理";
+    ViewBag.Breadcrumbs = new string[] { "經銷商管理" };
+    var criteriaVM = ViewBag.CriteriaVM as Bump.EStore.MVC.ViewModels.Dealers.DealerCriteriaVM;
+    int itemCount = ((IPagedList)ViewBag.PagedList).TotalItemCount;
+}
+@using X.PagedList.Mvc;
+@using X.PagedList;
+
+@section customStyles{
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <style>
+    </style>
+}
+
+<h2>經銷商列表</h2>
+
+@using (@Html.BeginForm("Index", "Dealers", FormMethod.Get, new { @id = "search" }))
+{
+    <div class="row my-1">
+        <div class="col-auto">
+            <label class="form-label col-form-label" for="Name-input">名稱:</label>
+        </div>
+        <div class="col-auto me-2">
+            <input type="text" name="Name" id="Name-input" class="form-control" />
+        </div>
+
+        <div class="col-auto">
+            <label class="form-label col-form-label" for="email-input">Email:</label>
+        </div>
+        <div class="col-auto me-2">
+            <input type="text" name="Email" id="email-input" class="form-control" />
+        </div>
+
+        <div class="col-auto">
+            <label class="form-label col-form-label" for="phone-number-input">電話:</label>
+        </div>
+        <div class="col-auto me-2">
+            <input type="text" name="PhoneNumber" class="form-control" id="phone-number-input"/>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary">搜尋</button>
+        </div>
+        <div class="col-auto ms-auto">
+            <a class="btn btn-success" href="~/Dealers/Create">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"></path>
+                </svg>
+                新增經銷商
+            </a>
+        </div>
+    </div>
+    <div class="row my-1 mt-3">
+        <div class="col-auto">
+            <label class="form-label col-form-label" for="address-input">地址:</label>
+        </div>
+        <div class="col-4 me-2">
+            <input type="text" name="Address" class="form-control" id="address-input"/>
+        </div>
+
+        <div class="col-auto">
+            <label class="form-label col-form-label" for="country-input">國家:</label>
+        </div>
+        <div class="col-2 me-2">
+            <input type="text" name="Country" class="form-control" id="country-input" />
+        </div>
+    </div>
+
+}
+
+@if (itemCount > 0)
+{
+    <table class="table table-hover table-striped mt-3">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in ViewBag.PagedList)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.PhoneNumber
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.Address
+                </td>
+                <td>
+                    @item.Country
+                </td>
+                <td>
+                    <span class="d-flex">
+                        <a class="btn btn-secondary mx-1" title="Edit" href="~/Dealers/Edit/@item.Id">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                            </svg>
+                        </a>
+                        <a type="button" class="btn btn-danger mx-1" title="Delete" href="~/Dealers/Delete/@item.Id">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
+                            </svg>
+                        </a>
+                    </span>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    @Html.PagedListPager((IPagedList)ViewBag.PagedList, page => Url.Action("Index", new { page, Name = criteriaVM.Name, Email = criteriaVM.Email, PhoneNumber = criteriaVM.PhoneNumber, Address = criteriaVM.Address, Country = criteriaVM.Country }))
+
+}
+else
+{
+    <h2 class="text-center text-danger mt-3">無資料</h2>
+}
+
+@section Scripts{
+    <script>
+        const queries = new URL(location.href).searchParams;
+        const form = document.getElementById('search');
+
+        form.querySelectorAll("select, input").forEach(ele => {
+            const nameAttr = ele.getAttribute("Name");
+            const q = queries.get(nameAttr);
+            if (q) {
+                ele.value = q;
+            }
+        });
+    </script>
+}

@@ -1,0 +1,79 @@
+﻿@model Bump.EStore.Infrastructure.Data.EFModels.MemberLevel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 class="mb-3">Delete</h2>
+
+<h3 class="text-danger">你確定要刪除嗎?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LevelOrder)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LevelOrder)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpgradePrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpgradePrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UpgradeOrderCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UpgradeOrderCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimePeriod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimePeriod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GainPointRate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GainPointRate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

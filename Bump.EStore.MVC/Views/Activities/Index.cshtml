@@ -1,0 +1,224 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.ActivityIndexVM>
+
+@{
+    ViewBag.Title = "促銷活動總覽";
+    var criteria = ViewBag.Criteria as Bump.EStore.Infrastructure.Criteria.ActivityCriteria;
+    var status = ViewBag.Status as SelectList;
+    ViewBag.Breadcrumbs = new string[] { "活動管理", "促銷活動總覽" };
+}
+
+@section customStyles{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <style>
+        th {
+            background-color: rgb(87,55,25) !important;
+            color: white !important;
+        }
+    </style>
+}
+
+<h2 class="mt-4">促銷活動總覽</h2>
+
+<section class="container">
+    <form method="get">
+        <div class="row d-flex align-items-end">
+            <div class="mb-3 col-md-1">
+                <label for="status">狀態</label>
+                <select name="status" id="statusId" class="form-select">
+                    @foreach (var item in status)
+                    {
+                        <option value="@item.Text">@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3 col-md-2">
+                <label for="name">名稱</label>
+                <input type="text" class="form-control" name="name" id="name" value="@criteria.Name">
+            </div>
+            <div class="mb-3 col-md-2">
+                <label for="startTime">搜尋區間</label>
+                <input type="datetime-local" class="form-control" name="startTime" id="startTime">
+            </div>
+            <div class="mb-3 col-md-2">
+                <label for="endTime"></label>
+                <input type="datetime-local" class="form-control" name="endTime" id="endTime">
+            </div>
+            <div class="col-md-1 align-self-center me-auto" id="search">
+                <button class="btn btn-warning">搜尋</button>
+            </div>
+            <div class="col-md-2 align-self-center d-flex justify-content-end">
+                <a class="btn btn-dark" href="@Url.Action("Create")" role="button"><i class="fa-solid fa-plus"></i>新增活動</a>
+            </div>
+        </div>
+    </form>
+</section>
+
+<table id="myTable" class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                檢視內容
+            </th>
+            <th>
+                編輯
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.Status == "已過期")
+                    {
+                        <div><span class="badge rounded-pill bg-secondary">@Html.DisplayFor(modelItem => item.Status)</span></div>
+                    }
+                    @if (item.Status == "進行中")
+                    {
+                        <div><span class="badge rounded-pill bg-success">@Html.DisplayFor(modelItem => item.Status)</span></div>
+                    }
+                    @if (item.Status == "未開始")
+                    {
+                        <div><span class="badge rounded-pill bg-warning">@Html.DisplayFor(modelItem => item.Status)</span></div>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a class="btn btn-secondary" href="@Url.Action("Index", "ActivityDetails", new { id = item.Id })" role="button"><i class="fa-solid fa-eye"></i></a>
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="@Url.Action("Edit", new { id = item.Id })" role="button"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <button type="submit" class="btn btn-danger delete" id="@item.Id"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts{
+    <script src="https://kit.fontawesome.com/afa27cfccd.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                /*  "searching": false,*/
+                "pageLength": '10',
+                "scrollCollapse": true, // 預設為false 是否開始滾軸功能控制X、Y軸
+                "scrollY": "600px", // 若有設置為Y軸(垂直)最大高度
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json"
+                }
+            });
+
+
+            var badge = document.querySelectorAll('.badge.rounded-pill.bg-secondary');
+            badge.forEach(item => item.parentNode.parentNode.parentNode.classList.add('table-active'))
+
+
+            var deleteMessages = document.querySelectorAll('.delete');
+            deleteMessages.forEach(deleteMessage => {
+                deleteMessage.onclick = function () {
+
+                    Swal.fire({
+                        title: '你確定要刪除這筆紀錄嗎?',
+                        text: "刪了就回不去了",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '確定',
+                        cancelButtonText: '取消'
+                    })
+                        .then(function (result) {
+                            if (result.value) {
+                                fetch(`/Activities/Delete`, {
+                                    method: "POST",
+                                    body: JSON.stringify({
+                                        id: deleteMessage.id
+                                    }),
+                                    headers: {
+                                        "content-type": "application/json"
+                                    }
+                                })
+                                    .then(res => {
+                                        if (res.ok) {
+                                            Swal.fire(
+                                                '刪除!',
+                                                '你成功將資料刪除',
+                                                'success'
+                                            ).then(
+                                                function () {
+                                                    location.reload();
+                                                })
+                                        }
+                                    })
+                                    .catch(err => {
+                                        alert(err)
+                                    })
+                            }
+                        })
+                }
+            });
+
+            const search = document.querySelector('#search');
+            const nameSearch = document.querySelector('#name');
+            search.addEventListener('click', function () {
+                nameSearch.value = '';
+            })
+
+
+            //$(document).ready(function () {
+            //    $('#startTime').on('change', function () {
+            //        var startDate = moment($(this).val()).format('YYYY-MM-DDTHH:mm:ss');
+            //        var endDate = moment($('#end').val()).format('YYYY-MM-DDTHH:mm:ss');
+
+            //        // 如果结束时间小于开始时间，则将结束时间设置为开始时间
+            //        if (endDate < startDate) {
+            //            $('#end').val(startDate);
+            //        }
+            //    });
+
+            //    $('#endTime').on('change', function () {
+            //        var startDate = moment($('#startTime').val()).format('YYYY-MM-DDTHH:mm:ss');
+            //        var endDate = moment($(this).val()).format('YYYY-MM-DDTHH:mm:ss');
+
+            //        // 如果结束时间小于开始时间，则将开始时间设置为结束时间
+            //        if (endDate < startDate) {
+            //            $('#startTime').val(endDate);
+            //        }
+            //    });
+            //});
+
+        });
+
+    </script>
+
+}

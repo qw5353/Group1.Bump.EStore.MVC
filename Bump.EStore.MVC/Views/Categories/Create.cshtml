@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+@{
+    var options = ViewBag.FirstCategoryName;
+    var options2 = ViewBag.SecondCategoryName;
+    var jsOptions = Newtonsoft.Json.JsonConvert.SerializeObject(options);
+    var jsOptions2 = Newtonsoft.Json.JsonConvert.SerializeObject(options2);
+}
+
+<style>
+    .w200 {
+        width: 200px;
+    }
+</style>
+
+
+
+@using (Html.BeginForm("Create", "Categories", FormMethod.Post, new { @id = "create-form" }))
+{
+    <input type="hidden" name="categoryLevel" value="0" id="categoryLevel" />
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <div class="mx-auto">
+                <h2 class="mb-5 mt-3">新增產品分類</h2>
+                <div class="mb-5">
+                    <h4>選擇分類位置</h4>
+                    <select id="selectCategory" class="form-select mb-3 w200">
+                        <option value="" disabled selected>分類層</option>
+                        <option value="firstCategory">第一分類</option>
+                        <option value="secondCategory">第二分類</option>
+                        <option value="thirdCategory">第三分類</option>
+                    </select>
+                </div>
+
+                <div class="mb-5">
+                    <h4>選擇分類名稱</h4>
+                    <select id="categoryName" name="categoryName" class="form-select mb-3 w200">
+                    </select>
+                </div>
+
+                <div class="mb-5">
+                    <input class="form-control border border-warning rounded-0110 mb-3 w200" type="text" id="createCategoeyName"
+                           placeholder="請輸入新增類別名稱" name="createCategoeyName">
+                </div>
+
+                <div class="mb-3">
+                    <input type="submit" value="新增" class="btn btn-warning text-white" id="createBtn" />
+                </div>
+            </div>
+        </div>
+    </div>
+        }
+
+
+        @section Scripts{
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+
+        //$(document).ready(function() {
+        //   監聽第一個選單的變化
+        //    $('#selectCategory').change(function() {
+        //    var selectedValue = $(this).val();  // 獲取選取的值
+
+        //     清空第二個選單
+        //        $('#categoryName').empty();
+
+        //     根據選取的值生成對應的選項
+        //        if (selectedValue === 'firstCategory') {
+        //            $("#categoryName").prop('disabled', true);
+        //        } else if (selectedValue === 'secondCategory') {
+        //            $('#categoryName').append('<option value="攀登">攀登</option>');
+        //            $("#categoryName").prop('disabled', false);
+        //        } else if (selectedValue === 'thirdCategory') {
+        //            $('#categoryName').append('<option value="1">鉤環</option>');
+        //            $('#categoryName').append('<option value="2">器械</option>');
+        //            $('#categoryName').append('<option value="3">身體裝備</option>');
+        //            $('#categoryName').append('<option value="4">繩索</option>');
+        //            $('#categoryName').append('<option value="5">冰雪攀</option>');
+        //            $('#categoryName').append('<option value="6">朔溪</option>');
+        //            $("#categoryName").prop('disabled', false);
+        //        }
+
+        //  });
+        //});
+        var options = @Html.Raw(jsOptions);
+        var options2 = @Html.Raw(jsOptions2);
+        $(document).ready(function () {
+            // 監聽第一個選單的變化
+            $('#selectCategory').change(function () {
+                var selectedValue = $(this).val();  // 獲取選取的值
+
+                // 清空第二個選單
+                $('#categoryName').empty();
+
+                // 根據選取的值生成對應的選項
+                if (selectedValue === 'firstCategory') {
+                    $("#categoryName").prop('disabled', true);
+                    $('#categoryLevel').val(1);
+                    $("#createCategoeyName").prop('disabled', false);
+                } else if (selectedValue === 'secondCategory') {
+                    for (var i = 0; i < options.length; i++) {
+                        var option = $("<option>").val(options[i].FirstCategoryId).text(options[i].FirstCategoryName);
+                        $("#categoryName").append(option);
+                    }
+                    //$('#categoryName').append(<input type="hidden" id="firstCategory" name="firstCategory" value="firstCategory" />);
+                    $('#categoryLevel').val(2);
+                    $("#categoryName").prop('disabled', false);
+                    $("#createCategoeyName").prop('disabled', false);
+                } else if (selectedValue === 'thirdCategory') {
+                    for (var i = 0; i < options2.length; i++) {
+                        var option2 = $("<option>").val(options2[i].SecondCategoryId).text(options2[i].SecondCategoryName);
+                        $("#categoryName").append(option2);
+                    }
+                    //$('#categoryName').append('<input type="hidden" id="secondCategory" name="secondCategory" value="secondCategory" />');
+                    $('#categoryLevel').val(3);
+                    $("#categoryName").prop('disabled', false);
+                    $("#createCategoeyName").prop('disabled', false);
+                }
+
+            });
+
+            var selectVal = $("#selectCategory").val();
+            if (selectVal == null) {
+                $("#categoryName").prop('disabled', true);
+                $("#createCategoeyName").prop('disabled', true);
+            }
+
+
+            $('#create-form').on('submit', function (e)
+            {
+                e.preventDefault();
+                Swal.fire({
+                    title: '確定新增類別?',
+                    text: "還是要再想一下!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: '取消',
+                    confirmButtonText: '確定!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            '成功!',
+                            '已新增一個類別',
+                            'success'
+                        )
+                        setTimeout(() => {
+                            e.target.submit();
+                        }, 2000);
+                    }
+                })
+            });
+
+        });
+
+
+
+            </script>
+        }
+

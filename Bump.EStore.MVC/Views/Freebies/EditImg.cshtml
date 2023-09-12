@@ -1,0 +1,37 @@
+﻿@model Bump.EStore.MVC.ViewModels.Freebies.FreebieEditImgVM
+
+@{
+    ViewBag.Title = "修改贈品圖片";
+}
+
+<h2>修改贈品圖片</h2>
+
+
+@using (Html.BeginForm("EditImg", "Freebies", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="row">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    <div class="mb-3 d-flex justify-content-center">
+        <img src="~/Uploads/Freebie_imgs/@Model.Thumbnail" width="200" height="200" />
+    </div>
+    <div class="mb-3">
+        <input type="file" name="imgFile" class="form-control" />
+        @Html.ValidationMessageFor(model => model.Thumbnail, "", new { @class = "text-danger" })
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-2 mt-3 d-flex justify-content-end">
+            <input type="submit" value="確定編輯" class="btn btn-success" />
+        </div>
+        <div class="col-md-2 mt-3">
+            <a class="btn btn-danger" href="@Url.Action("Index")" role="button"><i class="fa-solid fa-plus"></i>取消編輯</a>
+        </div>
+    </div>
+</div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

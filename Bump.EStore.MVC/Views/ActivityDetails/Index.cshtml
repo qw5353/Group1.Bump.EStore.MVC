@@ -1,0 +1,384 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.Activities.ActivityDetailIndexVM>
+@{
+    string title = ViewBag.Title;
+    DateTime startTime = ViewBag.Start;
+    DateTime endTime = ViewBag.End;
+    int id = ViewBag.Id;
+    ViewBag.Breadcrumbs = new string[] { "活動管理", "促銷活動總覽", title };
+    var activitiesDetail = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+}
+
+
+@section customStyles{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <style>
+        th {
+            background-color: rgb(87,55,25) !important;
+            color: white !important;
+        }
+    </style>
+}
+
+
+<h2 class="mb-3 mt-4">
+    @Html.DisplayFor(model => title)
+</h2>
+<p class="text-secondary mb-2">
+    <i class="fa-regular fa-clock"></i>&nbsp;&nbsp;@Html.DisplayFor(model => startTime)
+    &nbsp; ~ &nbsp; @Html.DisplayFor(model => endTime)
+</p>
+
+<section class="container">
+    <div class="row justify-content-between">
+        <div class="mb-3 col-md-1">
+            <a class="btn btn-dark" href="@Url.Action("Index", "Activities")" role="button"><i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+        <div class="mb-3 col-md-2 d-flex justify-content-end">
+            <a class="btn btn-dark" href="@Url.Action("Create", new { id = @id })" role="button"><i class="fa-solid fa-plus"></i>新增活動細項</a>
+        </div>
+    </div>
+</section>
+
+<table id="myTable" class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Thumbnail)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiscountTypeName)
+            </th>
+            <th>
+                檢視內容
+            </th>
+            <th>
+                編輯
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.Status == "已過期")
+                    {
+                        <div><span class="badge rounded-pill bg-secondary">@Html.DisplayFor(modelItem => item.Status)</span></div>
+                    }
+                    @if (item.Status == "進行中")
+                    {
+                        <div><span class="badge rounded-pill bg-success">@Html.DisplayFor(modelItem => item.Status)</span></div>
+                    }
+                    @if (item.Status == "未開始")
+                    {
+                        <div><span class="badge rounded-pill bg-warning">@Html.DisplayFor(modelItem => item.Status)</span></div>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Thumbnail)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+
+                <td id="select">
+                    @Html.DisplayFor(modelItem => item.DiscountTypeName)
+                </td>
+
+                <td>
+                    <button class="btn btn-secondary detail" id="@item.Id" onclick="showModal(@item.Id)"><i class="fa-solid fa-eye"></i></button>
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="@Url.Action("Edit", new { id = item.Id })" role="button"><i class="fa-solid fa-pen-to-square"></i></a>
+                    @*               <a class="btn btn-danger" href="@Url.Action("Delete", new { id = item.Id })" role="button"><i class="fa-solid fa-trash"></i></a>*@
+                    <button type="submit" class="btn btn-danger delete" id="@item.Id"><i class="fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="ActivityDetailModal" tabindex="-1" aria-labelledby="ActivityDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="https://kit.fontawesome.com/afa27cfccd.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+    <script>
+$('#myTable').DataTable({
+                /*  "searching": false,*/
+                "pageLength": '10',
+                "searching": false,
+                "scrollCollapse": true, // 預設為false 是否開始滾軸功能控制X、Y軸
+                "scrollY": "600px", // 若有設置為Y軸(垂直)最大高度
+                "bLengthChange":false,
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/zh_Hant.json"
+                }
+            });
+
+            var badge = document.querySelectorAll('.badge.rounded-pill.bg-secondary');
+            badge.forEach(item => item.parentNode.parentNode.parentNode.classList.add('table-active'));
+
+            const data = @Html.Raw(activitiesDetail);
+
+            const myModal = document.querySelector('#ActivityDetailModal');
+
+            function showModal(id) {
+                const modal = new bootstrap.Modal(myModal);
+                const row = data.find(row => row.Id === id);
+                const modalBody = document.querySelector("#ActivityDetailModal .modal-body");
+                const {
+                    Name,
+                    Description,
+                    StartTime,
+                    EndTime,
+                    DiscountTypeName,
+                    CouponName,
+                    GiftCouponId,
+                    TargetType,
+                    PromotionProductType,
+                    PriceThreshold,
+                    DiscountQty,
+                    Amount,
+                    Freebie,
+                    ExtraSalesUsage,
+                    ProductTag,
+                    Category,
+                    MemberTag,
+                    MemberLevel,
+                    CreatedAt
+                } = row;
+
+                modalBody.replaceChildren();
+
+                $(modalBody).append(
+                    $(`
+<h4>${Name}</h4>
+<h6 class="text-secondary">建立時間: ${dayFormat(CreatedAt)}</h6>
+<table class="table">
+<tr>
+	<th>
+		活動期間
+	</th>
+	<td>
+        <div class="row">
+            <div class="col-md-4">
+                ${dayFormat(StartTime)}
+            </div>
+            <div class="col-md-1">
+                到
+            </div>
+            <div class="col-md-6">
+                ${dayFormat(EndTime)}
+            </div>
+        </div>
+	</td>
+</tr>
+
+<tr>
+	<th>
+		@Html.DisplayNameFor(Model => Model.Description)
+	</th>
+	<td>
+		${Description}
+	</td>
+</tr>
+<tr style="${(!TargetType && !MemberLevel && !MemberTag) ? 'display: none;' : ''}">
+    <th>
+        @Html.DisplayNameFor(Model => Model.TargetType)
+    </th>
+    <td>
+        <div class="row">
+            ${TargetType ? `<div class="col-md-4">${TargetType}</div>` : ''}
+            ${!MemberLevel ? '' : `<div class="col-md-4">${MemberLevel}</div>`}
+            ${MemberTag ? `<div class="col-md-4">${MemberTag}</div>` : ''}
+        </div>
+    </td>
+</tr>
+<tr style="${(!PromotionProductType && !Category && !ProductTag) ? 'display: none;' : ''}">
+    <th>
+        @Html.DisplayNameFor(Model => Model.PromotionProductType)
+    </th>
+    <td>
+        <div class="row">
+            ${PromotionProductType ? `<div class="col-md-4">${PromotionProductType}</div>` : ''}
+            ${Category ? `<div class="col-md-4">${Category}</div>` : ''}
+            ${ProductTag ? `<div class="col-md-4">${ProductTag}</div>` : ''}
+        </div>
+    </td>
+</tr>
+<tr>
+	<th>
+        @Html.DisplayNameFor(Model => Model.DiscountTypeName)
+	</th>
+	<td>
+        <div class="row">
+            <div class="col-md-3">
+		        ${DiscountTypeName}
+            </div>
+            ${Amount ? getAmountText(Amount, Freebie, DiscountQty, GiftCouponId, DiscountTypeName) : ''}
+        ${GiftCouponId ? getAmountText(Amount, Freebie, DiscountQty, GiftCouponId, DiscountTypeName) : ''}
+        ${Freebie ? getAmountText(Amount, Freebie, DiscountQty, GiftCouponId, DiscountTypeName) : ''}
+        ${CouponName ? `<div class="col-md-4">${CouponName}</div>` : ''}
+        </div>
+	</td>
+</tr>
+<tr>
+	<th>
+		@Html.DisplayNameFor(Model => Model.PriceThreshold)
+	</th>
+	<td>
+		${PriceThreshold}
+	</td>
+</tr>
+<tr>
+	<th>
+		@Html.DisplayNameFor(Model => Model.ExtraSalesUsage)
+	</th>
+	<td>
+		${ExtraSalesUsage}
+	</td>
+</tr>
+</table>`)
+                )
+
+                modal.show();
+            }
+
+            const deleteMessages = document.querySelectorAll('.delete');
+            deleteMessages.forEach(deleteMessage => {
+                deleteMessage.onclick = function () {
+
+                    Swal.fire({
+                        title: '你確定要刪除這筆紀錄嗎?',
+                        text: "刪了就回不去了",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '確定',
+                        cancelButtonText: '取消'
+                    })
+                        .then(function (result) {
+                            if (result.value) {
+                                fetch(`/ActivityDetails/Delete`, {
+                                    method: "POST",
+                                    body: JSON.stringify({
+                                        id: deleteMessage.id
+                                    }),
+                                    headers: {
+                                        "content-type": "application/json"
+                                    }
+                                })
+                                    .then(res => {
+                                        if (res.ok) {
+                                            Swal.fire(
+                                                '刪除!',
+                                                '你成功將資料刪除',
+                                                'success'
+                                            ).then(
+                                                function () {
+                                                    location.reload();
+                                                })
+                                        }
+                                    })
+                                    .catch(err => {
+                                        alert(err)
+                                    })
+                            }
+                        })
+                }
+            });
+
+
+            function dayFormat(dateString) {
+                var date = new Date(dateString);
+
+                var year = date.getFullYear();
+                var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                var day = date.getDate().toString().padStart(2, '0');
+                var hours = date.getHours().toString().padStart(2, '0');
+                var minutes = date.getMinutes().toString().padStart(2, '0');
+
+                var formattedDateTime = year + "-" + month + "-" + day + " " + hours + ":" + minutes;
+
+                return formattedDateTime
+            }
+
+
+            function getAmountText(amount, freebie, discountQty, giftCouponId, discountTypeName) {
+                switch (discountTypeName) {
+                    case "打折":
+                        return `<div class="col-md-2">${amount}折</div>`;
+                    case "折抵":
+                        return `<div class="col-md-2">${amount}元</div>`;
+                    case "贈品":
+                        return `<div class="col-md-2">${freebie}</div>`;
+                    case "運費":
+                        return `<div class="col-md-2">${amount}元</div>`;
+                    case "買X送Y":
+                        return `<div class="col-md-2">買${amount}送${discountQty}</div>`;
+                    case "點數加倍送":
+                        return `<div class="col-md-2">${amount}倍</div>`;
+                    case "贈優惠券":
+                        return `<div class="col-md-2">${giftCouponId}</div>`;
+
+                    default:
+                        return '';
+                }
+            }
+
+            function getProductType(productTag, category, promotionProductType) {
+                switch (promotionProductType) {
+                    case "商品標籤":
+                        return `<div class="col-md-2">${productTag}</div>`;
+                    case "商品種類":
+                        return `<div class="col-md-2">${category}</div>`;
+
+                    default:
+                        return '';
+                }
+            }
+    </script>
+}
+
+

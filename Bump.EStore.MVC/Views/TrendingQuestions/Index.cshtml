@@ -1,0 +1,245 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.TrendingQuestionIndexVM>
+
+@{
+    ViewBag.Title = "常見問題";
+    ViewBag.Breadcrumbs = new string[] { "客服管理", "常見問題" };
+    var typeSelect = (SelectList)ViewBag.TypeSelect;
+    int rowsCount = Model.Count();
+}
+
+
+@section customStyles{
+    <style>
+        input#pageNumber::-webkit-outer-spin-button,
+        input#pageNumber::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+}
+
+<span class="d-none" id="rows-count" data-rows="@rowsCount"></span>
+
+<h2>常見問題</h2>
+
+<p class="my-3 d-flex">
+    <a class="btn btn-success" href="~/TrendingQuestions/Create">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"></path>
+        </svg>
+        新增問題
+    </a>
+    <a class="btn btn-secondary ms-auto" href="~/TrendingQuestionTypes">
+        管理問題種類
+    </a>
+</p>
+<div class="row mb-3">
+    <div class="col-2 d-flex">
+        <div class="row g-1 align-items-center">
+            <div class="col-auto">
+                <label for="TypeId" class="form-label fs-6 me-2">
+                    問題種類:
+                </label>
+            </div>
+            <div class="col-auto">
+                @Html.DropDownList("TypeId", typeSelect, "", new { @class = "form-select" })
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="row g-1 align-items-center">
+            <div class="col-auto">
+                <label for="title-search-input" class="form-label fs-6 me-2">
+                    標題搜尋:
+                </label>
+            </div>
+            <div class="col-auto">
+                <input type="text" id="title-search-input" placeholder="請輸入想搜索的標題" />
+                <button class="btn btn-primary" id="title-search-submit">搜索</button>
+            </div>
+        </div>
+    </div>
+</div>
+@if (rowsCount > 0)
+{
+    foreach (var item in Model)
+    {
+        <div class="row bg-secondary-subtle mx-auto mb-3 rounded-2">
+            <div class="col my-auto">
+                <dl>
+                    <dt class="fs-5 mt-2">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </dt>
+                    <dd class="mt-1">
+                        @Html.DisplayFor(modelItem => item.ShortenDescription)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-1 my-auto d-flex justify-content-end">
+                <a class="btn btn-secondary mx-1" title="edit row" href="/TrendingQuestions/Update/@item.Id">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                    </svg>
+                </a>
+                @using(Html.BeginForm("Delete","TrendingQuestions", FormMethod.Post)) {
+                    @Html.AntiForgeryToken();
+                    <button type="button" class="btn btn-danger mx-1" onclick="deleteQuestion(@item.Id, this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"></path>
+                        </svg>
+                    </button>
+                } 
+            </div>
+        </div>
+    }
+
+    <ul class="pagination">
+        <li class="page-item @(ViewBag.PageNumber as int? == 1 ? "d-none" : string.Empty)">
+            <a class="page-link" href="#" aria-label="First Page" id="page-link-first">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item @(ViewBag.PageNumber as int? == 1 ? "d-none" : string.Empty)">
+            <a class="page-link" href="#" aria-label="Previous" id="page-link-previous">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <span class="form-control py-0 h-100 d-flex align-items-center">
+                <input id="pageNumber" type="number" min="1" max="@ViewBag.TotalPages" class="border-1 border-secondary-subtle border-opacity-50 rounded text-center" style="width: 28px;" value="@ViewBag.PageNumber" onClick="this.select();" />
+                <span class=""> / @ViewBag.TotalPages</span>
+            </span>
+        </li>
+        <li class="page-item @(ViewBag.PageNumber as int? == ViewBag.TotalPages as int? ? "d-none" : string.Empty)">
+            <a class="page-link" href="#" aria-label="Next" id="page-link-next">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+        </li>
+        <li class="page-item @(ViewBag.PageNumber as int? == ViewBag.TotalPages as int? ? "d-none" : string.Empty)">
+            <a class="page-link" href="#" aria-label="Last Page" id="page-link-last">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+} else
+{
+    <h2 class="text-center text-secondary">無資料</h2>
+}
+
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="delete-alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                成功刪除!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        const currentUrl = new URL(location.href);
+        const pageNumber = +currentUrl.searchParams.get("pageNumber") || 1;
+        const pageNumberInput = document.getElementById('pageNumber');
+        const maxPages = pageNumberInput.getAttribute('max');
+        const pageLinks = document.querySelectorAll('ul.pagination li a');
+        const typeSelect = document.getElementById('TypeId');
+        const deleteAlert = document.getElementById('delete-alert');
+        const toastAlert = bootstrap.Toast.getOrCreateInstance(deleteAlert);
+        const rowsCount = +document.getElementById('rows-count').dataset.rows;
+        const searchBtn = document.getElementById('title-search-submit');
+
+        document.querySelectorAll('form').forEach(f => f.addEventListener('click', (e) => e.preventDefault()));
+
+        if (currentUrl.searchParams.get('Title')) {
+            document.getElementById('title-search-input').value = currentUrl.searchParams.get('Title');
+        }
+
+        searchBtn.addEventListener('click', function (e) {
+            const titleToSearch = document.getElementById('title-search-input').value;
+            redirectTo(1, titleToSearch);
+        });
+
+        pageLinks.forEach(pl => setPageLink(pl, pageNumber, maxPages));
+
+        pageNumberInput.addEventListener('input', function () {
+            const inputPageNumber = parseInt(this.value);
+            if (!inputPageNumber) {
+                alert('請輸入數字');
+                return;
+            }
+
+            if (inputPageNumber > maxPages || inputPageNumber < 0) {
+                alert('請輸入正確範圍內的頁碼');
+                return;
+            }
+
+            redirectTo(inputPageNumber);
+        })
+
+        typeSelect.addEventListener('input', function () {
+            redirectTo(1);
+        });
+
+        if (rowsCount === 0 && pageNumber !== 1) {
+            redirectTo(pageNumber - 1)
+        }
+
+        function deleteQuestion(id, targetElement) {
+            const hiddenToken = targetElement.closest("form").querySelector('input[name="__RequestVerificationToken"]').value;
+
+            const formdata = new FormData();
+            formdata.append('id', id);
+            formdata.append('__RequestVerificationToken', hiddenToken);
+
+            fetch("/TrendingQuestions/Delete", {
+                method: "POST",
+                body: formdata
+            })
+            .then(res => res.status)
+            .then(statusCode => {
+                if (statusCode === 200) {
+                    targetElement.closest('.row').classList.add('d-none');
+                    toastAlert.show();
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    throw Error("未成功刪除資料!");
+                }
+            })
+            .catch(err => console.error(err));
+        }
+
+        function setPageLink(pageLink, currentPage, maxPages) {
+            const redirectUrl = new URL(location.href);
+            const pageLinkAction = pageLink.id.replaceAll('page-link-', '');
+            redirectUrl.searchParams.set('pageNumber', getTargetPageNumber(pageLinkAction, currentPage, maxPages));
+            pageLink.href = redirectUrl.toString();
+        }
+
+        function getTargetPageNumber(pageLinkAction, currentPage, maxPages) {
+            const actionTargetPageMap = {
+                last: maxPages,
+                previous: currentPage - 1,
+                next: currentPage + 1,
+                first: 1
+            };
+
+            return actionTargetPageMap?.[pageLinkAction];
+        }
+
+        function redirectTo(pageNumber, title = "") {
+            const redirectUrl = new URL(location.href);
+
+            redirectUrl.searchParams.set('TypeId', typeSelect.value);
+            redirectUrl.searchParams.set('pageNumber', pageNumber);
+            redirectUrl.searchParams.set('Title', title);
+           
+            location.href = redirectUrl;
+        }
+    </script>
+}

@@ -1,0 +1,318 @@
+﻿@model IEnumerable<Bump.EStore.MVC.ViewModels.MemberLevels.MemberLevelIndexVM>
+
+@{
+    ViewBag.Title = "會員等級";
+    ViewBag.Breadcrumbs = new string[] { "會員管理", "會員等級" };
+}
+
+@section customStyles{
+    <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <style>
+        .card-group {
+            display: flex;
+            flex-direction: row;
+            height: 100%
+        }
+
+        .profile-image {
+            width: 30%
+        }
+
+        .profile-image img {
+            padding: 2%;
+            width: 100%
+        }
+
+        dl .topic {
+            padding: 0;
+        }
+
+        .topic div {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .topic div dt {
+            min-width: 3em;
+            margin-bottom: 6px
+        }
+
+        .topic div dd {
+            margin: 0;
+            margin-left: 1rem;
+        }
+
+        .card-body {
+            padding: 1px
+        }
+
+        .card-body {
+            padding: 0px
+        }
+
+        .btnCreate {
+            height: 125px;
+            width: 125px;
+            border-radius: 50%;
+            background-color: #6d543d;
+            border: 1;
+            cursor: pointer !important;
+        }
+    </style>
+}
+
+<h2>會員等級</h2>
+@*<table class="table table-hover table-striped">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LevelOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpgradeOrderCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimePeriod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GainPointRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LevelOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpgradePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpgradeOrderCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimePeriod)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GainPointRate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-secondary" })
+                    @if (item.Id > 1)
+                    {
+                        <button type="submit" class="btn btn-danger delete" id="@item.Id"><i class="fa-solid fa-trash"></i></button>
+                    }
+
+                </td>
+            </tr>
+        }
+
+    </table>*@
+
+<div class="row row-cols-1 row-cols-md-2 g-4" id="myDiv">
+    @foreach (var item in Model)
+    {
+
+        <div class="col">
+            <div class="card-group">
+                <div class="card">
+                    @*<div class="card-header text-dark bg-light-subtle">
+                            <div class="d-flex justify-content-between">
+                                <span class="fs-5 card-title me-3">
+                                    @Html.DisplayFor(modelItem => item.LevelOrder)
+                                </span>
+                                <span class="ms-auto justify-content-center"><a class="btn" data-bs-toggle="collapse" href="#collapse-@item.Id" role="button"><i class="fa-solid fa-ellipsis fa-xl"></i></a></span>
+
+                            </div>
+                        </div>*@
+                    <div class="card-body align-items-center">
+                        <div class="card-text mt-4 ms-4">
+
+                            <dl class="topic">
+                                <div class="d-flex">
+                                    <div class="me-auto">
+
+                                        <dt class="fs-3">Lv. @item.LevelOrder</dt>
+                                        <dd>
+                                            @if (item.Name == "怪力")
+                                            {
+                                                <span class="fs-4 badge rounded-pill border border-warning bg-warning text-light mx-0">@Html.DisplayFor(modelItem => item.Name)</span>
+                                            }
+                                            @if (item.Name == "豪力")
+                                            {
+                                                <span class="fs-4 badge rounded-pill border border-warning bg-warning-subtle text-warning mx-0">@Html.DisplayFor(modelItem => item.Name)</span>
+                                            }
+                                            @if (item.Name == "腕力")
+                                            {
+                                                <span class="fs-4 badge rounded-pill border border-warning text-warning mx-0">@Html.DisplayFor(modelItem => item.Name)</span>
+                                            }
+                                        </dd>
+                                    </div>
+                                    <div class="p-1"> <a class="btn btn-outline-success" href="@Url.Action("Edit" , new { id = item.Id })" role="button"><i class="fa-solid fa-pen-to-square"></i></a></div>
+                                    <div class="p-1 me-4">
+                                        @if (item.Id > 1)
+                                        {
+                                            <button type="submit" class="btn btn-outline-danger delete" id="@item.Id"><i class="fa-solid fa-trash"></i></button>
+                                        }
+                                    </div>
+                                </div>
+                                <table>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.UpgradePrice)</th>
+                                        <td class="ps-4">@Html.DisplayFor(modelItem => item.UpgradePrice)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.UpgradeOrderCount)</th>
+                                        <td class="ps-4">@Html.DisplayFor(modelItem => item.UpgradeOrderCount)</td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.TimePeriod)</th>
+                                        <td class="ps-4">@Html.DisplayFor(modelItem => item.TimePeriod)</td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.GainPointRate)</th>
+                                        <td class="ps-4">@Html.DisplayFor(modelItem => item.GainPointRate)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                                        <td class="ps-4">@Html.DisplayFor(modelItem => item.Description)</td>
+                                    </tr>
+                                </table>
+                                @*<div>
+                                        <dt>@Html.DisplayNameFor(model => model.UpgradePrice)</dt>
+                                        <dd>@Html.DisplayFor(modelItem => item.UpgradePrice)</dd>
+                                    </div>
+                                    <div>
+                                        <dt>@Html.DisplayNameFor(model => model.UpgradeOrderCount)</dt>
+                                        <dd>@Html.DisplayFor(modelItem => item.UpgradeOrderCount)</dd>
+
+                                    </div>
+                                    <div>
+                                        <dt>@Html.DisplayNameFor(model => model.TimePeriod)</dt>
+                                        <dd>@Html.DisplayFor(modelItem => item.TimePeriod)</dd>
+
+                                    </div>
+                                    <div>
+                                        <dt>@Html.DisplayNameFor(model => model.GainPointRate)</dt>
+                                        <dd>@Html.DisplayFor(modelItem => item.GainPointRate)</dd>
+                                    </div>
+                                    <div>
+                                        <dt>@Html.DisplayNameFor(model => model.Description)</dt>
+                                        <dd>@Html.DisplayFor(modelItem => item.Description)</dd>
+                                    </div>*@
+
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col d-flex align-items-end justify-content-end mb-3">
+        <div class="btnCreate fs-1 d-flex align-items-center justify-content-center">
+            @Html.ActionLink("+", "Create", "MemberLevels", new { @class = "text-decoration-none text-white text-center align-middle" })
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://kit.fontawesome.com/afa27cfccd.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
+    <script>
+        $(function () {
+            $('.btnCreate').click(function () {
+                location.href = "/MemberLevels/Create";
+            });
+        })
+        //$(document).ready(function () {
+        //    var deleteButtons = document.querySelectorAll('.delete');
+        //    Array.from(deleteButtons).forEach(function (button) {
+        //        $(button).click(function () {
+        //            var id = button.id;
+
+        //            fetch(`/MemberLevels/Delete`, {
+        //                method: "POST",
+        //                body: JSON.stringify({
+        //                    id: id
+        //                }),
+        //                headers: {
+        //                    "content-type": "application/json"
+        //                }
+        //            })
+        //                .then(res => {
+        //                    if (res.ok) {
+        //                        location.reload();
+        //                    }
+        //                })
+        //                .catch(err => {
+        //                    alert(err);
+        //                });
+        //        });
+        //    });
+        //});
+
+        var deleteMessages = document.querySelectorAll('.delete');
+        deleteMessages.forEach(deleteMessage => {
+            deleteMessage.onclick = function () {
+
+                Swal.fire({
+                    title: '你確定要刪除這筆紀錄嗎?',
+                    text: "刪了就回不去了",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消'
+                })
+                    .then(function (result) {
+                        if (result.value) {
+                            fetch(`/MemberLevels/Delete`, {
+                                method: "POST",
+                                body: JSON.stringify({
+                                    id: deleteMessage.id
+                                }),
+                                headers: {
+                                    "content-type": "application/json"
+                                }
+                            })
+                                .then(res => {
+                                    if (res.ok) {
+                                        location.reload();
+                                    }
+                                })
+                                .catch(err => {
+                                    alert(err)
+                                })
+                        }
+                    })
+            }
+        });
+
+    </script>
+
+}

@@ -1,0 +1,206 @@
+﻿@model IEnumerable<Bump.EStore.Infrastructure.Repositories.DapperRepositories.ExperienceEnrollmentVM>
+
+@{
+    ViewBag.Title = "報名檢視";
+    ViewBag.Breadcrumbs = new string[] { "課程管理", "報名檢視" };
+}
+
+
+@section customScripts {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+}
+
+@section customStyles {
+    <style>
+        dd {
+            margin-left: 10px;
+        }
+
+        .vh-65 {
+            height: 65vh;
+        }
+    </style>
+}
+
+<h2>報名檢視</h2>
+
+
+<div class="container-fluid" id="app">
+    <div class="row">
+        <div class="col-auto">
+            <label for="week-select">星期:</label>
+            <input type="week" id="week-select" min="2023-W01" max="2023-W52" />
+        </div>
+        <div class="col-auto">
+            <label for="field-select">場地:</label>
+            <select id="field-select">
+            </select>
+        </div>
+    </div>
+    <div class="row chart-row overflow-y-auto mt-4 vh-65" id="chart-row">
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
+
+
+
+    <script type="module">
+        import lodash from 'https://cdn.jsdelivr.net/npm/lodash@4.17.21/+esm';
+        const _ = lodash;
+
+        $(async function () {
+
+            $('#week-select').change(async function (e) {
+                await drawCharts();
+            });
+
+            $('#field-select').change(async function (e) {
+                await drawCharts();
+            })
+
+            google.charts.load('current', { 'packages': ['timeline'] });
+            const fieldSelect = document.getElementById('field-select');
+            const fields = await (await fetch('/CourseEnrollments/Fields')).json();
+
+            const DateTime = luxon.DateTime;
+
+
+            prepareInputDefault();
+            google.charts.setOnLoadCallback(drawCharts);
+
+
+            async function drawCharts() {
+                emptyChartContainer();
+                const data = await fetchData();
+                if (Object.keys(data).length === 0) {
+                    $('#chart-row').append(`<h2>無資料</h2>`);
+                    return;
+                } 
+                const chartId = `chart`;
+                $('#chart-row').append(`<div id="${chartId}" class="h-100"></div>`);
+
+                const container = document.getElementById(chartId);
+                const chart = new google.visualization.Timeline(container);
+                const dataTable = new google.visualization.DataTable();
+
+                dataTable.addColumn({ type: 'string', id: 'Date' });
+                dataTable.addColumn({ type: 'string', id: 'dummy-label' })
+                dataTable.addColumn({ type: 'string', role: 'tooltip' });
+                dataTable.addColumn({ type: 'date', id: 'Start' });
+                dataTable.addColumn({ type: 'date', id: 'End' });
+
+                const rows = Object.entries(data).map(([date, enrollments]) => enrollments.map(enroll => {
+                    const html = `
+                            <dl>
+                <dt>課程名稱</dt>
+                <dd>${enroll.CourseName}</dd>
+                <dt>課程時間</dt>
+                <dd>${enroll.StartTime.split("T")[1]} ~ ${enroll.EndTime.split("T")[1]}</dd>
+                <dt>方案名稱</dt>
+                <dd>${enroll.PlanName}</dd>
+                <dt>教練名稱</dt>
+                <dd>${enroll.CoachName}</dd>
+                <dt>場地名稱</dt>
+                <dd>${enroll.FieldName}</dd>
+                <dt>會員名稱</dt>
+                <dd>${enroll.MemberName}</dd>
+                <dt>會員帳號</dt>
+                <dd>${enroll.Account}</dd>
+                <dt>參加人數</dt>
+                <dd>${enroll.NumberOfPeople}</dd>
+                <dt>總價</dt>
+                <dd>${enroll.TotalPrice}</dd>
+                <dt>報名時間</dt>
+                <dd>${enroll.CreatedAt}</dd>
+</dl>`;
+
+                    const [startHours, startMinutes, startSeconds] = enroll.StartTime.split("T")[1].split(":").map(s => parseInt(s));
+                    const [endHours, endMinutes, endSeconds] = enroll.EndTime.split("T")[1].split(":").map(s => parseInt(s));
+
+                    return [
+                        date,
+                        null,
+                        html,
+                        new Date(0, 0, 0, startHours, startMinutes, startSeconds),
+                        new Date(0, 0, 0, endHours, endMinutes, endSeconds),
+                    ];
+                })).flatMap(f => f);
+
+                debugger;
+                dataTable.addRows(rows);
+
+                const options = {
+                    colors: ["#001219", "#005f73", "#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00", "#ca6702", "#bb3e03", "#ae2012", "#9b2226"],
+                    tooltip: {
+                        isHtml: true
+                    },
+                    timeline: {
+                        rowLabelStyle: {fontSize: 18, color: '#603913' },
+                        barLabelStyle: {fontSize: 18 }
+                    }
+                };
+
+
+                chart.draw(dataTable, options);
+            }
+
+
+            function prepareInputDefault() {
+                fields.forEach(f => $(fieldSelect).append(`<option value="${f.Id}">${f.Name}</option>`));
+
+                const weekSelect = document.getElementById('week-select');
+                const yearWeekOfToday = DateTime.now().toISOWeekDate().split('-').slice(0, -1).join("-");
+                weekSelect.value = yearWeekOfToday;
+            }
+
+            async function fetchData() {
+                const fieldId = $('#field-select').val();
+                const json = await (await fetch(`/CourseEnrollments/Data/?fieldId=${fieldId}`)).json();
+
+                const weekSelect = document.getElementById('week-select');
+                const [startDate, endDate] = getStartAndEndFromYearWeek(weekSelect.value);
+                const { experience, skill } = json;
+
+
+                const data = [
+                    ...experience
+                        .filter(e => DateTime.fromISO(e.StartTime) > startDate && DateTime.fromISO(e.EndTime) < endDate)
+                        .map(e => {
+                            return {
+                                ...e,
+                                CourseName: "體驗課程"
+                            }
+                        }),
+                    ...skill
+                        .filter(s => DateTime.fromISO(s.StartTime) > startDate && DateTime.fromISO(s.EndTime) < endDate)
+                        .map(s => {
+                            return {
+                                ...s, PlanName: "無"
+                            }
+                        })
+                ];
+
+                return _.groupBy(data, (row) => row.StartTime.split("T")[0]);
+            }
+
+            function getStartAndEndFromYearWeek(yearWeek) {
+                const dt = DateTime.fromISO(yearWeek);
+
+                const dateFrom = dt.startOf('week');
+                const dateTo = dt.endOf('week');
+
+                return [dateFrom, dateTo];
+            }
+
+            function emptyChartContainer() {
+                document.getElementById('chart-row').replaceChildren();
+            }
+        })
+
+    </script>
+}
